@@ -2,7 +2,7 @@ import glob from 'fast-glob';
 import path from 'path';
 import { StaticImageData } from 'next/image';
 
-type Writer = 'Dan Edwards' | 'Google Gemini';
+type Writer = 'Dan Edwards';
 
 type Tag =
 	| 'HTML'
@@ -42,6 +42,10 @@ export interface IArticle {
 	/**Year-Month-Day
 	 * Example: '2024-09-04' */
 	date: string;
+
+	/**Year-Month-Day
+	 * Example: '2024-09-04' */
+	updated?: string;
 }
 
 export interface IArticleWithSlug extends IArticle {
