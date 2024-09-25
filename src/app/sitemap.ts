@@ -6,10 +6,10 @@ export default async function sitemap() {
 
 	const articlePages = articles.map((article) => ({
 		url: `${environment.productionBaseURL}/articles/${article.slug}`,
-		lastModified: article.date,
+		lastModified: article.updated || article.date,
 	}));
 
-	const routes = ['', '/articles'].map((route) => ({
+	const routes = ['', '/about', 'rss', '/articles'].map((route) => ({
 		url: `${environment.productionBaseURL}${route}`,
 		lastModified: new Date().toISOString().split('T')[0],
 	}));
