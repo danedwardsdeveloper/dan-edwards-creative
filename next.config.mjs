@@ -1,19 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	images: {
-		formats: ['image/webp'],
-		deviceSizes: [576],
-		imageSizes: [],
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'simpleanalyticsbadges.com',
-				port: '',
-				pathname: '/**',
-			},
-		],
-	},
 	output: 'standalone',
+	pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+	images: {
+		deviceSizes: [640, 750],
+		imageSizes: [16, 32, 64, 128, 256, 384, 512],
+		formats: ['image/webp'],
+		minimumCacheTTL: 60,
+	},
 };
 
 export default nextConfig;

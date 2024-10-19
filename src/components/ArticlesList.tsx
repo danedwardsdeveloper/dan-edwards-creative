@@ -1,57 +1,84 @@
-import Link from 'next/link';
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import clsx from 'clsx';
-import { getAllArticles } from '@/library/articles';
-import formatDate from '@/library/formatDate';
-import { FeaturedImage } from './Images';
 
-export default async function ArticlesList() {
-	const articles = await getAllArticles();
+import ArticlePreview from './ArticlePreview';
+import { type ArticleWithSlug } from '@/library/articles';
 
-	if (articles.length === 0) {
-		return <p>No articles found.</p>;
-	}
+interface ArticlesListProps {
+	articles: ArticleWithSlug[];
+	classes?: string;
+}
+
+export default function ArticlesList({ articles, classes }: ArticlesListProps) {
+	const articlesRef = useRef<(HTMLLIElement | null)[]>([]);
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	useEffect(() => {
+		if (!isClient) return;
+
+		let ctx: gsap.Context;
+
+		const setupAnimations = () => {
+			if (typeof window === 'undefined') return;
+
+			gsap.registerPlugin(ScrollTrigger);
+
+			ctx = gsap.context(() => {
+				articlesRef.current.forEach((article, index) => {
+					if (article) {
+						gsap.fromTo(
+							article,
+							{
+								opacity: 0,
+								y: 50,
+							},
+							{
+								opacity: 1,
+								y: 0,
+								duration: 3,
+								ease: 'power3.out',
+								scrollTrigger: {
+									trigger: article,
+									start: 'top bottom-=10%',
+									end: 'top center',
+									toggleActions: 'play none none none',
+									// markers: true,
+								},
+								delay: index * 0.1,
+							}
+						);
+					}
+				});
+			});
+		};
+
+		requestAnimationFrame(() => {
+			requestAnimationFrame(setupAnimations);
+		});
+
+		return () => {
+			if (ctx) ctx.revert();
+		};
+	}, [isClient, articles]);
+
+	const setArticleRef = (element: HTMLLIElement | null, index: number) => {
+		articlesRef.current[index] = element;
+	};
 
 	return (
-		<div>
-			{articles.map((article) => (
-				<Link
-					key={article.slug}
-					href={`/articles/${article.slug}`}
-					className={clsx(
-						'flex flex-col space-y-1 my-3 p-1',
-						'hover:bg-orange-50 rounded-md transition-all duration-300',
-						'p-2'
-					)}
-				>
-					<div
-						className={clsx(
-							'w-full flex flex-col md:flex-row space-x-0 md:space-x-2'
-						)}
-					>
-						<p
-							className={clsx(
-								'text-neutral-600 dark:text-neutral-400 tabular-nums',
-								'md:w-40 md:flex-shrink-0 md:mr-2'
-							)}
-						>
-							{formatDate(article.date)}
-						</p>
-						<div>
-							<p
-								className={clsx(
-									'text-neutral-900 dark:text-neutral-100 tracking-tight'
-								)}
-							>
-								{article.title}
-							</p>
-							<FeaturedImage
-								image={article.featuredImage}
-								alt={article.title}
-							/>
-						</div>
-					</div>
-				</Link>
+		<ul role="list" className={clsx(classes)}>
+			{articles.map((article, index) => (
+				<li key={index} ref={(element) => setArticleRef(element, index)}>
+					<ArticlePreview article={article} priority={index < 2} />
+				</li>
 			))}
-		</div>
+		</ul>
 	);
 }

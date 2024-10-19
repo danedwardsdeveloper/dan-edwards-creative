@@ -1,63 +1,58 @@
-import { type IArticle } from '@/library/articles';
-import formatDate from '@/library/formatDate';
-import { FeaturedImage } from './Images';
-import { siteName } from '@/library/metadata';
+'use client';
+import { useContext } from 'react';
+import { useRouter } from 'next/navigation';
 
-export function generateSEOMetadata(article: IArticle) {
-	return {
-		title: article.title,
-		description: article.description,
-		openGraph: {
-			title: article.title,
-			description: article.description,
-			type: 'article',
-			publishedTime: article.date,
-			authors: [article.writer],
-			siteName: siteName,
-			images: [
-				{
-					url: article.featuredImage,
-					width: 1200,
-					height: 675,
-					alt: article.title,
-				},
-			],
-		},
-		twitter: {
-			card: 'summary_large_image',
-			title: article.title,
-			description: article.description,
-			images: [article.featuredImage],
-		},
-	};
-}
+import { AppContext } from '@/app/providers';
+import { Container } from '@/components/Container';
+import { ArrowLeftIcon } from './Icons';
+import { type Article } from '@/library/articles';
+
+import { formatDate } from '@/library/formatDate';
+import CustomImage from './CustomImage';
 
 export function ArticleLayout({
 	article,
-	borderOnFeaturedImage,
 	children,
 }: {
-	article: IArticle;
-	borderOnFeaturedImage?: boolean;
+	article: Article;
 	children: React.ReactNode;
 }) {
-	return (
-		<article>
-			<h1 className="title font-semibold text-2xl tracking-tighter">
-				{article.title}
-			</h1>
+	let router = useRouter();
+	let { previousPathname } = useContext(AppContext);
 
-			<div className="flex justify-between items-center mt-2 mb-8 text-sm">
-				<p className="text-sm text-neutral-600 dark:text-neutral-400">
-					{`by ${article.writer}, ${formatDate(article.date)}`}
-				</p>
+	return (
+		<Container className="mt-16 lg:mt-32">
+			<div className="xl:relative">
+				<div className="mx-auto max-w-2xl">
+					{previousPathname && (
+						<button
+							type="button"
+							onClick={() => router.back()}
+							aria-label="Go back to articles"
+							className="group mb-8 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 transition lg:absolute lg:-left-5 lg:-mt-2 lg:mb-0 xl:-top-1.5 xl:left-0 xl:mt-0 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 dark:ring-white/10 dark:hover:border-zinc-700 dark:hover:ring-white/20"
+						>
+							<ArrowLeftIcon className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400" />
+						</button>
+					)}
+					<article>
+						<header className="flex flex-col">
+							<span className="flex items-center text-base text-zinc-400 dark:text-zinc-500">
+								{formatDate(article.date)}
+							</span>
+							<h1 className="my-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+								{article.title}
+							</h1>
+							<CustomImage
+								src={article.socialImage}
+								classes={`mt-4 mb-8 shadow-lg md:shadow-2xl shadow-gray-700 dark:shadow-gray-900 rounded-xl`}
+								priority={true}
+								alt={article.title}
+							/>
+						</header>
+						<div className="mt-8">{children}</div>
+					</article>
+				</div>
 			</div>
-			<FeaturedImage
-				image={article.featuredImage}
-				alt={article.title}
-				border={borderOnFeaturedImage}
-			/>
-			<div>{children}</div>
-		</article>
+		</Container>
 	);
 }

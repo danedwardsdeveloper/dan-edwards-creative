@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import Image, { StaticImageData } from 'next/image';
 import clsx from 'clsx';
 
-const baseContainerStyles = `w-full my-4`;
+const baseContainerStyles = `w-full mt-10 mb-4`;
 const baseImageStyles = `rounded-lg w-full h-auto`;
 const borderStyles = 'border-2 border-gray-300 rounded-lg';
 const sizes =
@@ -24,9 +24,9 @@ export const FeaturedImage = ({ image, alt, border }: CustomImageProps) => {
 			<Image
 				src={image}
 				alt={alt}
-				height={576}
-				width={324}
-				quality={90}
+				height={627}
+				width={352}
+				quality={100}
 				priority
 				sizes={sizes}
 				placeholder="blur"

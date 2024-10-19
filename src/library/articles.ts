@@ -1,63 +1,27 @@
 import glob from 'fast-glob';
 import path from 'path';
-import { StaticImageData } from 'next/image';
+import { type StaticImageData } from 'next/image';
 
-type Writer = 'Dan Edwards';
-
-type Tag =
-	| 'HTML'
-	| 'CSS'
-	| 'JavaScript'
-	| 'TypeScript'
-	| 'Book review'
-	| 'History'
-	| 'React'
-	| 'Next'
-	| 'Tailwind'
-	| 'Codecademy'
-	| 'Philosophy'
-	| 'Vite'
-	| 'VS Code'
-	| 'MDX'
-	| 'Analytics';
-
-export interface IArticle {
-	/** Sentence case with a colon
-	 * Example: "Creating a complex React root: order and dependencies"
-	 */
+export interface Article {
 	title: string;
-	seoTitle?: string;
-	description: string;
-	writer: Writer;
-	tags: Tag[];
-
-	/** Lowercase, separated with a comma and space
-	 * 	Example; 'react, next.js, front-end'
-	 */
-	keywords: string;
-
-	/** Landscape meta image, PNG exactly 1,200 x 675px */
-	featuredImage: StaticImageData;
-
-	/**Year-Month-Day
-	 * Example: '2024-09-04' */
+	display: boolean;
+	displayDescription: string;
+	metaDescription?: string;
 	date: string;
-
-	/**Year-Month-Day
-	 * Example: '2024-09-04' */
-	updated?: string;
+	socialImage: StaticImageData;
 }
 
-export interface IArticleWithSlug extends IArticle {
+export interface ArticleWithSlug extends Article {
 	slug: string;
 }
 
 export async function getArticleData(
 	slug: string
-): Promise<IArticleWithSlug | null> {
+): Promise<ArticleWithSlug | null> {
 	try {
-		const articleModule = await import(`../app/articles/${slug}/data`);
-		const articleData = articleModule.article as IArticle;
+		const articleModule = await import(`../app/${slug}/data`);
+		console.log(articleModule);
+		const articleData = articleModule.article as Article;
 
 		return {
 			...articleData,
@@ -70,25 +34,27 @@ export async function getArticleData(
 	return null;
 }
 
-export async function getAllArticles(): Promise<IArticleWithSlug[]> {
+export async function getAllArticles(): Promise<ArticleWithSlug[]> {
 	try {
-		const articlePaths = await glob('src/app/articles/*', {
+		const articlePaths = await glob('src/app/*', {
 			onlyDirectories: true,
-			ignore: ['_work-in-progress'],
 		});
 
 		const articles = await Promise.all(
-			articlePaths.map(async (articlePath) => {
-				const slug = path.basename(articlePath);
+			articlePaths.map(async (projectPath) => {
+				const slug = path.basename(projectPath);
 				return await getArticleData(slug);
 			})
 		);
 
 		return articles
-			.filter((article): article is IArticleWithSlug => article !== null)
-			.sort(
-				(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-			);
+			.filter((project): project is ArticleWithSlug => project !== null)
+			.filter((project) => project.display)
+			.sort((a, b) => {
+				const dateA = new Date(a.date);
+				const dateB = new Date(b.date);
+				return dateB.getTime() - dateA.getTime();
+			});
 	} catch (error) {
 		console.error('Error fetching articles:', error);
 		return [];

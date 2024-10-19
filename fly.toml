@@ -1,4 +1,9 @@
-app = 'dan-digresses'
+# fly.toml app configuration file generated for dan-edwards-developer on 2024-10-05T21:25:11+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'dan-edwards-developer'
 primary_region = 'lhr'
 
 [build]

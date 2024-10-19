@@ -1,32 +1,21 @@
-import { cleanEnv, makeValidator } from 'envalid';
+const requiredEnvironmentVariables = ['BARE_DOMAIN'] as const;
 
-const nonEmptyStr = makeValidator((value) => {
-	if (value.trim() === '') throw new Error('Value cannot be an empty string');
-	return value;
-});
+type EnvironmentVariables = (typeof requiredEnvironmentVariables)[number];
 
-const envConfig = {
-	ENVIRONMENT: nonEmptyStr({ choices: ['development', 'production'] }),
+type Environment = {
+	[Key in EnvironmentVariables]: string;
 };
 
-const cleanedEnv = cleanEnv(process.env, envConfig);
+const environment = {} as Environment;
 
-const isProduction = cleanedEnv.ENVIRONMENT === 'production';
-const isDevelopment = cleanedEnv.ENVIRONMENT === 'development';
+for (const environmentVariable of requiredEnvironmentVariables) {
+	const value = process.env[environmentVariable];
+	if (!value) {
+		throw new Error(
+			`Missing required environment variable: ${environmentVariable}`
+		);
+	}
+	environment[environmentVariable] = value;
+}
 
-const bareDomain = 'dandigresses.co.uk';
-const productionBaseURL = `https://${bareDomain}`;
-const developmentBaseURL = 'http://localhost:3000';
-const dynamicBaseURL = isProduction ? productionBaseURL : developmentBaseURL;
-
-export const environment = {
-	isProduction,
-	isDevelopment,
-	bareDomain,
-	productionBaseURL,
-	dynamicBaseURL,
-} as const;
-
-export const validateEnvironment = () => {
-	cleanEnv(process.env, envConfig);
-};
+export { environment };

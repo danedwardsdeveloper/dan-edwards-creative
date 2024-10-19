@@ -1,19 +1,20 @@
-import { Metadata } from 'next';
-
-import { IArticle } from '@/library/articles';
-import { environment } from './environment';
+import { type Metadata } from 'next';
 import { StaticImageData } from 'next/image';
 
-export const siteName = 'Dan Digresses';
+import { type Article } from './articles';
+import { environment } from './environment';
 
-export const defaultMetaTitle = `Dan Digresses | `;
-
-export const defaultMetaDescription = ``;
-
+export const siteName = 'Dan Edwards developer';
+export const productionBaseURL = `https://${environment.BARE_DOMAIN}`;
+export const defaultMetaTitle = `Dan Edwards developer | Full-stack software engineer`;
+export const defaultMetaDescription = `I'm a full-stack web developer specialising in Node.js, TypeScript, and Next.js. Explore my portfolio and get in touch today.`;
+export const defaultKeywords =
+	'full-stack, node.js, react,  next.js, web developer, TypeScript';
+export const metaTitleTemplate = ` | Dan Edwards developer, full-stack software engineer`;
 export const defaultSocialImage = {
-	absoluteUrl: `${environment.productionBaseURL}/images/social-png/social.png`,
-	alt: 'Dan Digresses | blog with no particular theme',
-	height: 675,
+	absoluteUrl: `${productionBaseURL}/images/dan-edwards-developer.png`,
+	alt: 'Dan Edwards developer | Full-Stack Node programmer',
+	height: 630,
 	width: 1200,
 };
 
@@ -30,26 +31,26 @@ function extractImageName(image: StaticImageData): string {
 
 function generateAbsoluteURL(image: StaticImageData): string {
 	const imageName = extractImageName(image);
-	return `${environment.productionBaseURL}/images/social-png/${imageName}.png`;
+	return `${productionBaseURL}/images/${imageName}.png`;
 }
 
-export function generateArticleMetadata(article: IArticle): Metadata {
-	const absoluteImageURL = generateAbsoluteURL(article.featuredImage);
+export function generateArticleMetadata(article: Article): Metadata {
+	const absoluteImageURL = generateAbsoluteURL(article.socialImage);
 
 	return {
-		title: article.title,
-		description: article.description,
+		title: `${article.title} | Software development article by Dan Edwards`,
+		description: article.metaDescription || article.displayDescription,
 		openGraph: {
 			title: article.title,
-			description: article.description,
+			description: article.displayDescription,
 			type: 'article',
 			publishedTime: article.date,
-			authors: [article.writer],
+			authors: ['Dan Edwards'],
 			images: [
 				{
 					url: absoluteImageURL,
 					width: 1200,
-					height: 675,
+					height: 630,
 					alt: article.title,
 				},
 			],
@@ -57,7 +58,7 @@ export function generateArticleMetadata(article: IArticle): Metadata {
 		twitter: {
 			card: 'summary_large_image',
 			title: article.title,
-			description: article.description,
+			description: article.displayDescription,
 			images: [absoluteImageURL],
 		},
 	};

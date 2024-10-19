@@ -4,25 +4,16 @@ import clsx from 'clsx';
 
 interface StyledLinkProps {
 	href: string;
-	ariaLabel: string;
-	className?: string;
+	ariaLabel?: string;
 	children: ReactNode;
+	classes?: string;
 }
-
-const baseStyles = [
-	'relative group inline-block',
-	'underline underline-offset-2',
-	'transition-colors duration-200',
-	'focus:outline-none focus:ring-2',
-	'focus:ring-blue-500 focus:ring-offset-2',
-	'text-gray-600 hover:text-gray-500',
-];
 
 export default function StyledLink({
 	href,
 	ariaLabel,
-	className,
 	children,
+	classes,
 }: StyledLinkProps) {
 	const isExternal = href.startsWith('http') || href.startsWith('//');
 
@@ -33,12 +24,18 @@ export default function StyledLink({
 	return (
 		<Link
 			href={href}
-			className={clsx(baseStyles, className)}
 			aria-label={ariaLabel}
+			title={ariaLabel}
+			className={clsx(
+				'text-blue-600 hover:text-blue-400',
+				'dark:text-blue-500 dark:hover:text-blue-700',
+				'transition-all duration-200',
+				'underline underline-offset-2 decoration-slate-300 dark:decoration-slate-600',
+				classes
+			)}
 			{...targetRelationProps}
 		>
 			{children}
-			{isExternal && <span className="sr-only">(opens in a new tab)</span>}
 		</Link>
 	);
 }
