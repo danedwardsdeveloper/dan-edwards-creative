@@ -10,7 +10,7 @@ const sizes =
 const captionStyles = 'mt-2 mb-6 text-gray-600 italic text-sm';
 
 interface CustomImageProps {
-	image: StaticImageData;
+	src: StaticImageData;
 	alt: string;
 	caption?: string;
 	children?: ReactNode;
@@ -18,11 +18,11 @@ interface CustomImageProps {
 	classes?: string;
 }
 
-export const FeaturedImage = ({ image, alt, border }: CustomImageProps) => {
+export const FeaturedImage = ({ src, alt, border }: CustomImageProps) => {
 	return (
 		<div className={clsx(baseContainerStyles)}>
 			<Image
-				src={image}
+				src={src}
 				alt={alt}
 				height={627}
 				width={352}
@@ -37,7 +37,7 @@ export const FeaturedImage = ({ image, alt, border }: CustomImageProps) => {
 };
 
 export const AdditionalImage = ({
-	image,
+	src,
 	alt,
 	caption,
 	children,
@@ -48,7 +48,7 @@ export const AdditionalImage = ({
 		<>
 			<div className={clsx(baseContainerStyles, 'relative')}>
 				<Image
-					src={image}
+					src={src}
 					alt={alt}
 					quality={80}
 					sizes={sizes}
