@@ -19,8 +19,7 @@ export async function getArticleData(
 	slug: string
 ): Promise<ArticleWithSlug | null> {
 	try {
-		const articleModule = await import(`../app/${slug}/data`);
-		console.log(articleModule);
+		const articleModule = await import(`../app/articles/${slug}/data`);
 		const articleData = articleModule.article as Article;
 
 		return {
@@ -36,7 +35,7 @@ export async function getArticleData(
 
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
 	try {
-		const articlePaths = await glob('src/app/*', {
+		const articlePaths = await glob('src/app/articles/*', {
 			onlyDirectories: true,
 		});
 
