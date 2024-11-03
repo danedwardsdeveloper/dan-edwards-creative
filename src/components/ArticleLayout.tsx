@@ -8,7 +8,7 @@ import { ArrowLeftIcon } from './Icons';
 import { type Article } from '@/library/articles';
 
 import { formatDate } from '@/library/formatDate';
-import CustomImage from './CustomImage';
+import { FeaturedImage } from './Images';
 
 export function ArticleLayout({
 	article,
@@ -17,8 +17,8 @@ export function ArticleLayout({
 	article: Article;
 	children: React.ReactNode;
 }) {
-	let router = useRouter();
-	let { previousPathname } = useContext(AppContext);
+	const router = useRouter();
+	const { previousPathname } = useContext(AppContext);
 
 	return (
 		<Container className="mt-16 lg:mt-32">
@@ -42,10 +42,8 @@ export function ArticleLayout({
 							<h1 className="my-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
 								{article.title}
 							</h1>
-							<CustomImage
+							<FeaturedImage
 								src={article.socialImage}
-								classes={`mt-4 mb-8 shadow-lg md:shadow-2xl shadow-gray-700 dark:shadow-gray-900 rounded-xl`}
-								priority={true}
 								alt={article.title}
 							/>
 						</header>
