@@ -2,10 +2,9 @@ import { type Metadata } from 'next';
 import { StaticImageData } from 'next/image';
 
 import { type Article } from './articles';
-import { environment } from './environment';
 
 export const siteName = 'Dan Edwards developer';
-export const productionBaseURL = `https://${environment.BARE_DOMAIN}`;
+export const productionBaseURL = `https://dandigresses.co.uk`;
 export const defaultMetaTitle = `Dan Edwards developer | Full-stack software engineer`;
 export const defaultMetaDescription = `I'm a full-stack web developer specialising in Node.js, TypeScript, and Next.js. Explore my portfolio and get in touch today.`;
 export const defaultKeywords =

@@ -18,7 +18,7 @@ export default function ArticlePreview({
 	const router = useRouter();
 
 	const handleClick = () => {
-		router.push(`/${article.slug}`);
+		router.push(`/articles/${article.slug}`);
 	};
 
 	return (
@@ -72,19 +72,12 @@ export default function ArticlePreview({
 						'text-base leading-6 mb-1 font-semibold',
 						'text-slate-900 dark:text-white',
 						'group-hover:text-blue-600 dark:group-hover:text-blue-400',
-						'transition-colors duration-200 ease-in-out'
+						'transition-colors duration-200 ease-in-out',
+						'text-balance'
 					)}
 				>
 					{article.title}
 				</h2>
-				{/* <div
-					className={clsx(
-						'mt-auto',
-						'flex',
-						'flex-col space-y-6',
-						'lg:flex-row lg:items-end lg:justify-between'
-					)}
-				> */}
 				<p
 					className={clsx(
 						'flex-grow',
@@ -121,6 +114,5 @@ export default function ArticlePreview({
 				</div>
 			</div>
 		</div>
-		// </div>
 	);
 }

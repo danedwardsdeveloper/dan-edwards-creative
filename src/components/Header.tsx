@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
@@ -15,7 +15,7 @@ interface MenuItem {
 
 export const menuItems: MenuItem[] = [
 	{
-		name: 'Articles',
+		name: 'Home',
 		target: '/',
 	},
 ];
@@ -94,36 +94,140 @@ function ThemeToggle() {
 	);
 }
 
+function clamp(number: number, a: number, b: number) {
+	const min = Math.min(a, b);
+	const max = Math.max(a, b);
+	return Math.min(Math.max(number, min), max);
+}
+
 export function Header() {
 	const isHomePage = usePathname() === '/';
 
+	const headerRef = useRef<React.ElementRef<'div'>>(null);
+	const avatarRef = useRef<React.ElementRef<'div'>>(null);
+	const isInitial = useRef(true);
+
+	useEffect(() => {
+		const downDelay = avatarRef.current?.offsetTop ?? 0;
+		const upDelay = 64;
+
+		function setProperty(property: string, value: string) {
+			document.documentElement.style.setProperty(property, value);
+		}
+
+		function removeProperty(property: string) {
+			document.documentElement.style.removeProperty(property);
+		}
+
+		function updateHeaderStyles() {
+			if (!headerRef.current) {
+				return;
+			}
+
+			const { top, height } = headerRef.current.getBoundingClientRect();
+			const scrollY = clamp(
+				window.scrollY,
+				0,
+				document.body.scrollHeight - window.innerHeight
+			);
+
+			if (isInitial.current) {
+				setProperty('--header-position', 'sticky');
+			}
+
+			setProperty('--content-offset', `${downDelay}px`);
+
+			if (isInitial.current || scrollY < downDelay) {
+				setProperty('--header-height', `${downDelay + height}px`);
+				setProperty('--header-mb', `${-downDelay}px`);
+			} else if (top + height < -upDelay) {
+				const offset = Math.max(height, scrollY - upDelay);
+				setProperty('--header-height', `${offset}px`);
+				setProperty('--header-mb', `${height - offset}px`);
+			} else if (top === 0) {
+				setProperty('--header-height', `${scrollY + height}px`);
+				setProperty('--header-mb', `${-scrollY}px`);
+			}
+
+			if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
+				setProperty('--header-inner-position', 'fixed');
+				removeProperty('--header-top');
+				removeProperty('--avatar-top');
+			} else {
+				removeProperty('--header-inner-position');
+				setProperty('--header-top', '0px');
+				setProperty('--avatar-top', '0px');
+			}
+		}
+
+		function updateStyles() {
+			updateHeaderStyles();
+			isInitial.current = false;
+		}
+
+		updateStyles();
+		window.addEventListener('scroll', updateStyles, { passive: true });
+		window.addEventListener('resize', updateStyles);
+
+		return () => {
+			window.removeEventListener('scroll', updateStyles);
+			window.removeEventListener('resize', updateStyles);
+		};
+	}, [isHomePage]);
+
 	return (
-		<>
-			<header
-				className="pointer-events-none relative z-50 flex flex-none flex-col"
-				style={{
-					height: 'var(--header-height)',
-					marginBottom: 'var(--header-mb)',
-				}}
-			>
-				<div className="top-0 z-10 h-16 pt-6">
-					<Container className="top-[var(--header-top,theme(spacing.6))] w-full">
-						<div className="relative flex gap-4">
-							<div className="flex flex-1"></div>
-							<div className="flex flex-1 justify-end md:justify-center">
-								<DesktopNavigation className="pointer-events-auto" />
-							</div>
-							<div className="flex justify-end md:flex-1"></div>
+		<header
+			className="pointer-events-none relative z-50 flex flex-none flex-col"
+			style={{
+				height: 'var(--header-height)',
+				marginBottom: 'var(--header-mb)',
+			}}
+		>
+			{isHomePage && (
+				<>
+					<div
+						ref={avatarRef}
+						className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
+					/>
+					<Container
+						className="top-0 order-last -mb-3 pt-3"
+						style={{
+							position:
+								'var(--header-position)' as React.CSSProperties['position'],
+						}}
+					>
+						<div
+							className="top-[var(--avatar-top,theme(spacing.3))] w-full"
+							style={{
+								position:
+									'var(--header-inner-position)' as React.CSSProperties['position'],
+							}}
+						>
+							<div className="relative"></div>
 						</div>
 					</Container>
-				</div>
-			</header>
-			{isHomePage && (
-				<div
-					className="flex-none"
-					style={{ height: 'var(--content-offset)' }}
-				/>
+				</>
 			)}
-		</>
+			<div
+				ref={headerRef}
+				className="top-0 z-10 h-16 pt-6"
+				style={{
+					position:
+						'var(--header-position)' as React.CSSProperties['position'],
+				}}
+			>
+				<Container
+					className="top-[var(--header-top,theme(spacing.6))] w-full"
+					style={{
+						position:
+							'var(--header-inner-position)' as React.CSSProperties['position'],
+					}}
+				>
+					<div className="relative flex flex-1 justify-center">
+						<DesktopNavigation className="pointer-events-auto" />
+					</div>
+				</Container>
+			</div>
+		</header>
 	);
 }

@@ -3,14 +3,17 @@ import { type Metadata } from 'next';
 import { Container } from '@/components/Container';
 import { getAllArticles } from '@/library/articles';
 import ArticlesList from '@/components/ArticlesList';
+import { productionBaseURL } from '@/library/metadata';
 
 export const metadata: Metadata = {
-	title: `Dan Digresses`,
-	// ToDo
-	description: ``,
+	title: `Home | Dan Digresses - a blog without a theme`,
+	description: `Unfocused & random blog where I write about stuff that I want to write about.`,
+	alternates: {
+		canonical: productionBaseURL,
+	},
 };
 
-export default async function ProjectsPage() {
+export default async function Home() {
 	const articles = await getAllArticles();
 
 	return (
@@ -20,9 +23,9 @@ export default async function ProjectsPage() {
 					{`Dan Digresses`}
 				</h1>
 				<p className="mt-6 text-base text-zinc-600 dark:text-zinc-400 text-balance">
-					{`I'm `}
-					<em>{`always`}</em>
-					{` busy with a project. I've been programming for nearly a year now, and I've made lots of different sites, apps and scripts of varying scales and complexities. Here are my favorite ones, plus my work in progress and ambitious plans for the future.`}
+					{`Hey, welcome to my blog! I'm Dan - a practical/ creative/
+					intellectual/ philosophical type of guy. This is my unfocused &
+					random blog where I write about stuff that I want to write about.`}
 				</p>
 			</header>
 			<div className="mt-16 sm:mt-20">

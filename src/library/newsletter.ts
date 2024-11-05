@@ -1,6 +1,8 @@
 'use server';
-import { environment } from '@/library/environment';
 import { logger } from '@/library/logger';
+
+const mailchimpURL = process.env.MAILCHIMP_URL!;
+const mailchimpApiKey = process.env.MAILCHIMP_API_KEY!;
 
 export async function subscribeToNewsletter(email: string, name: string) {
 	try {
@@ -17,10 +19,10 @@ export async function subscribeToNewsletter(email: string, name: string) {
 		};
 
 		logger.info('Attempting to register subscriber with Mailchimp...');
-		const response = await fetch(environment.MAILCHIMP_URL, {
+		const response = await fetch(mailchimpURL, {
 			method: 'POST',
 			headers: {
-				Authorization: `Bearer ${environment.MAILCHIMP_API_KEY}`,
+				Authorization: `Bearer ${mailchimpApiKey}`,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(subscriberData),

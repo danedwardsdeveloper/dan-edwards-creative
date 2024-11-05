@@ -1,21 +1,13 @@
-const requiredEnvironmentVariables = ['BARE_DOMAIN'] as const;
+const isProduction = process.env.NODE_ENV === 'production'
+const isDevelopment = process.env.NODE_ENV === 'development'
 
-type EnvironmentVariables = (typeof requiredEnvironmentVariables)[number];
+const productionBaseURL = 'https://dandigresses.co.uk'
+const developmentBaseURL = 'http://localhost:3000'
+const dynamicBaseURL = isProduction ? productionBaseURL : developmentBaseURL
 
-type Environment = {
-	[Key in EnvironmentVariables]: string;
-};
-
-const environment = {} as Environment;
-
-for (const environmentVariable of requiredEnvironmentVariables) {
-	const value = process.env[environmentVariable];
-	if (!value) {
-		throw new Error(
-			`Missing required environment variable: ${environmentVariable}`
-		);
-	}
-	environment[environmentVariable] = value;
-}
-
-export { environment };
+export const environment = {
+  isProduction,
+  isDevelopment,
+  productionBaseURL,
+  dynamicBaseURL,
+} as const

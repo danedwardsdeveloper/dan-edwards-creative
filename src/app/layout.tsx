@@ -6,11 +6,12 @@ import {
 	defaultMetaTitle,
 	defaultMetaDescription,
 	defaultKeywords,
-	productionBaseURL,
 	siteName,
+	productionBaseURL,
 	defaultSocialImage,
 } from '@/library/metadata';
 import '@/styles/tailwind.css';
+import { PageViewTracker } from '@/components/PageViewTracker';
 
 export const metadata: Metadata = {
 	title: defaultMetaTitle,
@@ -63,6 +64,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" className="h-full antialiased" suppressHydrationWarning>
 			<body className="flex h-full bg-zinc-50 dark:bg-black">
+				<PageViewTracker />
 				<Providers>
 					<div className="flex w-full">
 						<Layout>{children}</Layout>
