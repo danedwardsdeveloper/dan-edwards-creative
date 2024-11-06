@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import clsx from 'clsx'
 
 import LinkCard, { LinkItemInterface } from './LinkCard'
-import PreSaveCard from '@/components/PreSaveCard'
+// import PreSaveCard from '@/components/PreSaveCard'
 
 interface ArticlesListProps {
   linkItems: LinkItemInterface[]
@@ -74,9 +74,9 @@ export default function LinksList({ linkItems, classes }: ArticlesListProps) {
 
   return (
     <ul role="list" className={clsx('flex flex-col space-y-3', classes)}>
-      <li ref={(element) => setItemRef(element, 0)}>
+      {/* <li ref={(element) => setItemRef(element, 0)}>
         <PreSaveCard classes="mb-3" />
-      </li>
+      </li> */}
       {linkItems.map((linkItem, index) => (
         <li
           key={linkItem.href}
