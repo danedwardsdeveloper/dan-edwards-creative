@@ -1,0 +1,23 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.article-content h2 {
+  @apply mb-6 text-2xl font-bold text-zinc-800 dark:text-zinc-100;
+}
+
+.article-content h3 {
+  @apply mb-4 text-xl font-bold text-zinc-800 dark:text-zinc-100;
+}
+
+.article-content p {
+  @apply mb-8 text-zinc-600 dark:text-zinc-400;
+}
+
+.article-content ul {
+  @apply mb-8 list-disc space-y-2 pl-6;
+}
+
+.article-content li {
+  @apply text-zinc-600 dark:text-zinc-400;
+}
