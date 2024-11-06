@@ -11,6 +11,7 @@ export type Destination =
   | 'instagram-profile'
   | 'twitter-profile'
   | 'tiktok-profile'
+  | 'copy-email-address'
 
 interface ClickRecord {
   timestamp: Date
