@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next build && tsx testServer.ts",
     "lint": "next lint",
-    "validate-dockerfile": "tsx deploy/validate-dockerfile.ts",
-    "deploy": "pnpm validate-dockerfile && pnpm lint && pnpm build && fly deploy"
+    "predeploy": "pnpm tsx deploy/validate-dockerfile.ts && pnpm lint && pnpm build",
+    "deploy": "fly deploy"
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
@@ -43,7 +43,6 @@
     "eslint-config-next": "^14.0.4",
     "express": "^4.21.0",
     "prettier": "^3.3.2",
-    "prettier-plugin-tailwindcss": "^0.6.5",
     "sharp": "0.33.1",
     "tsx": "^4.19.1"
   }
