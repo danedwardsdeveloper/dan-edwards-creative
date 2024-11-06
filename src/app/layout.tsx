@@ -11,7 +11,7 @@ import {
   defaultSocialImage,
   siteName,
 } from '@/library/metadata'
-import '@/styles/tailwind.css'
+import '@/styles.tailwind.css'
 import clsx from 'clsx'
 import { AudioPlayer } from '@/components/player/AudioPlayer'
 
