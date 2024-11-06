@@ -19,8 +19,20 @@ export const menuItems: MenuItem[] = [
     target: '/',
   },
   {
+    name: 'Music',
+    target: '/music',
+  },
+  {
+    name: 'Articles',
+    target: '/articles',
+  },
+  {
     name: 'Links',
     target: '/links',
+  },
+  {
+    name: 'Contact',
+    target: '/contact',
   },
 ]
 
