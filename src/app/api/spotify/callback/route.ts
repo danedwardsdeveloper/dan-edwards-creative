@@ -12,7 +12,7 @@ async function recordPreSaveAttempt(
   error?: string,
 ) {
   try {
-    const url = new URL('/api/pre-save', dynamicBaseURL).toString()
+    const url = new URL('/api/analytics/pre-saves', dynamicBaseURL).toString()
 
     await fetch(url, {
       method: 'POST',

@@ -1,5 +1,5 @@
 'use client'
-import BackButton from '@/components/BackButton'
+import HoveringBackButton from '@/components/HoveringBackButton'
 import { Header } from '@/components/Header'
 import { useContext } from 'react'
 import { AppContext } from '../providers'
@@ -15,7 +15,7 @@ export default function LinksPage() {
       <div className="xl:relative">
         <div className="mx-auto max-w-2xl">
           <article>
-            <BackButton previousPathname={previousPathname} />
+            <HoveringBackButton previousPathname={previousPathname} />
             <Header
               title="Dan Edwards, pop music producer & songwriter"
               subtitle="All my links in one place. Pre-save my upcoming single Piece of Me (ft. rowan)."

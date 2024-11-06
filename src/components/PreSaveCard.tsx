@@ -4,6 +4,15 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import { SpotifyIcon } from './Icons'
 import pieceOfMeImage from '../images/pre-save-images/piece-of-me-dan-edwards-ft-rowan-artwork.png'
+import { PauseIcon, PlayIcon } from './Icons'
+import { EpisodePlayButton } from './EpisodePlayButton'
+
+import { type Episode } from './AudioProvider'
+
+const trackPreview: Episode = {
+  title: `Piece of Me - Dan Edwards (ft. rowan)`,
+  slug: 'piece-of-me',
+}
 
 export default function PreSaveCard({ classes }: { classes?: string }) {
   const handlePreSave = async () => {
@@ -28,6 +37,22 @@ export default function PreSaveCard({ classes }: { classes?: string }) {
         alt={`Piece of Me by Dan Edwards (ft. rowan) cover art`}
         className="rounded-md"
         priority
+      />
+      <EpisodePlayButton
+        episode={trackPreview}
+        className="flex items-center gap-x-3 text-sm font-bold leading-6 text-pink-500 hover:text-pink-700 active:text-pink-900"
+        playing={
+          <>
+            <PauseIcon className="h-2.5 w-2.5 fill-current" />
+            <span aria-hidden="true">Listen</span>
+          </>
+        }
+        paused={
+          <>
+            <PlayIcon className="h-2.5 w-2.5 fill-current" />
+            <span aria-hidden="true">Listen</span>
+          </>
+        }
       />
       <div className="flex flex-col space-y-3 pt-4">
         <p className="text-sm text-slate-600 dark:text-slate-300">{`'Pre-saving' a song on Spotify means the track will appear in your  'Liked songs' playlist as soon as it's released. You'll need a Spotify account - free or premium - and you'll need to sign in to Spotify to authorise the pre-save on the next page.`}</p>

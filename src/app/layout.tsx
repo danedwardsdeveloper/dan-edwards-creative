@@ -12,6 +12,8 @@ import {
   siteName,
 } from '@/library/metadata'
 import '@/styles/tailwind.css'
+import clsx from 'clsx'
+import { AudioPlayer } from '@/components/player/AudioPlayer'
 
 export const metadata: Metadata = {
   title: defaultMetaTitle,
@@ -66,8 +68,18 @@ export default function RootLayout({
       <body className="flex h-full bg-zinc-50 dark:bg-black">
         <PageViewTracker />
         <Providers>
-          <div className="flex w-full">
-            <Layout>{children}</Layout>
+          <div className="flex w-full flex-col">
+            <div className="h-[calc(100vh-6rem)]">
+              <Layout>{children}</Layout>
+            </div>
+            <div
+              className={clsx(
+                'fixed inset-x-0 bottom-0 z-10',
+                'md:mx-auto md:max-w-xl',
+              )}
+            >
+              <AudioPlayer />
+            </div>
           </div>
         </Providers>
       </body>

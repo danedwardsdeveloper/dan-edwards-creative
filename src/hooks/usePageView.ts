@@ -1,28 +1,28 @@
-'use client';
+'use client'
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 export function usePageView() {
-	const pathname = usePathname();
+  const pathname = usePathname()
 
-	useEffect(() => {
-		const countView = async () => {
-			try {
-				await fetch('/api/pageview', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ page: pathname }),
-				});
-			} catch (error) {
-				console.error('Error logging page view:', error);
-			}
-		};
+  useEffect(() => {
+    const countView = async () => {
+      try {
+        await fetch('/api/analytics/page-views', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ page: pathname }),
+        })
+      } catch (error) {
+        console.error('Error logging page view:', error)
+      }
+    }
 
-		if (pathname) {
-			countView();
-		}
-	}, [pathname]);
+    if (pathname) {
+      countView()
+    }
+  }, [pathname])
 }

@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react'
 import { useEffect, useState } from 'react'
 import { AppContext } from '../providers'
 import { Container } from '@/components/Container'
-import BackButton from '@/components/BackButton'
+import HoveringBackButton from '@/components/HoveringBackButton'
 import { Header } from '@/components/Header'
 
 interface PageMetric {
@@ -69,7 +69,7 @@ export default function AnalyticsPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch('/api/analytics')
+    fetch('/api/analytics/page-views')
       .then((res) => res.json())
       .then((data) => {
         setAnalytics(data)
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
       <div className="xl:relative">
         <div className="mx-auto max-w-2xl">
           <article>
-            <BackButton previousPathname={previousPathname} />
+            <HoveringBackButton previousPathname={previousPathname} />
             <Header
               title="Analytics"
               subtitle="Site analytics for Dan Edwards creative"

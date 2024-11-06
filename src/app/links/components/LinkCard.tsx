@@ -1,13 +1,15 @@
 import { FC } from 'react'
-
 import Link from 'next/link'
 
+import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 import { IconProps } from '@/components/Icons'
+import { type Destination } from '@/app/api/analytics/link-clicks/route'
 
 export interface LinkItemInterface {
   title: string
   href: string
   icon: FC<IconProps>
+  analyticsName: Destination
   description: string
   external?: boolean
 }
@@ -17,7 +19,9 @@ interface LinkCardProps {
 }
 
 export default function LinkCard({ linkCard }: LinkCardProps) {
-  const { title, href, icon: Icon, description } = linkCard
+  const { title, href, icon: Icon, description, analyticsName } = linkCard
+  const recordClick = useRecordLinkClick()
+
   return (
     <Link
       href={href}
@@ -25,6 +29,7 @@ export default function LinkCard({ linkCard }: LinkCardProps) {
       rel="noopener noreferrer"
       className="group flex items-center rounded-lg bg-blue-50 p-3 transition-colors duration-300 hover:bg-blue-100 dark:bg-slate-800 dark:hover:bg-slate-700"
       aria-label={`${title} - ${description}`}
+      onClick={() => recordClick(analyticsName)}
     >
       <Icon
         className="h-10 w-10 flex-shrink-0 stroke-zinc-500 transition-colors duration-300 group-hover:stroke-zinc-700 dark:stroke-zinc-400 dark:group-hover:stroke-zinc-300"
