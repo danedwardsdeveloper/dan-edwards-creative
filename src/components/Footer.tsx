@@ -2,6 +2,7 @@
 import { ContainerInner, ContainerOuter } from '@/components/Container'
 import { useAudioPlayer } from '@/components/AudioProvider'
 import clsx from 'clsx'
+import Link from 'next/link'
 
 export function Footer() {
   const player = useAudioPlayer()
@@ -18,6 +19,12 @@ export function Footer() {
         >
           <ContainerInner>
             <div className="flex flex-col items-center justify-end gap-6 sm:flex-row">
+              <Link
+                href={`/privacy-policy-and-terms-of-service`}
+                className="text-sm text-zinc-500 decoration-transparent underline-offset-2 transition-all duration-300 hover:underline hover:decoration-zinc-500 dark:text-zinc-400 dark:decoration-zinc-400"
+              >
+                {`Privacy policy & terms of service`}
+              </Link>
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 &copy; {new Date().getFullYear()}, Dan Edwards
               </p>
