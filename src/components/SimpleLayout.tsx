@@ -19,7 +19,9 @@ export function SimpleLayout({
           {intro}
         </p>
       </header>
-      {children && <div className="mt-16 sm:mt-20">{children}</div>}
+      {children && (
+        <div className="article-content mt-16 sm:mt-20">{children}</div>
+      )}
     </Container>
   )
 }
