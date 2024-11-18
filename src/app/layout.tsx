@@ -1,7 +1,6 @@
 import { type Metadata } from 'next'
 
-import { Providers } from '@/app/providers'
-import { Layout } from '@/components/Layout'
+import { Providers } from '@/components/Providers'
 import { PageViewTracker } from '@/components/PageViewTracker'
 import { productionBaseURL } from '@/library/environment'
 import {
@@ -14,6 +13,8 @@ import {
 import '@/styles.tailwind.css'
 import clsx from 'clsx'
 import { AudioPlayer } from '@/components/player/AudioPlayer'
+import { Footer } from '@/components/Footer'
+import MenuBar from '@/components/MenuBar'
 
 export const metadata: Metadata = {
   title: defaultMetaTitle,
@@ -70,7 +71,16 @@ export default function RootLayout({
         <Providers>
           <div className="flex w-full flex-col">
             <div className="h-[calc(100vh-6rem)]">
-              <Layout>{children}</Layout>
+              <div className="fixed inset-0 flex justify-center sm:px-8">
+                <div className="flex w-full max-w-7xl lg:px-8">
+                  <div className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20" />
+                </div>
+              </div>
+              <div className="relative flex w-full flex-col">
+                <MenuBar />
+                <main className="flex-auto">{children}</main>
+                <Footer />
+              </div>
             </div>
             <div
               className={clsx(

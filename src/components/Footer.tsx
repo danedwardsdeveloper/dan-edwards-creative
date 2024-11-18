@@ -1,6 +1,6 @@
 'use client'
 import { ContainerInner, ContainerOuter } from '@/components/Container'
-import { useAudioPlayer } from '@/components/AudioProvider'
+import { useAudioPlayer } from '@/providers/audio'
 import clsx from 'clsx'
 import Link from 'next/link'
 

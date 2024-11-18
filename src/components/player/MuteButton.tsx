@@ -1,4 +1,4 @@
-import { type PlayerAPI } from '@/components/AudioProvider'
+import { type PlayerAPI } from '@/providers/audio'
 
 function MuteIcon({
   muted,

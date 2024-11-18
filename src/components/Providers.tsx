@@ -3,7 +3,8 @@
 import { createContext, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { ThemeProvider, useTheme } from 'next-themes'
-import { AudioProvider } from '@/components/AudioProvider'
+import { LoadingProvider } from '@/providers/loading'
+import { AudioProvider } from '@/providers/audio'
 
 function usePrevious<T>(value: T) {
   const ref = useRef<T>()
@@ -46,11 +47,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const previousPathname = usePrevious(pathname)
 
   return (
-    <AppContext.Provider value={{ previousPathname }}>
-      <ThemeProvider attribute="class" disableTransitionOnChange>
-        <ThemeWatcher />
-        <AudioProvider>{children}</AudioProvider>
-      </ThemeProvider>
-    </AppContext.Provider>
+    <LoadingProvider>
+      <AppContext.Provider value={{ previousPathname }}>
+        <ThemeProvider attribute="class" disableTransitionOnChange>
+          <ThemeWatcher />
+          <AudioProvider>{children}</AudioProvider>
+        </ThemeProvider>
+      </AppContext.Provider>
+    </LoadingProvider>
   )
 }

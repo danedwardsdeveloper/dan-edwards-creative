@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
-import { AppContext } from './providers'
+import { AppContext } from '../components/Providers'
 import { useContext } from 'react'
 
 export default function NotFound() {

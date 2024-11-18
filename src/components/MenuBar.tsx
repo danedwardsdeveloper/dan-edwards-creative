@@ -19,20 +19,16 @@ export const menuItems: MenuItem[] = [
     target: '/',
   },
   {
-    name: 'Music',
-    target: '/music',
-  },
-  {
     name: 'Articles',
     target: '/articles',
   },
   {
-    name: 'Links',
-    target: '/links',
-  },
-  {
     name: 'Contact',
     target: '/contact',
+  },
+  {
+    name: 'Links',
+    target: '/links',
   },
 ]
 
@@ -195,7 +191,7 @@ export default function MenuBar() {
 
   return (
     <header
-      className="pointer-events-none relative z-50 flex flex-none flex-col"
+      className="pointer-events-none relative z-10 flex flex-none flex-col"
       style={{
         height: 'var(--header-height)',
         marginBottom: 'var(--header-mb)',

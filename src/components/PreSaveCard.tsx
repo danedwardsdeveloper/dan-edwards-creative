@@ -7,7 +7,7 @@ import pieceOfMeImage from '../images/pre-save-images/piece-of-me-dan-edwards-ft
 import { PauseIcon, PlayIcon } from './Icons'
 import { EpisodePlayButton } from './EpisodePlayButton'
 
-import { type Episode } from './AudioProvider'
+import { type Episode } from './audio'
 
 const trackPreview: Episode = {
   title: `Piece of Me - Dan Edwards (ft. rowan) [clip]`,

@@ -1,4 +1,4 @@
-import { type PlayerAPI } from '@/components/AudioProvider'
+import { type PlayerAPI } from '@/providers/audio'
 import { PauseIcon, PlayIcon } from '../Icons'
 export function PlayButton({ player }: { player: PlayerAPI }) {
   const Icon = player.playing ? PauseIcon : PlayIcon
