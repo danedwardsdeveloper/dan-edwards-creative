@@ -20,7 +20,7 @@ export function useLayout() {
 }
 
 export function LayoutProvider({ children }: { children: React.ReactNode }) {
-  const [showAudioPlayer, setShowAudioPlayer] = useState(true)
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
