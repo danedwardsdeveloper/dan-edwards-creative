@@ -13,10 +13,6 @@ export const menuItems: MenuItem[] = [
     href: '/songs',
   },
   {
-    displayName: 'Articles',
-    href: 'articles',
-  },
-  {
     displayName: 'Work with me',
     href: '/work-with-me',
   },
