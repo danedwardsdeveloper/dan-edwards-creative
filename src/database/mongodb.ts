@@ -1,13 +1,6 @@
 import { MongoClient } from 'mongodb'
 
-import { isDevelopment } from './environment'
-
-export const databaseName = 'dan-edwards-creative-analytics'
-export const tableNames = {
-  pageViews: 'page-views',
-  preSaves: 'pre-saves',
-  linkClicks: 'link-clicks',
-}
+import { isDevelopment } from '@/library/environment'
 
 if (!process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI missing')
