@@ -12,7 +12,7 @@ export default function LinksPage() {
       intro={`I'm a pop music producer and songwriter in Salisbury, UK. Here are all my links in one place.`}
       articleContent={false}
     >
-      <LinksList linkItems={musicLinkItems} />
+      <LinksList linkItems={musicLinkItems} classes="mb-32" />
     </SimpleLayout>
   )
 }
