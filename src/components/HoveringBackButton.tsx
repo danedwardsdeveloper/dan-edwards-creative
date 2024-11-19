@@ -1,11 +1,8 @@
 import { useRouter } from 'next/navigation'
+
 import { ArrowLeftIcon } from './Icons'
 
-export default function HoveringBackButton({
-  previousPathname,
-}: {
-  previousPathname: string | undefined
-}) {
+export default function HoveringBackButton({ previousPathname }: { previousPathname: string | undefined }) {
   const router = useRouter()
 
   if (!previousPathname) return null

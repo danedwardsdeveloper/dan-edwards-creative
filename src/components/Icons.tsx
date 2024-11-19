@@ -34,12 +34,7 @@ export function ChevronDownIcon(props: IconProps) {
 export function ChevronRightIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-      <path
-        d="M6.75 5.75 9.25 8l-2.5 2.25"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M6.75 5.75 9.25 8l-2.5 2.25" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -181,12 +176,7 @@ export function ArrowLeftIcon(props: IconProps) {
 
 export function AppleMusicIcon(props: IconProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" {...props}>
       <path
         fill="#FA2D48"
         fillRule="evenodd"
@@ -201,23 +191,11 @@ export function AppleMusicIcon(props: IconProps) {
 
 export function InstagramIcon(props: IconProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 448 512"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" {...props}>
       <defs>
-        <linearGradient
-          id="instagram-gradient"
-          x1="0%"
-          y1="100%"
-          x2="100%"
-          y2="0%"
-        >
+        <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
           <stop offset="0%" style={{ stopColor: '#833AB4' }} /> {/* Purple */}
-          <stop offset="50%" style={{ stopColor: '#FD1D1D' }} />{' '}
-          {/* Pink/Red */}
+          <stop offset="50%" style={{ stopColor: '#FD1D1D' }} /> {/* Pink/Red */}
           <stop offset="100%" style={{ stopColor: '#F77737' }} /> {/* Orange */}
         </linearGradient>
       </defs>
@@ -237,12 +215,7 @@ export function SpotifyIcon({ colour = 'green', ...props }: IconProps) {
   }
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 496 512"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" aria-hidden="true" {...props}>
       <path
         className={`${colourClassMap[colour]}`}
         d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"
@@ -253,12 +226,7 @@ export function SpotifyIcon({ colour = 'green', ...props }: IconProps) {
 
 export function TwitterIcon({ ...props }: IconProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 448 512"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-hidden="true" {...props}>
       <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm297.1 84L257.3 234.6 379.4 396H283.8L209 298.1 123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5L313.6 116h47.5zM323.3 367.6L153.4 142.9H125.1L296.9 367.6h26.3z" />
     </svg>
   )
@@ -266,12 +234,7 @@ export function TwitterIcon({ ...props }: IconProps) {
 
 export function YouTubeMusicIcon(props: IconProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 176 176"
-      aria-hidden="true"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 176" aria-hidden="true" {...props}>
       <g>
         <circle className="fill-red-500" cx="88" cy="88" r="88" />
         <path

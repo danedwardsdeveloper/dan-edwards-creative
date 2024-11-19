@@ -1,13 +1,13 @@
 import { type Metadata } from 'next'
 import { StaticImageData } from 'next/image'
-import { productionBaseURL } from './environment'
+
 import { type Article } from './articles'
+import { productionBaseURL } from './environment'
 
 export const siteName = 'Dan Edwards creative'
 export const defaultMetaTitle = `Dan Edwards creative | Pop music producer & songwriter`
 export const defaultMetaDescription = `Dan Edwards creative | Pop music producer & songwriter`
-export const defaultKeywords =
-  'Pop music, music producer, UK, songwriter, pop music producer'
+export const defaultKeywords = 'Pop music, music producer, UK, songwriter, pop music producer'
 export const defaultSocialImage = {
   absoluteUrl: `${productionBaseURL}/images/dan-edwards-developer.png`,
   alt: 'Dan Edwards developer | Full-Stack Node programmer',

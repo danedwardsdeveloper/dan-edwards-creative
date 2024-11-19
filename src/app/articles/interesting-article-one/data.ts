@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
 
 import { type Article } from '@/library/articles'
-import plantCounterSocialImage from '../../../../public/images/plant-counter-ios-app.png'
 import { generateArticleMetadata } from '@/library/metadata'
+
+import plantCounterSocialImage from '../../../../public/images/plant-counter-ios-app.png'
 
 export const generateMetadata = (): Metadata => {
   return generateArticleMetadata(article)
@@ -11,8 +12,7 @@ export const generateMetadata = (): Metadata => {
 export const article: Article = {
   title: 'This is in the articles directory!',
   display: true,
-  displayDescription:
-    'An iOS app to help people keep track of the number of plant foods they consume.',
+  displayDescription: 'An iOS app to help people keep track of the number of plant foods they consume.',
   metaDescription:
     'An iPhone app that helps people to keep track of the number of plant foods they consume, built with React Native and Expo.',
   date: '2024-09-30',

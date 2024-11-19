@@ -1,22 +1,18 @@
 'use client'
-import { useContext } from 'react'
+
 import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 
-import { AppContext } from '@/components/Providers'
-import { Container } from '@/components/Container'
-import { ArrowLeftIcon } from './Icons'
 import { type Article } from '@/library/articles'
-
 import { formatDate } from '@/library/formatDate'
+
+import { Container } from '@/components/Container'
+import { AppContext } from '@/components/Providers'
+
+import { ArrowLeftIcon } from './Icons'
 import { FeaturedImage } from './Images'
 
-export function ArticleLayout({
-  article,
-  children,
-}: {
-  article: Article
-  children: React.ReactNode
-}) {
+export function ArticleLayout({ article, children }: { article: Article; children: React.ReactNode }) {
   const router = useRouter()
   const { previousPathname } = useContext(AppContext)
 

@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
-import mongoClient, { databaseName, tableNames } from '@/library/mongodb'
 import { Document } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server'
+
 import { validateRequestIp } from '@/library/ipValidation'
+import mongoClient, { databaseName, tableNames } from '@/library/mongodb'
 
 interface SpotifyResponse {
   status: number
@@ -27,14 +28,9 @@ interface PreSaveRecord {
   interactions: PreSaveInteraction[]
 }
 
-async function recordPreSaveInteraction(
-  trackId: string,
-  interaction: PreSaveInteraction,
-) {
+async function recordPreSaveInteraction(trackId: string, interaction: PreSaveInteraction) {
   const client = await mongoClient
-  const collection = client
-    .db(databaseName)
-    .collection<PreSaveRecord>(tableNames.preSaves)
+  const collection = client.db(databaseName).collection<PreSaveRecord>(tableNames.preSaves)
 
   await collection.updateOne(
     { trackId },
@@ -65,10 +61,7 @@ export async function POST(request: NextRequest) {
     const { status, trackId, error, spotifyResponse } = body
 
     if (!status || !trackId) {
-      return NextResponse.json(
-        { error: 'Status and trackId are required' },
-        { status: 400 },
-      )
+      return NextResponse.json({ error: 'Status and trackId are required' }, { status: 400 })
     }
 
     const interaction: PreSaveInteraction = {
@@ -88,10 +81,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error recording pre-save attempt:', error)
-    return NextResponse.json(
-      { error: 'Failed to record pre-save attempt' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to record pre-save attempt' }, { status: 500 })
   }
 }
 
@@ -103,18 +93,13 @@ export async function GET(request: NextRequest) {
     }
 
     const client = await mongoClient
-    const collection = client
-      .db(databaseName)
-      .collection<PreSaveRecord>(tableNames.preSaves)
+    const collection = client.db(databaseName).collection<PreSaveRecord>(tableNames.preSaves)
 
     const stats = await collection.find().toArray()
 
     return NextResponse.json(stats)
   } catch (error) {
     console.error('Error fetching pre-save stats:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch pre-save statistics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch pre-save statistics' }, { status: 500 })
   }
 }

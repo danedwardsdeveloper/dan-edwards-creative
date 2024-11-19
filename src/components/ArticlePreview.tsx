@@ -1,9 +1,11 @@
 'use client'
+
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import clsx from 'clsx'
 
 import { type ArticleWithSlug } from '@/library/articles'
+
 import { ChevronRightIcon } from '@/components/Icons'
 
 interface ArticlePreviewProps {
@@ -11,10 +13,7 @@ interface ArticlePreviewProps {
   priority: boolean
 }
 
-export default function ArticlePreview({
-  article,
-  priority,
-}: ArticlePreviewProps) {
+export default function ArticlePreview({ article, priority }: ArticlePreviewProps) {
   const router = useRouter()
 
   const handleClick = () => {
@@ -59,12 +58,7 @@ export default function ArticlePreview({
         )}
       >
         <div className={clsx('overflow-hidden rounded-xl')}>
-          <Image
-            src={article.socialImage}
-            alt={article.title}
-            priority={priority}
-            placeholder="blur"
-          />
+          <Image src={article.socialImage} alt={article.title} priority={priority} placeholder="blur" />
         </div>
       </div>
       <div className="mt-3 flex flex-col">

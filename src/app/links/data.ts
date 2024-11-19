@@ -1,13 +1,9 @@
-import {
-  AppleMusicIcon,
-  InstagramIcon,
-  SpotifyIcon,
-  TwitterIcon,
-  YouTubeMusicIcon,
-} from '@/components/Icons'
-import { productionBaseURL } from '@/library/environment'
 import { Metadata } from 'next'
+
+import { productionBaseURL } from '@/library/environment'
+
 import { LinkItemInterface } from './components/LinkCard'
+import { AppleMusicIcon, InstagramIcon, SpotifyIcon, TwitterIcon, YouTubeMusicIcon } from '@/components/Icons'
 
 export const metadata: Metadata = {
   title: `Links | Dan Edwards, pop music producer and songwriter in Salisbury, UK.`,

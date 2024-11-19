@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+
+import clsx from 'clsx'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import clsx from 'clsx'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { type ArticleWithSlug } from '@/library/articles'
 
 import ArticlePreview from './ArticlePreview'
-import { type ArticleWithSlug } from '@/library/articles'
 
 interface ArticlesListProps {
   articles: ArticleWithSlug[]
@@ -75,7 +77,7 @@ export default function ArticlesList({ articles, classes }: ArticlesListProps) {
   return (
     <ul role="list" className={clsx(classes)}>
       {articles.map((article, index) => (
-        <li key={index} ref={(element) => setArticleRef(element, index)}>
+        <li key={index} ref={element => setArticleRef(element, index)}>
           <ArticlePreview article={article} priority={index < 2} />
         </li>
       ))}

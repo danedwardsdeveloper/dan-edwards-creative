@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo, useReducer, useRef } from 'react'
 
-export interface Episode {
+export interface Song {
   title: string
   slug: string
 }
@@ -12,18 +12,18 @@ interface PlayerState {
   muted: boolean
   duration: number
   currentTime: number
-  episode: Episode | null
+  song: Song | null
 }
 
 interface PublicPlayerActions {
-  play: (episode?: Episode) => void
+  play: (song?: Song) => void
   pause: () => void
-  toggle: (episode?: Episode) => void
+  toggle: (song?: Song) => void
   seekBy: (amount: number) => void
   seek: (time: number) => void
   playbackRate: (rate: number) => void
   toggleMute: () => void
-  isPlaying: (episode?: Episode) => boolean
+  isPlaying: (song?: Song) => boolean
 }
 
 export type PlayerAPI = PlayerState & PublicPlayerActions
@@ -38,7 +38,7 @@ const enum ActionKind {
 }
 
 type Action =
-  | { type: ActionKind.SET_META; payload: Episode }
+  | { type: ActionKind.SET_META; payload: Song }
   | { type: ActionKind.PLAY }
   | { type: ActionKind.PAUSE }
   | { type: ActionKind.TOGGLE_MUTE }
@@ -50,7 +50,7 @@ const AudioPlayerContext = createContext<PlayerAPI | null>(null)
 function audioReducer(state: PlayerState, action: Action): PlayerState {
   switch (action.type) {
     case ActionKind.SET_META:
-      return { ...state, episode: action.payload }
+      return { ...state, song: action.payload }
     case ActionKind.PLAY:
       return { ...state, playing: true }
     case ActionKind.PAUSE:
@@ -74,21 +74,21 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     muted: false,
     duration: 0,
     currentTime: 0,
-    episode: null,
+    song: null,
   })
   const playerRef = useRef<React.ElementRef<'audio'>>(null)
 
   const actions = useMemo<PublicPlayerActions>(() => {
     return {
-      play(episode) {
-        if (episode) {
-          dispatch({ type: ActionKind.SET_META, payload: episode })
+      play(song) {
+        if (song) {
+          dispatch({ type: ActionKind.SET_META, payload: song })
 
           if (playerRef.current) {
             const currentSrc = playerRef.current.currentSrc
-            if (currentSrc !== episode.slug) {
+            if (currentSrc !== song.slug) {
               const playbackRate = playerRef.current.playbackRate
-              playerRef.current.src = getAudioPath(episode.slug)
+              playerRef.current.src = getAudioPath(song.slug)
               playerRef.current.load()
               playerRef.current.pause()
               playerRef.current.playbackRate = playbackRate
@@ -106,11 +106,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           void playerRef.current.pause()
         }
       },
-      toggle(episode) {
-        if (this.isPlaying(episode)) {
+      toggle(song) {
+        if (this.isPlaying(song)) {
           this.pause()
         } else {
-          this.play(episode)
+          this.play(song)
         }
       },
       seekBy(amount) {
@@ -131,37 +131,31 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       toggleMute() {
         dispatch({ type: ActionKind.TOGGLE_MUTE })
       },
-      isPlaying(episode) {
+      isPlaying(song) {
         if (!playerRef.current) return false
-        return episode
-          ? state.playing &&
-              playerRef.current.currentSrc === getAudioPath(episode.slug)
+        return song
+          ? state.playing && playerRef.current.currentSrc === getAudioPath(song.slug)
           : state.playing
       },
     }
   }, [state.playing])
 
-  const api = useMemo<PlayerAPI>(
-    () => ({ ...state, ...actions }),
-    [state, actions],
-  )
+  const api = useMemo<PlayerAPI>(() => ({ ...state, ...actions }), [state, actions])
 
   return (
     <>
-      <AudioPlayerContext.Provider value={api}>
-        {children}
-      </AudioPlayerContext.Provider>
+      <AudioPlayerContext.Provider value={api}>{children}</AudioPlayerContext.Provider>
       <audio
         ref={playerRef}
         onPlay={() => dispatch({ type: ActionKind.PLAY })}
         onPause={() => dispatch({ type: ActionKind.PAUSE })}
-        onTimeUpdate={(event) => {
+        onTimeUpdate={event => {
           dispatch({
             type: ActionKind.SET_CURRENT_TIME,
             payload: Math.floor(event.currentTarget.currentTime),
           })
         }}
-        onDurationChange={(event) => {
+        onDurationChange={event => {
           dispatch({
             type: ActionKind.SET_DURATION,
             payload: Math.floor(event.currentTarget.duration),
@@ -173,22 +167,22 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function useAudioPlayer(episode?: Episode) {
+export function useAudioPlayer(song?: Song) {
   const player = useContext(AudioPlayerContext)
 
   return useMemo<PlayerAPI>(
     () => ({
       ...player!,
       play() {
-        player!.play(episode)
+        player!.play(song)
       },
       toggle() {
-        player!.toggle(episode)
+        player!.toggle(song)
       },
       get playing() {
-        return player!.isPlaying(episode)
+        return player!.isPlaying(song)
       },
     }),
-    [player, episode],
+    [player, song],
   )
 }

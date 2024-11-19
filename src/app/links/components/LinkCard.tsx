@@ -1,9 +1,10 @@
-import { FC } from 'react'
 import Link from 'next/link'
+import { FC } from 'react'
 
-import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 import { IconProps } from '@/components/Icons'
+
 import { type Destination } from '@/app/api/analytics/link-clicks/route'
+import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 export interface LinkItemInterface {
   title: string
@@ -36,9 +37,7 @@ export default function LinkCard({ linkCard }: LinkCardProps) {
         aria-hidden="true"
       />
       <div className="ml-4 flex min-w-0 flex-col">
-        <span className="text-balance text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          {title}
-        </span>
+        <span className="text-balance text-lg font-semibold text-zinc-900 dark:text-zinc-100">{title}</span>
         <span className="line-clamp-2 text-balance text-sm text-zinc-600 dark:text-zinc-300">
           {description}
         </span>

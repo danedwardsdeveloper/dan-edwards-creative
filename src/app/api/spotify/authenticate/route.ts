@@ -1,5 +1,6 @@
-import { spotifyRedirectUri } from '@/library/environment'
 import { NextResponse } from 'next/server'
+
+import { spotifyRedirectUri } from '@/library/environment'
 
 export async function GET() {
   const spotifyClientId = process.env.SPOTIFY_CLIENT_ID

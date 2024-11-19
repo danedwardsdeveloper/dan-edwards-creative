@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+
 import clientPromise from '@/library/mongodb'
 
 export async function GET() {
@@ -8,9 +9,7 @@ export async function GET() {
     const collection = db.collection('dan-edwards-creative')
 
     const now = new Date()
-    const ukTime = new Date(
-      now.toLocaleString('en-US', { timeZone: 'Europe/London' }),
-    )
+    const ukTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/London' }))
 
     const thirtyDaysAgo = new Date(ukTime)
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -19,10 +18,9 @@ export async function GET() {
 
     const pages = await collection.find({}).toArray()
 
-    const pageMetrics = pages.map((page) => {
+    const pageMetrics = pages.map(page => {
       const last30DaysViews = page.views.filter(
-        (view: { timestamp: Date }) =>
-          new Date(view.timestamp) >= thirtyDaysAgo,
+        (view: { timestamp: Date }) => new Date(view.timestamp) >= thirtyDaysAgo,
       ).length
 
       const thisMonthViews = page.views.filter(
@@ -42,19 +40,13 @@ export async function GET() {
       last30Days: pages.reduce(
         (sum, page) =>
           sum +
-          page.views.filter(
-            (view: { timestamp: Date }) =>
-              new Date(view.timestamp) >= thirtyDaysAgo,
-          ).length,
+          page.views.filter((view: { timestamp: Date }) => new Date(view.timestamp) >= thirtyDaysAgo).length,
         0,
       ),
       thisMonth: pages.reduce(
         (sum, page) =>
           sum +
-          page.views.filter(
-            (view: { timestamp: Date }) =>
-              new Date(view.timestamp) >= startOfMonth,
-          ).length,
+          page.views.filter((view: { timestamp: Date }) => new Date(view.timestamp) >= startOfMonth).length,
         0,
       ),
     }
@@ -71,9 +63,6 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Error fetching analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })
   }
 }

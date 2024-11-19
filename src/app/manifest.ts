@@ -4,8 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Dan Edwards creative | Pop music producer and songwriter in Salisbury, UK.',
     short_name: 'Dan Edwards creative',
-    description:
-      'Dan Edwards creative | Pop music producer and songwriter in Salisbury, UK.',
+    description: 'Dan Edwards creative | Pop music producer and songwriter in Salisbury, UK.',
     start_url: '/',
     display: 'standalone',
 

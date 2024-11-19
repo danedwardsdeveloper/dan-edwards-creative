@@ -1,8 +1,10 @@
 'use client'
-import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
+
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+
+import { Button } from '@/components/Button'
+import { Container } from '@/components/Container'
 
 function ErrorContent() {
   const searchParams = useSearchParams()

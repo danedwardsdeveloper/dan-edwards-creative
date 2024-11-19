@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
-import mongoClient from '@/library/mongodb'
 import { Document } from 'mongodb'
-import { databaseName, tableNames } from '@/library/mongodb'
+import { NextRequest, NextResponse } from 'next/server'
+
 import { validateRequestIp } from '@/library/ipValidation'
+import mongoClient from '@/library/mongodb'
+import { databaseName, tableNames } from '@/library/mongodb'
 
 export type Destination =
   | 'spotify-artist-profile'
@@ -30,15 +31,11 @@ export async function POST(request: NextRequest) {
       return ipValidation.response
     }
 
-    const body: { destination: Destination; source: string } =
-      await request.json()
+    const body: { destination: Destination; source: string } = await request.json()
     const { destination, source } = body
 
     if (!destination || !source) {
-      return NextResponse.json(
-        { error: 'Destination and source are required' },
-        { status: 400 },
-      )
+      return NextResponse.json({ error: 'Destination and source are required' }, { status: 400 })
     }
 
     const client = await mongoClient
@@ -70,10 +67,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error recording link click:', error)
-    return NextResponse.json(
-      { error: 'Failed to record link click' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to record link click' }, { status: 500 })
   }
 }
 
@@ -87,9 +81,6 @@ export async function GET() {
     return NextResponse.json(stats)
   } catch (error) {
     console.error('Error fetching link click stats:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch link click statistics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch link click statistics' }, { status: 500 })
   }
 }

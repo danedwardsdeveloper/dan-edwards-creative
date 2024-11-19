@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb'
+
 import { isDevelopment } from './environment'
 
 export const databaseName = 'dan-edwards-creative-analytics'

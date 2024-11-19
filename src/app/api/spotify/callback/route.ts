@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { dynamicBaseURL, spotifyRedirectUri } from '@/library/environment'
+
 import { SpotifyErrorResponse, SpotifySuccessResponse } from '@/types/spotify'
 
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID
@@ -37,34 +39,23 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
 
   if (!code) {
-    await recordPreSaveAttempt(
-      'failure',
-      undefined,
-      'Missing authorization code',
-    )
-    return NextResponse.redirect(
-      `${dynamicBaseURL}/error?message=Missing authorization code`,
-    )
+    await recordPreSaveAttempt('failure', undefined, 'Missing authorization code')
+    return NextResponse.redirect(`${dynamicBaseURL}/error?message=Missing authorization code`)
   }
 
   try {
-    const tokenResponse = await fetch(
-      'https://accounts.spotify.com/api/token',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${Buffer.from(
-            `${spotifyClientId}:${spotifyClientSecret}`,
-          ).toString('base64')}`,
-        },
-        body: new URLSearchParams({
-          grant_type: 'authorization_code',
-          code: code,
-          redirect_uri: spotifyRedirectUri,
-        }),
+    const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString('base64')}`,
       },
-    )
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: spotifyRedirectUri,
+      }),
+    })
 
     const tokenData = await tokenResponse.json()
 
@@ -76,9 +67,7 @@ export async function GET(request: NextRequest) {
 
       await recordPreSaveAttempt('failure', undefined, error)
 
-      return NextResponse.redirect(
-        `${dynamicBaseURL}/error?message=${encodeURIComponent(error)}`,
-      )
+      return NextResponse.redirect(`${dynamicBaseURL}/error?message=${encodeURIComponent(error)}`)
     }
 
     const saveResponse = await fetch('https://api.spotify.com/v1/me/tracks', {
@@ -100,24 +89,17 @@ export async function GET(request: NextRequest) {
     }
 
     if (!saveResponse.ok) {
-      await recordPreSaveAttempt(
-        'failure',
-        spotifyResponse,
-        'Failed to save track',
-      )
+      await recordPreSaveAttempt('failure', spotifyResponse, 'Failed to save track')
       throw new Error('Failed to save track')
     }
 
     await recordPreSaveAttempt('success', spotifyResponse)
     return NextResponse.redirect(`${dynamicBaseURL}/success`)
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'An unknown error occurred'
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred'
 
     await recordPreSaveAttempt('failure', undefined, errorMessage)
 
-    return NextResponse.redirect(
-      `${dynamicBaseURL}/error?message=${encodeURIComponent(errorMessage)}`,
-    )
+    return NextResponse.redirect(`${dynamicBaseURL}/error?message=${encodeURIComponent(errorMessage)}`)
   }
 }

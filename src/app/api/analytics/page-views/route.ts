@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { Document } from 'mongodb'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { validateRequestIp } from '@/library/ipValidation'
 import clientPromise from '@/library/mongodb'
 import { databaseName, tableNames } from '@/library/mongodb'
-import { validateRequestIp } from '@/library/ipValidation'
 
 interface PageView {
   timestamp: Date
@@ -62,10 +63,7 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error counting page view:', error)
-    return NextResponse.json(
-      { error: 'Failed to count page view' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to count page view' }, { status: 500 })
   }
 }
 
@@ -76,9 +74,7 @@ export async function GET() {
     const collection = db.collection<PageViewData>(tableNames.pageViews)
 
     const now = new Date()
-    const ukTime = new Date(
-      now.toLocaleString('en-GB', { timeZone: 'Europe/London' }),
-    )
+    const ukTime = new Date(now.toLocaleString('en-GB', { timeZone: 'Europe/London' }))
 
     const thirtyDaysAgo = new Date(ukTime)
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -87,14 +83,10 @@ export async function GET() {
 
     const pages = await collection.find().toArray()
 
-    const pageMetrics: PageMetrics[] = pages.map((page) => {
-      const last30DaysViews = page.views.filter(
-        (view) => new Date(view.timestamp) >= thirtyDaysAgo,
-      ).length
+    const pageMetrics: PageMetrics[] = pages.map(page => {
+      const last30DaysViews = page.views.filter(view => new Date(view.timestamp) >= thirtyDaysAgo).length
 
-      const thisMonthViews = page.views.filter(
-        (view) => new Date(view.timestamp) >= startOfMonth,
-      ).length
+      const thisMonthViews = page.views.filter(view => new Date(view.timestamp) >= startOfMonth).length
 
       return {
         page: page.page,
@@ -122,9 +114,6 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Error fetching analytics:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })
   }
 }

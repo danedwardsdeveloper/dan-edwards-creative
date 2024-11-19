@@ -1,7 +1,5 @@
-import { type Metadata } from 'next'
+import { type Metadata, type Viewport } from 'next'
 
-import { Providers } from '@/components/Providers'
-import { PageViewTracker } from '@/components/PageViewTracker'
 import { productionBaseURL } from '@/library/environment'
 import {
   defaultKeywords,
@@ -10,11 +8,13 @@ import {
   defaultSocialImage,
   siteName,
 } from '@/library/metadata'
+
+import MainContainer from '@/components/MainContainer'
+import { PageViewTracker } from '@/components/PageViewTracker'
+import { Providers } from '@/components/Providers'
+import SplashScreen from '@/components/SplashScreen'
+
 import '@/styles.tailwind.css'
-import clsx from 'clsx'
-import { AudioPlayer } from '@/components/player/AudioPlayer'
-import { Footer } from '@/components/Footer'
-import MenuBar from '@/components/MenuBar'
 
 export const metadata: Metadata = {
   title: defaultMetaTitle,
@@ -59,38 +59,23 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  width: 'device-width',
+  initialScale: 1,
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex h-full bg-zinc-50 dark:bg-black">
+    <html lang="en-GB" className="antialiased" suppressHydrationWarning>
+      <body className="overflow-hidden bg-zinc-50 dark:bg-black">
         <PageViewTracker />
         <Providers>
-          <div className="flex w-full flex-col">
-            <div className="h-[calc(100vh-6rem)]">
-              <div className="fixed inset-0 flex justify-center sm:px-8">
-                <div className="flex w-full max-w-7xl lg:px-8">
-                  <div className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20" />
-                </div>
-              </div>
-              <div className="relative flex w-full flex-col">
-                <MenuBar />
-                <main className="flex-auto">{children}</main>
-                <Footer />
-              </div>
+          <SplashScreen>
+            <div id="sliding-container" className="h-screen w-full transition-transform duration-500">
+              <MainContainer>{children}</MainContainer>
             </div>
-            <div
-              className={clsx(
-                'fixed inset-x-0 bottom-0 z-10',
-                'md:mx-auto md:max-w-xl',
-              )}
-            >
-              <AudioPlayer />
-            </div>
-          </div>
+          </SplashScreen>
         </Providers>
       </body>
     </html>

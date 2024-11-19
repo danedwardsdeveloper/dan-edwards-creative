@@ -1,7 +1,10 @@
 'use client'
-import { useState, useCallback } from 'react'
+
 import clsx from 'clsx'
+import { useCallback, useState } from 'react'
+
 import { MailIcon } from '@/components/Icons'
+
 import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 interface ObfuscatedEmailProps {
@@ -33,11 +36,7 @@ export default function ObfuscatedEmail({ className }: ObfuscatedEmailProps) {
 
   return (
     <li className={clsx(className, 'flex')}>
-      <button
-        onClick={handleClick}
-        title="Copy Dan's email address to the clipboard"
-        className="group flex"
-      >
+      <button onClick={handleClick} title="Copy Dan's email address to the clipboard" className="group flex">
         <MailIcon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-blue-600 dark:group-hover:fill-blue-400" />
         <span
           className={clsx(

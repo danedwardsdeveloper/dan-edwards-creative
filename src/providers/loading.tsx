@@ -11,15 +11,10 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([
-      document.fonts.ready,
-      new Promise((resolve) => setTimeout(resolve, 800)),
-    ]).then(() => setIsLoading(false))
+    Promise.all([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 800))]).then(() =>
+      setIsLoading(false),
+    )
   }, [])
 
-  return (
-    <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
-      {children}
-    </LoadingContext.Provider>
-  )
+  return <LoadingContext.Provider value={{ isLoading, setIsLoading }}>{children}</LoadingContext.Provider>
 }
