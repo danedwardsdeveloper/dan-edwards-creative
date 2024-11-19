@@ -8,8 +8,8 @@ import { musicLinkItems } from './data'
 export default function LinksPage() {
   return (
     <SimpleLayout
-      title={'Dan Edwards, pop music producer & songwriter'}
-      intro={`All my links in one place. Pre-save my upcoming single Piece of Me (ft. rowan).`}
+      title={'Dan Edwards creative | Links'}
+      intro={`I'm a pop music producer and songwriter in Salisbury, UK. Here are all my links in one place.`}
       articleContent={false}
     >
       <LinksList linkItems={musicLinkItems} />
