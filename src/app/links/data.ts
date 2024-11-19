@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export const musicLinkItems: LinkItemInterface[] = [
   {
     title: 'Listen on Spotify',
-    href: 'https://open.spotify.com/user/1123306625?si=800c1f9aea304e42',
+    href: 'https://open.spotify.com/artist/7p3CxuHLT2LvMCl5w7brvj',
     icon: SpotifyIcon,
     description: 'Follow my official Spotify artist profile',
     analyticsName: 'spotify-artist-profile',
