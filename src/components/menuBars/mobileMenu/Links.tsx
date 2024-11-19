@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { menuItems } from '../menuItems'
+import { menuItems } from '../data'
 import { baseStyles, colourStyles, sizeStyles } from '../styles'
 
 const menuItemsWithoutHome = menuItems.filter(
