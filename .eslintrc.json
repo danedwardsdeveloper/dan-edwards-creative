@@ -20,7 +20,7 @@
         "hoist": "all",
         // prettier-ignore
         "allow": [
-        "context", "data", "description", "Document", "email", "error", "event", "global", 
+        "context", "crypto", "data", "description", "Document", "email", "error", "event", "global", 
         "id", "Image", "message", "name", "params", "password", "path", "props", "query", 
         "reject", "req", "Request", "res", "resolve", "Response", "result", "scrollY", 
         "session", "status", "text", "title", "top", "type", "url", "user", "value"
