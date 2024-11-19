@@ -53,12 +53,12 @@ function createLogger() {
           console.warn(formattedMessage)
           break
         case 'info':
-          console.info(formattedMessage)
+          console.info(formattedMessage) // eslint-disable-line no-console
           break
         case 'debug':
         case 'verbose':
         case 'silly':
-          console.debug(formattedMessage)
+          console.debug(formattedMessage) // eslint-disable-line no-console
           break
       }
     }
