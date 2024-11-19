@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PageViewTracker />
         <Providers>
           <SplashScreen>
-            <div id="sliding-container" className="h-screen w-full transition-transform duration-500">
+            <div id="sliding-container" className="h-screen w-full transition-transform duration-500 lg:px-8">
               <MainContainer>{children}</MainContainer>
             </div>
           </SplashScreen>
