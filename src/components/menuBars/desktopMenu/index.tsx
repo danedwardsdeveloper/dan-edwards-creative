@@ -1,6 +1,6 @@
 'use client'
 
-import { menuItems } from '../menuItems'
+import { menuItems } from '../data'
 import { ThemeToggleIcons } from '../ThemeToggle'
 import NavItem from './desktopMenuItems'
 
