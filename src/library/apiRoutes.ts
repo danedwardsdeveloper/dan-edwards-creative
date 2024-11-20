@@ -11,4 +11,9 @@ export const apiRoutes = {
     authenticate: '/api/spotify/authenticate',
     callback: '/api/spotify/callback',
   },
+  subscriptions: {
+    main: '/api/subscriptions',
+    confirm: '/api/subscriptions/confirm',
+    unsubscribe: '/api/subscriptions/unsubscribe',
+  },
 }
