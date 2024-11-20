@@ -1,30 +1,36 @@
-import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { isDevelopment } from '@/library/environment'
+import { logger } from '@/library/logger'
+
+import { generateConfirmationLink, generateToken } from './utilities'
 import { tableNames } from '@/database/configuration'
 import mongoClient from '@/database/mongodb'
 
-const subscriptionsTable = tableNames.subscriptions
+export type SubscriptionsStatus = 'subscribed' | 'unsubscribed' | 'unconfirmed'
 
-type Subscriber = {
+export type Subscriber = {
   firstName: string
   email: string
-  subscribed: boolean
+  status: SubscriptionsStatus
   createdAt: Date
+  confirmationToken: string | null
   unsubscribeToken: string
-}
-
-function generateUnsubscribeToken(): string {
-  return crypto.randomBytes(10).toString('hex')
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { email, firstName } = await request.json()
-    const collection = (await mongoClient).db().collection(subscriptionsTable)
+    const collection = (await mongoClient).db().collection(tableNames.subscriptions)
     const existing = await collection.findOne({ email })
 
     if (existing) {
+      if (!existing.confirmed) {
+        return NextResponse.json({
+          message: 'Please check your email to confirm your subscription',
+        })
+      }
+
       if (!existing.subscribed) {
         const result = await collection.findOneAndUpdate(
           { email },
@@ -34,14 +40,8 @@ export async function POST(request: NextRequest) {
               firstName,
             },
           },
-          {
-            returnDocument: 'after',
-          },
+          { returnDocument: 'after' },
         )
-
-        if (!result) {
-          return NextResponse.json({ error: 'Failed to resubscribe' }, { status: 500 })
-        }
 
         return NextResponse.json({
           message: `Welcome back ${firstName}. You have been resubscribed`,
@@ -52,19 +52,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email already subscribed' }, { status: 409 })
     }
 
-    const unsubscribeToken = generateUnsubscribeToken()
+    const confirmationToken = generateToken()
+    const unsubscribeToken = generateToken()
+
     const newSubscriber: Subscriber = {
       firstName,
       email,
-      subscribed: true,
+      status: 'unconfirmed',
       createdAt: new Date(),
+      confirmationToken,
       unsubscribeToken,
     }
 
     const result = await collection.insertOne(newSubscriber)
 
+    if (isDevelopment) {
+      logger.info('Confirmation Link: ')
+      logger.info(generateConfirmationLink(confirmationToken, email))
+    }
+
+    // ToDo
+    // Send confirmation email with confirmationToken
+
     return NextResponse.json({
-      message: `Welcome ${firstName}. Subscription successful`,
+      message: `Please check your email to confirm your subscription`,
       subscriber: { ...newSubscriber, _id: result.insertedId },
     })
   } catch (error) {
@@ -75,49 +86,12 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const collection = (await mongoClient).db().collection(subscriptionsTable)
-    const subscribers = await collection.find({}).sort({ createdAt: -1 }).toArray()
+    const collection = (await mongoClient).db().collection(tableNames.subscriptions)
+    const subscribers = await collection.find({ status: 'subscribed' }).sort({ createdAt: -1 }).toArray()
 
     return NextResponse.json({ subscribers })
   } catch (error) {
     console.error('Failed to fetch subscribers:', error)
     return NextResponse.json({ error: 'Failed to fetch subscribers' }, { status: 500 })
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
-
-    if (!token) {
-      return NextResponse.json({ error: 'Unsubscribe token is required' }, { status: 400 })
-    }
-
-    const collection = (await mongoClient).db().collection(subscriptionsTable)
-    const existingSubscriber = await collection.findOne({ unsubscribeToken: token })
-
-    if (!existingSubscriber) {
-      return NextResponse.json({ error: 'Invalid unsubscribe token' }, { status: 404 })
-    }
-
-    if (!existingSubscriber.subscribed) {
-      return NextResponse.json({
-        message: `${existingSubscriber.email} already unsubscribed`,
-        subscriber: existingSubscriber,
-      })
-    }
-
-    await collection.updateOne({ unsubscribeToken: token }, { $set: { subscribed: false } })
-
-    const updatedSubscriber = await collection.findOne({ unsubscribeToken: token })
-
-    return NextResponse.json({
-      message: `${existingSubscriber.email} unsubscribed`,
-      subscriber: updatedSubscriber,
-    })
-  } catch (error) {
-    console.error('Failed to update subscription:', error)
-    return NextResponse.json({ error: 'Failed to update subscription' }, { status: 500 })
   }
 }
