@@ -15,7 +15,8 @@ interface ValidationResult {
 export function validateRequestIp(request: NextRequest, options: ValidateIpOptions = {}): ValidationResult {
   const { allowLocalhost = false, customMessage = 'Ignored localhost attempt' } = options
 
-  const ip = request.ip || request.headers.get('x-forwarded-for') || '0.0.0.0'
+  const ip =
+    request.headers.get('x-real-ip') || request.headers.get('x-forwarded-for')?.split(',')[0] || '0.0.0.0'
 
   if (!allowLocalhost && (ip === '::1' || ip === '127.0.0.1')) {
     logger.info(customMessage)
