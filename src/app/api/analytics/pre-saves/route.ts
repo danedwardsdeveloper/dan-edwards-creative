@@ -1,8 +1,10 @@
 import { Document } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { validateRequestIp } from '@/library/ipValidation'
-import mongoClient, { databaseName, tableNames } from '@/library/mongodb'
+import { validateRequestIp } from '@/library/validateIp'
+
+import { databaseNames, tableNames } from '@/database/configuration'
+import mongoClient from '@/database/mongodb'
 
 interface SpotifyResponse {
   status: number
@@ -30,7 +32,7 @@ interface PreSaveRecord {
 
 async function recordPreSaveInteraction(trackId: string, interaction: PreSaveInteraction) {
   const client = await mongoClient
-  const collection = client.db(databaseName).collection<PreSaveRecord>(tableNames.preSaves)
+  const collection = client.db(databaseNames).collection<PreSaveRecord>(tableNames.preSaves)
 
   await collection.updateOne(
     { trackId },
@@ -93,7 +95,7 @@ export async function GET(request: NextRequest) {
     }
 
     const client = await mongoClient
-    const collection = client.db(databaseName).collection<PreSaveRecord>(tableNames.preSaves)
+    const collection = client.db(databaseNames).collection<PreSaveRecord>(tableNames.preSaves)
 
     const stats = await collection.find().toArray()
 

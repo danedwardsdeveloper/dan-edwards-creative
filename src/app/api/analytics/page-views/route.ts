@@ -1,9 +1,10 @@
 import { Document } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { validateRequestIp } from '@/library/ipValidation'
-import clientPromise from '@/library/mongodb'
-import { databaseName, tableNames } from '@/library/mongodb'
+import { validateRequestIp } from '@/library/validateIp'
+
+import { databaseNames, tableNames } from '@/database/configuration'
+import mongoClient from '@/database/mongodb'
 
 interface PageView {
   timestamp: Date
@@ -42,8 +43,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Ignored analytics page view' })
     }
 
-    const client = await clientPromise
-    const db = client.db(databaseName)
+    const client = await mongoClient
+    const db = client.db(databaseNames)
     const collection = db.collection<PageViewData>(tableNames.pageViews)
 
     await collection.updateOne(
@@ -69,8 +70,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const client = await clientPromise
-    const db = client.db(databaseName)
+    const client = await mongoClient
+    const db = client.db(databaseNames)
     const collection = db.collection<PageViewData>(tableNames.pageViews)
 
     const now = new Date()

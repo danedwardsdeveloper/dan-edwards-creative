@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 
-import clientPromise from '@/library/mongodb'
+import mongoClient from '@/database/mongodb'
 
 export async function GET() {
   try {
-    const client = await clientPromise
+    const client = await mongoClient
     const db = client.db('page-views')
     const collection = db.collection('dan-edwards-creative')
 

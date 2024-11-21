@@ -1,9 +1,10 @@
 import { Document } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { validateRequestIp } from '@/library/ipValidation'
-import mongoClient from '@/library/mongodb'
-import { databaseName, tableNames } from '@/library/mongodb'
+import { validateRequestIp } from '@/library/validateIp'
+
+import { databaseNames, tableNames } from '@/database/configuration'
+import mongoClient from '@/database/mongodb'
 
 export type Destination =
   | 'spotify-artist-profile'
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     const client = await mongoClient
-    const db = client.db(databaseName)
+    const db = client.db(databaseNames)
     const collection = db.collection<LinkClicksData>(tableNames.linkClicks)
 
     const click: ClickRecord = {
@@ -74,7 +75,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   try {
     const client = await mongoClient
-    const db = client.db(databaseName)
+    const db = client.db(databaseNames)
     const collection = db.collection<LinkClicksData>(tableNames.linkClicks)
 
     const stats = await collection.find().toArray()
