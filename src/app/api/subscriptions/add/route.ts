@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isDevelopment } from '@/library/environment'
 import { logger } from '@/library/logger'
 
-import { sendConfirmationEmail } from '../emailTemplates'
-import { Subscriber, SubscriptionsStatus } from '../types'
+import { Subscriber, SubscriptionStatus } from '../types'
 import { generateConfirmationLink, generateToken } from '../utilities'
 import { tableNames } from '@/database/configuration'
 import mongoClient from '@/database/mongodb'
+import sendConfirmationEmail from '@/email/confirmation'
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             message: 'Please check your email to confirm your subscription',
-            status: 'pending' as SubscriptionsStatus,
+            status: 'pending' as SubscriptionStatus,
           },
           { status: 202 },
         )

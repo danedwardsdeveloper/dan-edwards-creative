@@ -1,9 +1,9 @@
-export type SubscriptionsStatus = 'subscribed' | 'pending'
+export type SubscriptionStatus = 'subscribed' | 'pending'
 
 export type Subscriber = {
   firstName: string
   email: string
-  status: SubscriptionsStatus
+  status: SubscriptionStatus
   createdAt: Date
   confirmationToken: string
   unsubscribeToken: string

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { logger } from '@/library/logger'
 
-import { SubscriptionsStatus } from '../types'
+import { SubscriptionStatus } from '../types'
 import { decodeEmail } from '../utilities'
 import { tableNames } from '@/database/configuration'
 import mongoClient from '@/database/mongodb'
@@ -50,7 +50,7 @@ export async function PATCH(request: NextRequest) {
       },
       {
         $set: {
-          status: 'subscribed' as SubscriptionsStatus,
+          status: 'subscribed' as SubscriptionStatus,
         },
       },
       { returnDocument: 'after' },
