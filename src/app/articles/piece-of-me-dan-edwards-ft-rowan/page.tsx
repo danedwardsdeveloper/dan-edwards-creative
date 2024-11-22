@@ -3,7 +3,6 @@ import { Metadata } from 'next'
 import { generateArticleMetadata } from '@/library/metadata'
 
 import { ArticleLayout } from '@/components/ArticleLayout'
-import PreSaveCard from '@/components/PreSaveCard'
 import { Paragraph } from '@/components/Text'
 
 import { article } from './data'
@@ -16,7 +15,6 @@ export default function Page() {
   return (
     <ArticleLayout article={article}>
       <Paragraph>This is a paragraph</Paragraph>
-      <PreSaveCard />
     </ArticleLayout>
   )
 }
