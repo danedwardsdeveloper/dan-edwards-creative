@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { logger } from '@/library/logger'
 
-import type { SubscriptionsStatus } from '../route'
+import type { SubscriptionsStatus } from '../add/route'
 import { tableNames } from '@/database/configuration'
 import mongoClient from '@/database/mongodb'
 
