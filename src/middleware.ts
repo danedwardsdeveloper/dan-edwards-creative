@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
-import { apiRoutes } from '@/library/apiRoutes'
 import { Token } from '@/library/cookies'
 import { cookieName } from '@/library/cookies'
 import { logger } from '@/library/logger'
@@ -16,7 +15,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`https://${customDomain}${url.pathname}${url.search}`)
   }
 
-  const isAnalyticsRoute = Object.values(apiRoutes.analytics).some(route => url.pathname === route)
+  const isAnalyticsRoute = url.pathname.startsWith('/api/analytics')
 
   if (isAnalyticsRoute) {
     const analyticsCookie = request.cookies.get(cookieName)
