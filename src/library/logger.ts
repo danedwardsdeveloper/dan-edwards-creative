@@ -17,7 +17,7 @@ type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'verbose' | 'silly'
 interface LogMessage {
   timestamp: string
   level: LogLevel
-  message: string
+  messages: unknown[]
   metadata?: Record<string, unknown>
 }
 
@@ -25,8 +25,22 @@ function shouldLog(messageLevel: LogLevel): boolean {
   return LOG_LEVEL_VALUES[messageLevel] >= LOG_LEVEL_VALUES[CURRENT_LOG_LEVEL]
 }
 
-function formatLog({ timestamp, level, message, metadata }: LogMessage): string {
-  let formattedMessage = `${timestamp} ${level}: ${message}`
+function formatValue(value: unknown): string {
+  if (value === null) return 'null'
+  if (value === undefined) return 'undefined'
+  if (typeof value === 'object') {
+    try {
+      return JSON.stringify(value, null, 2)
+    } catch {
+      return String(value)
+    }
+  }
+  return String(value)
+}
+
+function formatLog({ timestamp, level, messages, metadata }: LogMessage): string {
+  const formattedMessages = messages.map(formatValue).join(' ')
+  let formattedMessage = `${timestamp} ${level}: ${formattedMessages}`
   if (metadata) {
     formattedMessage += `\n${JSON.stringify(metadata, null, 2)}`
   }
@@ -34,12 +48,22 @@ function formatLog({ timestamp, level, message, metadata }: LogMessage): string 
 }
 
 function createLogger() {
-  const log = (level: LogLevel, message: string, metadata?: Record<string, unknown>) => {
+  const log = (level: LogLevel, ...args: unknown[]) => {
     if (process.env.NODE_ENV === 'development' && shouldLog(level)) {
+      // Separate metadata object if last argument is a plain object
+      let messages = args
+      let metadata: Record<string, unknown> | undefined
+
+      const lastArg = args[args.length - 1]
+      if (lastArg && typeof lastArg === 'object' && !Array.isArray(lastArg) && !(lastArg instanceof Error)) {
+        messages = args.slice(0, -1)
+        metadata = lastArg as Record<string, unknown>
+      }
+
       const logMessage: LogMessage = {
         timestamp: new Date().toISOString(),
         level,
-        message,
+        messages,
         metadata,
       }
 
@@ -65,12 +89,12 @@ function createLogger() {
   }
 
   return {
-    error: (message: string, metadata?: Record<string, unknown>) => log('error', message, metadata),
-    warn: (message: string, metadata?: Record<string, unknown>) => log('warn', message, metadata),
-    info: (message: string, metadata?: Record<string, unknown>) => log('info', message, metadata),
-    debug: (message: string, metadata?: Record<string, unknown>) => log('debug', message, metadata),
-    verbose: (message: string, metadata?: Record<string, unknown>) => log('verbose', message, metadata),
-    silly: (message: string, metadata?: Record<string, unknown>) => log('silly', message, metadata),
+    error: (...args: unknown[]) => log('error', ...args),
+    warn: (...args: unknown[]) => log('warn', ...args),
+    info: (...args: unknown[]) => log('info', ...args),
+    debug: (...args: unknown[]) => log('debug', ...args),
+    verbose: (...args: unknown[]) => log('verbose', ...args),
+    silly: (...args: unknown[]) => log('silly', ...args),
   }
 }
 
@@ -84,25 +108,26 @@ export function loggerMiddleware(request: NextRequest) {
     logResponse: (response: NextResponse) => {
       const duration = Date.now() - start
       const status = response.status
-      const message = `${method} ${url} ${status} ${duration}ms`
 
       if (status >= 400) {
-        logger.error(message)
+        logger.error(method, url, status, `${duration}ms`)
       } else {
-        logger.info(message)
+        logger.info(method, url, status, `${duration}ms`)
       }
     },
   }
 }
 
 export const logError = (error: Error, context?: string) => {
-  logger.error(`${context ? context + ': ' : ''}${error.message}`, {
-    stack: error.stack,
-  })
+  if (context) {
+    logger.error(context + ':', error.message, { stack: error.stack })
+  } else {
+    logger.error(error.message, { stack: error.stack })
+  }
 }
 
 export const logAPIError = (request: NextRequest, response: NextResponse, error: Error) => {
-  logger.error(`API Error: ${request.method} ${request.url}`, {
+  logger.error('API Error:', request.method, request.url, {
     error: error.message,
     stack: error.stack,
     url: request.url,
