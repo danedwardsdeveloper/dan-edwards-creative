@@ -23,7 +23,7 @@ export function SimpleLayout({
         <p className="mt-6 text-balance text-base text-zinc-600 dark:text-zinc-400">{intro}</p>
       </header>
       {children && (
-        <div className={clsx('mt-16 sm:mt-20 px-4 md:px-0', articleContent && 'article-content')}>
+        <div className={clsx('my-12 sm:my-20 px-4 md:px-0', articleContent && 'article-content')}>
           {children}
         </div>
       )}
