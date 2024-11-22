@@ -13,6 +13,7 @@
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.696.0",
     "@headlessui/react": "^2.1.0",
     "@tailwindcss/typography": "^0.5.4",
     "@types/node": "^20.10.8",
