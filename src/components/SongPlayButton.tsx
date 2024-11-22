@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 
 import { type Song, useAudioPlayer } from '@/providers/audio'
+import { useLayout } from '@/providers/layout'
 
 export function SongPlayButton({
   song,
@@ -15,11 +16,17 @@ export function SongPlayButton({
   paused: ReactNode
 }) {
   const player = useAudioPlayer(song)
+  const { showAudioPlayer, setShowAudioPlayer } = useLayout()
+
+  function handleClick() {
+    player.toggle()
+    setShowAudioPlayer(!showAudioPlayer)
+  }
 
   return (
     <button
       type="button"
-      onClick={() => player.toggle()}
+      onClick={handleClick}
       aria-label={`${player.playing ? 'Pause' : 'Play'} song ${song.title}`}
       {...props}
     >
