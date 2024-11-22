@@ -12,12 +12,12 @@ export function encodeEmail(email: string): string {
 
 export function generateConfirmationLink(token: string, email: string): string {
   const encodedEmail = encodeEmail(email)
-  return `${dynamicBaseURL}/newsletter?e=${encodedEmail}&x=${token}`
+  return `${dynamicBaseURL}/confirm?e=${encodedEmail}&x=${token}`
 }
 
 export function generateUnsubscribeLink(token: string, email: string): string {
   const encodedEmail = encodeEmail(email)
-  return `${dynamicBaseURL}/newsletter/unsubscribe?e=${encodedEmail}&x=${token}`
+  return `${dynamicBaseURL}/unsubscribe?e=${encodedEmail}&x=${token}`
 }
 
 export function decodeEmail(encodedEmail: string): string {
@@ -27,8 +27,4 @@ export function decodeEmail(encodedEmail: string): string {
     .padEnd(encodedEmail.length + ((4 - (encodedEmail.length % 4)) % 4), '=')
 
   return Buffer.from(base64, 'base64').toString()
-}
-
-export function isValidToken(token: string): boolean {
-  return /^[a-f0-9]{20}$/.test(token)
 }
