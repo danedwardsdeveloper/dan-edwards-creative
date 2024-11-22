@@ -5,7 +5,7 @@ import { Button } from '../Button'
 import Spinner from '../Spinner'
 import StyledLink from '../StyledLink'
 import Input from './Input'
-import { type SubscriptionsStatus } from '@/app/api/subscriptions/types'
+import { type SubscriptionStatus } from '@/app/api/subscriptions/types'
 
 interface MessageConfig {
   heading: string
@@ -16,11 +16,11 @@ type MessageStatus = 'default' | 'success' | 'subscribed' | 'pending' | 'error'
 
 interface SubscriptionResponse {
   message: string
-  status?: SubscriptionsStatus
+  status?: SubscriptionStatus
   subscriber?: {
     firstName: string
     email: string
-    status: SubscriptionsStatus
+    status: SubscriptionStatus
   }
   error?: string
 }
