@@ -2,11 +2,14 @@ import { SendEmailCommand } from '@aws-sdk/client-ses'
 
 import { logger } from '@/library/logger'
 
-import { generateUnsubscribeLink } from '@/app/api/subscriptions/utilities'
 import { fromEmail, sesClient } from '@/email/client'
 
-export default async function sendEmail(email: string, token: string, subject: string, body: string) {
-  const unsubscribeLink = generateUnsubscribeLink(token, email)
+export default async function sendEmail(
+  email: string,
+  subject: string,
+  body: string,
+  unsubscribeLink: string,
+) {
   try {
     const htmlBody = `
 ${body}
