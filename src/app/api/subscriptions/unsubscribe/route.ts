@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { logger } from '@/library/logger'
 
-import type { SubscriptionsStatus } from '../add/route'
+import { type SubscriptionStatus } from '../types'
 import { tableNames } from '@/database/configuration'
 import mongoClient from '@/database/mongodb'
 
@@ -31,7 +31,7 @@ export async function PATCH(request: NextRequest) {
 
     const result = await collection.findOneAndUpdate(
       { unsubscribeToken: token },
-      { $set: { status: 'unsubscribed' as SubscriptionsStatus } },
+      { $set: { status: 'unsubscribed' as SubscriptionStatus } },
       { returnDocument: 'after' },
     )
 
