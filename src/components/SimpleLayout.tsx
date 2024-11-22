@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { ReactNode } from 'react'
 
 import { Container } from '@/components/Container'
 
@@ -9,7 +10,7 @@ export function SimpleLayout({
   children,
 }: {
   title: string
-  intro: string
+  intro: string | ReactNode
   articleContent?: boolean
   children?: React.ReactNode
 }) {
