@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import mongoClient from '@/database/mongodb'
+import mongoClient from '@/library/database/mongodb'
 
 export async function GET() {
   try {
