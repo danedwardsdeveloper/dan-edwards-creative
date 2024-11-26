@@ -1,11 +1,13 @@
 import clsx from 'clsx'
 import { ReactNode, useState } from 'react'
 
+import { logger } from '@/library/logger'
+
 import { Button } from '../Button'
 import Spinner from '../Spinner'
 import StyledLink from '../StyledLink'
 import Input from './Input'
-import { type SubscriptionStatus } from '@/app/api/subscriptions/types'
+import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
 
 interface MessageConfig {
   heading: string
@@ -13,17 +15,6 @@ interface MessageConfig {
   colour: string
 }
 type MessageStatus = 'default' | 'success' | 'subscribed' | 'pending' | 'error'
-
-interface SubscriptionResponse {
-  message: string
-  status?: SubscriptionStatus
-  subscriber?: {
-    firstName: string
-    email: string
-    status: SubscriptionStatus
-  }
-  error?: string
-}
 
 export function NewsletterForm() {
   const [isSubscribing, setIsSubscribing] = useState(false)
@@ -67,8 +58,10 @@ export function NewsletterForm() {
     event.preventDefault()
     setIsSubscribing(true)
 
+    const path = '/api/subscriptions/add' as ApiPath
+
     try {
-      const response = await fetch('/api/subscriptions/add', {
+      const response = await fetch(path, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +69,11 @@ export function NewsletterForm() {
         body: JSON.stringify({ email: email.trim(), firstName: firstName.trim() }),
       })
 
-      const data: SubscriptionResponse = await response.json()
+      logger.info('Received subscription response', {
+        status: response.status,
+      })
+
+      const data: ApiEndpoints['/api/subscriptions/add']['POST']['response'] = await response.json()
       switch (response.status) {
         case 201:
         case 200:
@@ -89,7 +86,7 @@ export function NewsletterForm() {
           setStatus('subscribed')
           break
         default:
-          throw new Error(data.error || 'Subscription failed')
+          throw new Error('Subscription failed')
       }
     } catch {
       setStatus('error')
