@@ -103,7 +103,7 @@ export async function POST(
     } else {
       return NextResponse.json(
         {
-          message: 'already confirmed',
+          message: 'success please confirm',
           subscriber: savedSubscriber.toObject(),
         },
         { status: 201 },
