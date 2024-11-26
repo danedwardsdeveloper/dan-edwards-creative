@@ -1,33 +1,37 @@
-'use client'
+// 'use client'
 
-import { usePathname } from 'next/navigation'
-import { useCallback } from 'react'
+// import { usePathname } from 'next/navigation'
+// import { useCallback } from 'react'
 
-import { Destination } from '@/app/api/analytics/link-clicks/route'
-import { apiPaths } from '@/types/apiEndpoints'
+// // import { Destination } from '@/app/api/analytics/link-clicks/route'
+// import { ApiEndpoints, ApiMethod, ApiPath } from '@/types/apiEndpoints'
 
-export function useRecordLinkClick() {
-  const currentPath = usePathname()
+// export function useRecordLinkClick() {
+//   const currentPath = usePathname()
 
-  const recordClick = useCallback(
-    async (destination: Destination) => {
-      try {
-        await fetch(apiPaths['/api/analytics/link-clicks'], {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            destination,
-            source: currentPath,
-          }),
-        })
-      } catch (error) {
-        console.error('Error logging link click:', error)
-      }
-    },
-    [currentPath],
-  )
+//   const recordClick = useCallback(
+//     async (destination: Destination) => {
+//       try {
+//         const typesafePath: ApiPath<'/api/analytics/link-clicks'> = '/api/analytics/link-clicks'
+//         const typesafeMethod: ApiMethod<'/api/analytics/link-clicks'> = 'POST'
+//         const typesafeBody: ApiEndpoints['/api/analytics/link-clicks']['POST']['body'] = {
+//           destination,
+//           source: currentPath,
+//         }
 
-  return recordClick
-}
+//         await fetch(typesafePath, {
+//           method: typesafeMethod,
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify(typesafeBody),
+//         })
+//       } catch (error) {
+//         console.error('Error logging link click:', error)
+//       }
+//     },
+//     [currentPath],
+//   )
+
+//   return recordClick
+// }

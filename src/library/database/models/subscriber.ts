@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
-import { type TableNames } from '../tableNames'
+import { TableNames } from '../tableNames'
 
 export type SubscriptionStatus = 'subscribed' | 'pending'
 
