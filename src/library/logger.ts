@@ -53,7 +53,7 @@ function formatValue(value: unknown): string {
 function formatLog({ timestamp, level, messages, metadata }: LogMessage): string {
   const colorFn = LOG_LEVEL_COLORS[level]
   const formattedMessages = messages.map(formatValue).join(' ')
-  let formattedMessage = `${colorFn(divider)}\n${timestamp} ${colorFn(`${level}:`)}\n${formattedMessages}`
+  let formattedMessage = `${colorFn(divider)}\n${colorFn(`${level}:`)}\n${formattedMessages}`
   if (metadata) {
     formattedMessage += `\n${JSON.stringify(metadata, null, 2)}`
   }
