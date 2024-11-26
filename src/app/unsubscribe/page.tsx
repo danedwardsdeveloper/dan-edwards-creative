@@ -4,13 +4,14 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 
 import { logger } from '@/library/logger'
+import { typesafeFetch } from '@/library/typesafeFetch'
 
 import { SimpleLayout } from '@/components/SimpleLayout'
 import Spinner from '@/components/Spinner'
 import StyledLink from '@/components/StyledLink'
 
 import { decodeEmail } from '../api/subscriptions/utilities'
-import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
+import { ApiEndpoints } from '@/types/apiEndpoints'
 
 const UnsubscribeStates = {
   default: 'default',
@@ -34,18 +35,19 @@ function UnsubscribeContent() {
         const typesafeParams = Object.fromEntries(
           searchParams.entries(),
         ) as ApiEndpoints['/api/subscriptions/unsubscribe']['DELETE']['params']
+
+        setState(UnsubscribeStates.loading)
+
         const token = typesafeParams.x
         const encodedEmail = typesafeParams.e
 
-        logger.info('Received unsubscribe parameters', { encodedEmail, hasToken: !!token })
+        logger.debug('Received unsubscribe parameters', { encodedEmail, hasToken: !!token })
 
         if (!token && !encodedEmail) {
-          logger.info('No token or email provided, showing default state')
+          logger.debug('No token or email provided, showing default state')
           setState('default')
           return
         }
-
-        setState(UnsubscribeStates.loading)
 
         if (!token || !encodedEmail) {
           logger.info('Missing required parameter', { hasToken: !!token, hasEmail: !!encodedEmail })
@@ -53,34 +55,37 @@ function UnsubscribeContent() {
           return
         }
 
-        const path: ApiPath<'/api/subscriptions/unsubscribe'> = '/api/subscriptions/unsubscribe'
-
-        logger.info('Making unsubscribe request', { encodedEmail, path })
-
-        const response = await fetch(`${path}?x=${token}&e=${encodedEmail}`, {
+        const response = await typesafeFetch({
+          path: '/api/subscriptions/unsubscribe',
           method: 'DELETE',
+          params: {
+            x: token,
+            e: encodedEmail,
+          },
         })
 
-        const data: ApiEndpoints['/api/subscriptions/unsubscribe']['DELETE']['response'] =
-          await response.json()
+        const message = response.message
 
-        const message = data.message
-
-        if (message === 'Invalid link') {
-          setState(UnsubscribeStates.invalid)
-          return
+        switch (message) {
+          case 'Invalid link':
+            setState(UnsubscribeStates.invalid)
+            break
+          case 'Already unsubscribed':
+            setState(UnsubscribeStates.already)
+            break
+          case 'Unsubscribed successfully':
+            setEmail(decodeEmail(encodedEmail))
+            setState(UnsubscribeStates.success)
+            break
+          case 'Failed to unsubscribe':
+            setState(UnsubscribeStates.error)
+            break
+          default:
+            logger.error('Unexpected response message', { message: response.message })
+            setState(UnsubscribeStates.error)
         }
-
-        if (message === 'Already unsubscribed') {
-          setState(UnsubscribeStates.already)
-          return
-        }
-
-        if (message === 'Unsubscribed successfully') {
-          setEmail(decodeEmail(encodedEmail))
-          setState(UnsubscribeStates.success)
-        }
-      } catch {
+      } catch (error) {
+        logger.error('Error handling unsubscribe', { error })
         setState(UnsubscribeStates.invalid)
       }
     }
