@@ -1,10 +1,9 @@
 import { Document } from 'mongodb'
 import { NextRequest, NextResponse } from 'next/server'
 
+import mongoClient from '@/library/database/mongodb'
+import { tableNames } from '@/library/database/tableNames'
 import { validateRequestIp } from '@/library/validateIp'
-
-import { databaseNames, tableNames } from '@/database/configuration'
-import mongoClient from '@/database/mongodb'
 
 export type Destination =
   | 'spotify-artist-profile'
