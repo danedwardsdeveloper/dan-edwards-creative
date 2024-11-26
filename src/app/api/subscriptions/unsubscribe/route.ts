@@ -39,7 +39,7 @@ export async function DELETE(
     if (!subscriber) {
       return NextResponse.json(
         {
-          message: 'User already unsubscribed',
+          message: 'Already unsubscribed',
         },
         { status: 404 },
       )
@@ -55,7 +55,7 @@ export async function DELETE(
     })
 
     return NextResponse.json({
-      message: `${email} unsubscribed successfully`,
+      message: `Unsubscribed successfully`,
     })
   } catch (error) {
     logger.error('Failed to unsubscribe:', error instanceof Error ? error.message : String(error))
