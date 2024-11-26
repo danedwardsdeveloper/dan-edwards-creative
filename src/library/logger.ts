@@ -1,8 +1,11 @@
+import chalk from 'chalk'
 import { NextRequest, NextResponse } from 'next/server'
 
-type Level = 'verbose' | 'info' | 'warn' | 'error' | 'debug' | 'silly'
-const CURRENT_LOG_LEVEL: Level = 'info'
+const CURRENT_LOG_LEVEL: Level = 'debug'
 
+const divider = '----------------------------------'
+
+type Level = 'verbose' | 'info' | 'warn' | 'error' | 'debug' | 'silly'
 const LOG_LEVEL_VALUES: Record<Level, number> = {
   silly: 0,
   debug: 1,
@@ -13,6 +16,15 @@ const LOG_LEVEL_VALUES: Record<Level, number> = {
 }
 
 type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'verbose' | 'silly'
+
+const LOG_LEVEL_COLORS: Record<LogLevel, typeof chalk.blue> = {
+  error: chalk.red,
+  warn: chalk.hex('#FFA500'), // Orange
+  info: chalk.blue,
+  debug: chalk.blue,
+  verbose: chalk.blue,
+  silly: chalk.blue,
+}
 
 interface LogMessage {
   timestamp: string
@@ -39,18 +51,19 @@ function formatValue(value: unknown): string {
 }
 
 function formatLog({ timestamp, level, messages, metadata }: LogMessage): string {
+  const colorFn = LOG_LEVEL_COLORS[level]
   const formattedMessages = messages.map(formatValue).join(' ')
-  let formattedMessage = `${timestamp} ${level}: ${formattedMessages}`
+  let formattedMessage = `${colorFn(divider)}\n${timestamp} ${colorFn(`${level}:`)}\n${formattedMessages}`
   if (metadata) {
     formattedMessage += `\n${JSON.stringify(metadata, null, 2)}`
   }
+  formattedMessage += `\n${colorFn(divider)}`
   return formattedMessage
 }
 
 function createLogger() {
   const log = (level: LogLevel, ...args: unknown[]) => {
     if (process.env.NODE_ENV === 'development' && shouldLog(level)) {
-      // Separate metadata object if last argument is a plain object
       let messages = args
       let metadata: Record<string, unknown> | undefined
 
