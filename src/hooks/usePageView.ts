@@ -3,18 +3,20 @@
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
+import { typesafeFetch } from '@/types/apiEndpoints'
+
 export function usePageView() {
   const pathname = usePathname()
 
   useEffect(() => {
     const countView = async () => {
       try {
-        await fetch('/api/analytics/page-views', {
+        await typesafeFetch({
+          path: '/api/analytics/page-views',
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+          body: {
+            page: pathname,
           },
-          body: JSON.stringify({ page: pathname }),
         })
       } catch (error) {
         console.error('Error logging page view:', error)
