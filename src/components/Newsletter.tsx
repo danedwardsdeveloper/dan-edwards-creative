@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import { ChangeEvent, FormEvent, useState } from 'react'
 
-import { subscribeToNewsletter } from '@/library/newsletter'
+import { subscribeToNewsletter } from '@/library/mailchimpNewsletter'
 
 import { Button } from '@/components/Button'
 
