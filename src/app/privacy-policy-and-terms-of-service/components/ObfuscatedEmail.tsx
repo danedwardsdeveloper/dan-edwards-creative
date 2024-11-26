@@ -5,14 +5,14 @@ import { useCallback, useState } from 'react'
 
 import { MailIcon } from '@/components/Icons'
 
-import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
+// import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 interface ObfuscatedEmailProps {
   className?: string
 }
 
 export default function ObfuscatedEmail({ className }: ObfuscatedEmailProps) {
-  const recordClick = useRecordLinkClick()
+  // const recordClick = useRecordLinkClick()
   const encodedEmail = 'ZGFuZWR3YXJkc2NyZWF0aXZlQGdtYWlsLmNvbQ=='
   const [decodedEmail, setDecodedEmail] = useState('')
   const [copied, setCopied] = useState(false)
@@ -26,7 +26,7 @@ export default function ObfuscatedEmail({ className }: ObfuscatedEmailProps) {
 
   const handleClick = (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    recordClick('copy-email-address')
+    // recordClick('copy-email-address')
     decodeEmail()
     navigator.clipboard.writeText(decodedEmail).then(() => {
       setCopied(true)
