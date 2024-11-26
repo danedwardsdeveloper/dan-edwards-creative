@@ -3,33 +3,37 @@
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { logger } from '@/library/logger'
+
 import { SimpleLayout } from '@/components/SimpleLayout'
 import Spinner from '@/components/Spinner'
 import StyledLink from '@/components/StyledLink'
 
-type ConfirmationState = 'default' | 'loading' | 'invalid' | 'success' | 'already' | 'error'
+import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
 
-interface SubscriberResponse {
-  error?: string
-  message?: string
-  subscriber?: {
-    name: string
-    email: string
-  }
-}
+type ConfirmationState = 'default' | 'loading' | 'invalid' | 'success' | 'already' | 'error'
 
 export default function ConfirmPage() {
   const [state, setState] = useState<ConfirmationState>('default')
-  const [subscriber, setSubscriber] = useState<{ name: string; email: string }>({ name: '', email: '' })
+  const [subscriber, setSubscriber] = useState<{ firstName: string; email: string }>({
+    firstName: '',
+    email: '',
+  })
   const searchParams = useSearchParams()
 
   useEffect(() => {
     async function confirmSubscription() {
       try {
-        const token = searchParams.get('x')
-        const email = searchParams.get('e')
+        const typesafeParams = Object.fromEntries(
+          searchParams.entries(),
+        ) as ApiEndpoints['/api/subscriptions/confirm']['PATCH']['params']
+        const token = typesafeParams.x
+        const email = typesafeParams.e
+
+        logger.info('Received confirmation parameters', { email, hasToken: !!token })
 
         if (!token && !email) {
+          logger.info('No token or email provided, showing default state')
           setState('default')
           return
         }
@@ -37,29 +41,44 @@ export default function ConfirmPage() {
         setState('loading')
 
         if (!token || !email) {
+          logger.info('Missing required parameter', { hasToken: !!token, hasEmail: !!email })
           setState('invalid')
           return
         }
 
-        const response = await fetch(`/api/subscriptions/confirm?x=${token}&e=${email}`, {
-          method: 'PATCH',
-        })
+        const basePath: ApiPath = '/api/subscriptions/confirm'
+        logger.info('Making confirmation request', { email, basePath })
+        type ConfirmMethod = keyof ApiEndpoints['/api/subscriptions/confirm']
+        const method: ConfirmMethod = 'PATCH'
 
-        const data: SubscriberResponse = await response.json()
+        const response = await fetch(
+          `${basePath}?x=${encodeURIComponent(token)}&e=${encodeURIComponent(email)}`,
+          {
+            method,
+          },
+        )
 
-        if (!response.ok) {
+        const data: ApiEndpoints['/api/subscriptions/confirm']['PATCH']['data'] = await response.json()
+
+        const message = data.message
+
+        if (message === "Missing param: 'e'" || message === "Missing param: 'x'") {
           setState('invalid')
           return
         }
 
-        if (data.message === 'Email already confirmed' && data.subscriber) {
-          setSubscriber(data.subscriber)
+        if (message === 'Email already confirmed') {
+          if (data.subscriber) {
+            setSubscriber(data.subscriber)
+          }
           setState('already')
           return
         }
 
-        if (data.subscriber) {
-          setSubscriber(data.subscriber)
+        if (message === 'Email confirmed successfully') {
+          if (data.subscriber) {
+            setSubscriber(data.subscriber)
+          }
           setState('success')
         }
       } catch {
@@ -99,7 +118,7 @@ export default function ConfirmPage() {
       title: 'Subscription confirmed',
       intro: (
         <>
-          Thank you{subscriber.name ? ` ${subscriber.name},` : ''} for your support.
+          Thank you{subscriber.firstName ? `, ${subscriber.firstName}` : ''} for your support.
           <br />
           <br />
           {subscriber.email ? subscriber.email : 'Your email'} has been subscribed to my newsletter.
