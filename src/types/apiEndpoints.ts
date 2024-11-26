@@ -30,15 +30,17 @@ export interface ApiEndpoints {
   }
   '/api/subscriptions/add': {
     POST: {
-      body: Record<'email' | 'firstName', string>
-      response: {
+      body: PublicSubscriber
+      data: {
         message:
-          | 'Please check your email to confirm your subscription'
-          | 'Thank you for subscribing to my newsletter'
-          | 'Email already subscribed'
-          | 'First name is required'
-          | 'Email is required'
-          | 'Failed to add subscription'
+          | 'default'
+          | 'success confirmation bypassed'
+          | 'success please confirm'
+          | 'already confirmed'
+          | 'already pending'
+          | 'email required'
+          | 'first name required'
+          | 'fail'
         subscriber?: PublicSubscriber
       }
     }
@@ -46,12 +48,64 @@ export interface ApiEndpoints {
   '/api/subscriptions/unsubscribe': {
     DELETE: {
       params: Record<'x' | 'e', string>
-      response: ApiResponse
+      response: {
+        message:
+          | 'Invalid link'
+          | 'Already unsubscribed'
+          | 'Unsubscribed successfully'
+          | 'Failed to unsubscribe'
+        subscriber?: PublicSubscriber
+      }
     }
   }
   '/api/analytics/link-clicks': {
-    POST: {}
+    POST: {
+      body: Record<'destination' | 'source', string>
+      response: ApiResponse
+    }
+  }
+  '/api/analytics/page-views': {
+    POST: {
+      body: Record<'page', string>
+      response: ApiResponse
+    }
   }
 }
 
-export type ApiPath = keyof ApiEndpoints
+export type ApiPath<P extends keyof ApiEndpoints> = P
+export type ApiMethod<P extends keyof ApiEndpoints> = keyof ApiEndpoints[P]
+
+type TypesafeApiRequest<P extends keyof ApiEndpoints, M extends keyof ApiEndpoints[P]> = {
+  path: P
+  method: M
+  body?: ApiEndpoints[P][M] extends { body: infer B } ? B : never
+  params?: ApiEndpoints[P][M] extends { params: infer ParamType } ? ParamType : never
+}
+
+type TypesafeApiResponse<
+  P extends keyof ApiEndpoints,
+  M extends keyof ApiEndpoints[P],
+> = ApiEndpoints[P][M] extends { response: infer R }
+  ? R
+  : ApiEndpoints[P][M] extends { data: infer D }
+    ? D
+    : never
+
+export async function typesafeFetch<P extends keyof ApiEndpoints, M extends keyof ApiEndpoints[P]>({
+  path,
+  method,
+  body,
+  params,
+}: TypesafeApiRequest<P, M>): Promise<TypesafeApiResponse<P, M>> {
+  const queryString = params ? `?${new URLSearchParams(params as Record<string, string>).toString()}` : ''
+
+  const response = await fetch(`${path}${queryString}`, {
+    method: method as string,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  })
+
+  return response.json()
+}
