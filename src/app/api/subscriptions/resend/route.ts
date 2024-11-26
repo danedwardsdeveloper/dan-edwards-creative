@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import mongoClient from '@/library/database/mongodb'
+import { tableNames } from '@/library/database/tableNames'
 import { isDevelopment } from '@/library/environment'
 import { logger } from '@/library/logger'
 
 import { generateConfirmationLink, generateToken } from '../utilities'
-import { tableNames } from '@/database/configuration'
-import mongoClient from '@/database/mongodb'
 
 export async function POST(request: NextRequest) {
   try {
