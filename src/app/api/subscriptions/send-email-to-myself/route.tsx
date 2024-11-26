@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { type SubscriberInterface } from '@/library/database/models/subscriber'
 import { sendEmail } from '@/library/email/sendEmail'
 import { testEmail, testEmailSubject } from '@/library/email/testEmail'
 import { logger } from '@/library/logger'
 
-import { type Subscriber } from '@/types/subscriber'
-
 export async function POST(request: NextRequest) {
   try {
-    const subscriber: Subscriber = {
+    const subscriber: SubscriberInterface = {
       firstName: 'Dan',
       email: 'danedwardscreative@gmail.com',
       status: 'subscribed',
