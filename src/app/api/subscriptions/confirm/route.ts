@@ -1,68 +1,99 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+import { Subscriber } from '@/library/database/models/subscriber'
+import connectDB from '@/library/database/mongoose'
 import { logger } from '@/library/logger'
 
-import { SubscriptionStatus } from '../types'
-import { decodeEmail } from '../utilities'
-import { tableNames } from '@/database/configuration'
-import mongoClient from '@/database/mongodb'
+import { decodeEmail, generateUnsubscribeLink } from '../utilities'
+import { ApiEndpoints } from '@/types/apiEndpoints'
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+): Promise<NextResponse<ApiEndpoints['/api/subscriptions/confirm']['PATCH']['data']>> {
   try {
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('x')
-    const encodedEmail = searchParams.get('e')
+    await connectDB()
 
-    if (!token || !encodedEmail) {
-      logger.error('Missing required params:', {
-        token: token ? 'present' : 'missing',
-        encodedEmail: encodedEmail ? 'present' : 'missing',
-      })
-      return NextResponse.json({ error: 'Invalid link' }, { status: 400 })
+    const { searchParams } = new URL(request.url)
+    const typesafeParams = Object.fromEntries(
+      searchParams.entries(),
+    ) as ApiEndpoints['/api/subscriptions/confirm']['PATCH']['params']
+
+    const confirmationToken = typesafeParams.x
+    const encodedEmail = typesafeParams.e
+
+    if (!confirmationToken) {
+      logger.error(`Missing param: 'x'`)
+      return NextResponse.json(
+        {
+          status: 400,
+          message: `Missing param: 'x'`,
+        },
+        { status: 400 },
+      )
     }
 
-    const collection = (await mongoClient).db().collection(tableNames.subscriptions)
+    if (!encodedEmail) {
+      logger.error(`Missing param: 'e'`)
+      return NextResponse.json({ status: 400, message: `Missing param: 'e'` }, { status: 400 })
+    }
+
     const email = decodeEmail(encodedEmail)
 
-    const subscriber = await collection.findOne({
+    const subscriber = await Subscriber.findOne({
       email,
-      confirmationToken: token,
-    })
+      confirmationToken,
+    }).select('firstName email status')
 
     if (!subscriber) {
-      return NextResponse.json({ error: 'Invalid link' }, { status: 404 })
+      return NextResponse.json({ status: 404, message: 'Subscriber not found' }, { status: 404 })
     }
 
     if (subscriber.status === 'subscribed') {
       return NextResponse.json(
         {
+          status: 409,
           message: 'Email already confirmed',
-          subscriber,
+          subscriber: {
+            firstName: subscriber.firstName,
+            email: subscriber.email,
+          },
         },
-        { status: 200 },
+        { status: 409 },
       )
     }
 
-    const result = await collection.findOneAndUpdate(
+    const result = await Subscriber.findOneAndUpdate(
       {
         email,
-        confirmationToken: token,
+        confirmationToken,
       },
       {
         $set: {
-          status: 'subscribed' as SubscriptionStatus,
+          status: 'subscribed',
         },
       },
-      { returnDocument: 'after' },
+      {
+        new: true,
+        select: 'firstName email unsubscribeToken',
+      },
     )
 
-    return NextResponse.json({
-      message: 'Email confirmed successfully',
-      subscriber: result,
-    })
+    logger.info('Unsubscribe Link:', generateUnsubscribeLink(result.unsubscribeToken, email))
+
+    return NextResponse.json(
+      {
+        status: 200,
+        message: 'Email confirmed successfully',
+        subscriber: {
+          firstName: result.firstName,
+          email: result.email,
+        },
+      },
+      { status: 200 },
+    )
   } catch (error) {
     logger.error('Failed to confirm subscription:')
     logger.error(error as string)
-    return NextResponse.json({ error: 'Failed to confirm subscription' }, { status: 500 })
+    return NextResponse.json({ status: 500, message: 'Failed to confirm subscription' }, { status: 500 })
   }
 }
