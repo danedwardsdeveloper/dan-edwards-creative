@@ -1,151 +1,27 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-
-import { logger } from '@/library/logger'
+import { Suspense } from 'react'
 
 import { SimpleLayout } from '@/components/SimpleLayout'
 import Spinner from '@/components/Spinner'
-import StyledLink from '@/components/StyledLink'
 
-import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
-
-type ConfirmationState = 'default' | 'loading' | 'invalid' | 'success' | 'already' | 'error'
+import ConfirmationContent from './ConfirmationContent'
 
 export default function ConfirmPage() {
-  const [state, setState] = useState<ConfirmationState>('default')
-  const [subscriber, setSubscriber] = useState<{ firstName: string; email: string }>({
-    firstName: '',
-    email: '',
-  })
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    async function confirmSubscription() {
-      try {
-        const typesafeParams = Object.fromEntries(
-          searchParams.entries(),
-        ) as ApiEndpoints['/api/subscriptions/confirm']['PATCH']['params']
-        const token = typesafeParams.x
-        const email = typesafeParams.e
-
-        logger.info('Received confirmation parameters', { email, hasToken: !!token })
-
-        if (!token && !email) {
-          logger.info('No token or email provided, showing default state')
-          setState('default')
-          return
-        }
-
-        setState('loading')
-
-        if (!token || !email) {
-          logger.info('Missing required parameter', { hasToken: !!token, hasEmail: !!email })
-          setState('invalid')
-          return
-        }
-
-        const basePath: ApiPath = '/api/subscriptions/confirm'
-        logger.info('Making confirmation request', { email, basePath })
-        type ConfirmMethod = keyof ApiEndpoints['/api/subscriptions/confirm']
-        const method: ConfirmMethod = 'PATCH'
-
-        const response = await fetch(
-          `${basePath}?x=${encodeURIComponent(token)}&e=${encodeURIComponent(email)}`,
-          {
-            method,
-          },
-        )
-
-        const data: ApiEndpoints['/api/subscriptions/confirm']['PATCH']['data'] = await response.json()
-
-        const message = data.message
-
-        if (message === "Missing param: 'e'" || message === "Missing param: 'x'") {
-          setState('invalid')
-          return
-        }
-
-        if (message === 'Email already confirmed') {
-          if (data.subscriber) {
-            setSubscriber(data.subscriber)
+  return (
+    <Suspense
+      fallback={
+        <SimpleLayout
+          title="Confirm"
+          intro={
+            <>
+              Loading subscription details... <Spinner classes="mt-4" />
+            </>
           }
-          setState('already')
-          return
-        }
-
-        if (message === 'Email confirmed successfully') {
-          if (data.subscriber) {
-            setSubscriber(data.subscriber)
-          }
-          setState('success')
-        }
-      } catch {
-        setState('error')
+        />
       }
-    }
-
-    confirmSubscription()
-  }, [searchParams])
-
-  const content = {
-    default: {
-      title: 'Confirm',
-      intro: 'Please check your email to confirm your subscription.',
-    },
-    loading: {
-      title: 'Confirm',
-      intro: (
-        <>
-          Checking your subscription details... <Spinner classes="mt-4" />
-        </>
-      ),
-    },
-    invalid: {
-      title: 'Invalid link',
-      intro: (
-        <>
-          This subscription confirmation link is invalid or expired.
-          <br />
-          <br />
-          Please double-check the link in your email, sign up again for a fresh confirmation link, or{' '}
-          <StyledLink href="/contact" text="contact me" /> directly
-        </>
-      ),
-    },
-    success: {
-      title: 'Subscription confirmed',
-      intro: (
-        <>
-          Thank you{subscriber.firstName ? `, ${subscriber.firstName}` : ''} for your support.
-          <br />
-          <br />
-          {subscriber.email ? subscriber.email : 'Your email'} has been subscribed to my newsletter.
-        </>
-      ),
-    },
-    already: {
-      title: 'Already subscribed',
-      intro: (
-        <>
-          {subscriber.email ? subscriber.email : 'Your email'} is already subscribed to my newsletter.
-          <br />
-          <br />
-          Thank you for your continued support.
-        </>
-      ),
-    },
-    error: {
-      title: 'Something went wrong',
-      intro: (
-        <>
-          Please double-check the link in your email, sign up again for a fresh confirmation link, or{' '}
-          <StyledLink href="/contact" text="contact me" /> directly.
-        </>
-      ),
-    },
-  }
-
-  return <SimpleLayout title={content[state].title} intro={content[state].intro} />
+    >
+      <ConfirmationContent />
+    </Suspense>
+  )
 }
