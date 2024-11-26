@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import { logger } from '@/library/logger'
 
@@ -9,6 +9,7 @@ import { SimpleLayout } from '@/components/SimpleLayout'
 import Spinner from '@/components/Spinner'
 import StyledLink from '@/components/StyledLink'
 
+import { decodeEmail } from '../api/subscriptions/utilities'
 import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
 
 const UnsubscribeStates = {
@@ -22,7 +23,7 @@ const UnsubscribeStates = {
 
 type UnsubscribeState = (typeof UnsubscribeStates)[keyof typeof UnsubscribeStates]
 
-export default function UnsubscribePage() {
+function UnsubscribeContent() {
   const [state, setState] = useState<UnsubscribeState>(UnsubscribeStates.default)
   const [email, setEmail] = useState<string>('')
   const searchParams = useSearchParams()
@@ -52,33 +53,33 @@ export default function UnsubscribePage() {
           return
         }
 
-        const basePath: ApiPath = '/api/subscriptions/unsubscribe'
-        logger.info('Making unsubscribe request', { encodedEmail, basePath })
+        const path: ApiPath<'/api/subscriptions/unsubscribe'> = '/api/subscriptions/unsubscribe'
 
-        const response = await fetch(`${basePath}?x=${token}&e=${encodedEmail}`, {
+        logger.info('Making unsubscribe request', { encodedEmail, path })
+
+        const response = await fetch(`${path}?x=${token}&e=${encodedEmail}`, {
           method: 'DELETE',
         })
 
-        const data =
-          (await response.json()) as ApiEndpoints['/api/subscriptions/unsubscribe']['DELETE']['response']
+        const data: ApiEndpoints['/api/subscriptions/unsubscribe']['DELETE']['response'] =
+          await response.json()
 
-        if (response.status === 400) {
+        const message = data.message
+
+        if (message === 'Invalid link') {
           setState(UnsubscribeStates.invalid)
           return
         }
 
-        if (response.status === 404) {
+        if (message === 'Already unsubscribed') {
           setState(UnsubscribeStates.already)
           return
         }
 
-        if (!response.ok) {
-          setState(UnsubscribeStates.error)
-          return
+        if (message === 'Unsubscribed successfully') {
+          setEmail(decodeEmail(encodedEmail))
+          setState(UnsubscribeStates.success)
         }
-
-        setEmail(encodedEmail)
-        setState(UnsubscribeStates.success)
       } catch {
         setState(UnsubscribeStates.invalid)
       }
@@ -96,7 +97,7 @@ export default function UnsubscribePage() {
       title: 'Unsubscribe',
       intro: (
         <>
-          Processing your unsubscribe request... <Spinner classes="mt-4" />
+          Unsubscribing... <Spinner classes="mt-4" />
         </>
       ),
     },
@@ -116,7 +117,7 @@ export default function UnsubscribePage() {
       title: 'Successfully unsubscribed',
       intro: (
         <>
-          ${email} successfully unsubscribed from the newsletter.
+          {`${email} successfully unsubscribed from the newsletter.`}
           <br />
           <br />
           You can always <StyledLink href="/newsletter" text="subscribe again" />.
@@ -127,10 +128,10 @@ export default function UnsubscribePage() {
       title: 'Already unsubscribed',
       intro: (
         <>
-          You are already unsubscribed from the newsletter.
+          {`We have no record of ${email ? email : ' your email'} on our mailing list.`}
           <br />
           <br />
-          If you'd like to receive updates again, you can{' '}
+          {`If you'd like to receive updates again, you can `}
           <StyledLink href="/newsletter" text="subscribe here" />.
         </>
       ),
@@ -149,4 +150,23 @@ export default function UnsubscribePage() {
   }
 
   return <SimpleLayout title={content[state].title} intro={content[state].intro} />
+}
+
+export default function UnsubscribePage() {
+  return (
+    <Suspense
+      fallback={
+        <SimpleLayout
+          title="Unsubscribe"
+          intro={
+            <>
+              Loading unsubscribe details... <Spinner classes="mt-4" />
+            </>
+          }
+        />
+      }
+    >
+      <UnsubscribeContent />
+    </Suspense>
+  )
 }
