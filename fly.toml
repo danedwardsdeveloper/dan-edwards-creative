@@ -1,8 +1,12 @@
-app = 'dan-edwards-creative'
+# fly.toml app configuration file generated for dec-test on 2024-11-26T16:27:06Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'dec-test'
 primary_region = 'lhr'
 
 [build]
-  no_retry = true
 
 [http_service]
   internal_port = 3000
