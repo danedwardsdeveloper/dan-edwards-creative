@@ -4,12 +4,13 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { logger } from '@/library/logger'
+import { typesafeFetch } from '@/library/typesafeFetch'
 
 import { SimpleLayout } from '@/components/SimpleLayout'
 import Spinner from '@/components/Spinner'
 import StyledLink from '@/components/StyledLink'
 
-import { ApiEndpoints, ApiPath } from '@/types/apiEndpoints'
+import { ApiEndpoints } from '@/types/apiEndpoints'
 
 type ConfirmationState = 'default' | 'loading' | 'invalid' | 'success' | 'already' | 'error'
 
@@ -45,20 +46,14 @@ export default function ConfirmationContent() {
           return
         }
 
-        const path: ApiPath<'/api/subscriptions/confirm'> = '/api/subscriptions/confirm'
-        logger.info('Making confirmation request', { email, path })
-
-        type ConfirmMethod = keyof ApiEndpoints['/api/subscriptions/confirm']
-        const method: ConfirmMethod = 'PATCH'
-
-        const response = await fetch(
-          `${path}?x=${encodeURIComponent(token)}&e=${encodeURIComponent(email)}`,
-          {
-            method,
+        const data = await typesafeFetch({
+          path: '/api/subscriptions/confirm',
+          method: 'PATCH',
+          params: {
+            x: token,
+            e: email,
           },
-        )
-
-        const data: ApiEndpoints['/api/subscriptions/confirm']['PATCH']['data'] = await response.json()
+        })
 
         const message = data.message
 
