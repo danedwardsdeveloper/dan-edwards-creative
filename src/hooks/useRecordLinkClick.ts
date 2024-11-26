@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 
 import { Destination } from '@/app/api/analytics/link-clicks/route'
+import { apiPaths } from '@/types/apiEndpoints'
 
 export function useRecordLinkClick() {
   const currentPath = usePathname()
@@ -11,7 +12,7 @@ export function useRecordLinkClick() {
   const recordClick = useCallback(
     async (destination: Destination) => {
       try {
-        await fetch('/api/analytics/link-clicks', {
+        await fetch(apiPaths['/api/analytics/link-clicks'], {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
