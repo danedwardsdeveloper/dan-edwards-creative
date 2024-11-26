@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
-import { tableNames } from '@/database/configuration'
-import mongoClient from '@/database/mongodb'
+import mongoClient from '@/library/database/mongodb'
+import { tableNames } from '@/library/database/tableNames'
 
 // ToDo
 // Require password!
