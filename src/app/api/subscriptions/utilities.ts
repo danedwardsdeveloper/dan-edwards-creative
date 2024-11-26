@@ -6,8 +6,8 @@ export function generateToken(): string {
   return crypto.randomBytes(10).toString('hex')
 }
 
-export function encodeEmail(plainEmail: string): string {
-  return Buffer.from(plainEmail).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+export function encodeEmail(email: string): string {
+  return Buffer.from(email).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 }
 
 export function decodeEmail(encodedEmail: string): string {
@@ -19,12 +19,12 @@ export function decodeEmail(encodedEmail: string): string {
   return Buffer.from(base64, 'base64').toString()
 }
 
-export function generateConfirmationLink(token: string, plainEmail: string): string {
-  const encodedEmail = encodeEmail(plainEmail)
+export function generateConfirmationLink(token: string, email: string): string {
+  const encodedEmail = encodeEmail(email)
   return `${dynamicBaseURL}/confirm?e=${encodedEmail}&x=${token}`
 }
 
-export function generateUnsubscribeLink(token: string, plainEmail: string): string {
-  const encodedEmail = encodeEmail(plainEmail)
+export function generateUnsubscribeLink(token: string, email: string): string {
+  const encodedEmail = encodeEmail(email)
   return `${dynamicBaseURL}/unsubscribe?e=${encodedEmail}&x=${token}`
 }
