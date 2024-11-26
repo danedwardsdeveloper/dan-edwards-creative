@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import mongoClient from '@/library/database/mongodb'
-import { tableNames } from '@/library/database/tableNames'
+import { type TableNames } from '@/library/database/tableNames'
 import { isDevelopment } from '@/library/environment'
 import { logger } from '@/library/logger'
 
@@ -10,7 +10,7 @@ import { generateConfirmationLink, generateToken } from '../utilities'
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json()
-    const collection = (await mongoClient).db().collection(tableNames.subscriptions)
+    const collection = (await mongoClient).db().collection('subscribers' as TableNames)
     const subscriber = await collection.findOne({ email })
 
     if (!subscriber) {
