@@ -1,7 +1,7 @@
 import { isProduction } from './environment'
 
 const oneYearInSeconds = 365 * 24 * 60 * 60
-export const cookieName = 'dec_analytics_excluded'
+export const cookieName = 'exclude'
 
 type CookieOptions = {
   name: string
