@@ -1,8 +1,8 @@
 export const isProduction = process.env.NODE_ENV === 'production'
 export const isDevelopment = process.env.NODE_ENV === 'development'
 
-export const productionBaseURL = 'https://danedwardscreative.com'
+// ToDo: Remember to change this!
+export const productionBaseURL = 'https://dec-test.fly.dev'
 export const developmentBaseURL = 'http://localhost:3000'
 export const dynamicBaseURL = isProduction ? productionBaseURL : developmentBaseURL
-// ToDo
-export const spotifyRedirectUri = `${dynamicBaseURL}/api/spotify/callback`
+// export const spotifyRedirectUri = `${dynamicBaseURL}/api/spotify/callback`
