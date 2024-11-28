@@ -3,10 +3,10 @@
 import { ThemeProvider, useTheme } from 'next-themes'
 import { useEffect } from 'react'
 
-import AudioProvider from '@/providers/audio'
-import LayoutProvider from '@/providers/layout'
-import LoadingProvider from '@/providers/loading'
-import PreviousPathnameProvider from '@/providers/previousPathname'
+import { AudioProvider } from '@/providers/audio'
+import { LayoutProvider } from '@/providers/layout'
+import { LoadingProvider } from '@/providers/loading'
+import { PreviousPathnameProvider } from '@/providers/previousPathname'
 
 function ThemeWatcher() {
   const { resolvedTheme, setTheme } = useTheme()

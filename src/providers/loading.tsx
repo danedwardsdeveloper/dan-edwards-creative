@@ -7,7 +7,7 @@ export const LoadingContext = createContext({
   setIsLoading: (loading: boolean) => {},
 })
 
-export default function LoadingProvider({ children }: { children: React.ReactNode }) {
+export function LoadingProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

@@ -23,7 +23,7 @@ export function usePreviousPathname() {
   return context.previousPathname
 }
 
-export default function PreviousPathnameProvider({ children }: { children: React.ReactNode }) {
+export function PreviousPathnameProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const previousPathname = usePrevious(pathname)
 

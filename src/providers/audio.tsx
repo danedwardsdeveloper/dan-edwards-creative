@@ -68,7 +68,7 @@ function getAudioPath(slug: string) {
   return `/audio/${slug}.mp3`
 }
 
-export default function AudioProvider({ children }: { children: React.ReactNode }) {
+export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(audioReducer, {
     playing: false,
     muted: false,
