@@ -16,7 +16,6 @@ export interface ApiEndpoints {
     PATCH: {
       params: Record<'x' | 'e', string>
       data: {
-        status: 404 | 400 | 409 | 200 | 500
         message:
           | 'Email already confirmed'
           | `Missing param: 'x'`
@@ -61,7 +60,15 @@ export interface ApiEndpoints {
   '/api/analytics/link-clicks': {
     POST: {
       body: Record<'destination' | 'source', string>
-      response: ApiResponse
+      response: {
+        message:
+          | 'destination required'
+          | 'source required'
+          | 'admin click failed'
+          | 'admin click recorded'
+          | 'click failed'
+          | 'click recorded'
+      }
     }
   }
   '/api/analytics/page-views': {
