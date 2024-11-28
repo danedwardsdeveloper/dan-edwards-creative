@@ -86,7 +86,7 @@ export default function MobileMenu() {
         <div
           data-component="MobileMenuPanel"
           className={clsx(
-            'absolute z-50 w-full top-20',
+            'absolute z-40 w-full top-20',
             'border-t border-blue-200 dark:border-slate-900',
             'bg-gradient-to-r from-sky-50 via-indigo-100 to-cyan-100',
             ' dark:from-sky-950 dark:via-indigo-950 dark:to-cyan-950',
