@@ -13,7 +13,7 @@ export default function DesktopMenu() {
       className={clsx(
         'h-16 pt-6',
         'hidden md:block fixed',
-        'pt-6 left-0 right-0 z-50 top-0 w-full transition-transform duration-500',
+        'pt-6 left-0 right-0 z-40 top-0 w-full transition-transform duration-500',
       )}
     >
       <div className="flex justify-center">
