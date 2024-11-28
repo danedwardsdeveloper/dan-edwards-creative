@@ -3,6 +3,8 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 
+import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
+
 const footerLinkStyles = clsx(
   'text-sm',
   'text-zinc-500 dark:text-zinc-400',
@@ -13,9 +15,13 @@ const footerLinkStyles = clsx(
 )
 
 export function Footer() {
+  const recordClick = useRecordLinkClick()
+
   return (
     <footer
+      data-component="Footer"
       className={clsx(
+        'shrink-0',
         'flex flex-col sm:flex-row',
         'mt-4 py-6 pb-8 md:px-6 gap-6',
         'border-t border-zinc-100 dark:border-zinc-700/40',
@@ -28,7 +34,11 @@ export function Footer() {
       >{`Privacy policy & terms of service`}</Link>
       <p className="text-sm text-zinc-500 dark:text-zinc-400">
         {`Site by `}
-        <Link href="https://danedwardsdeveloper.com/" className={footerLinkStyles}>{`Dan Edwards`}</Link>
+        <Link
+          href="https://danedwardsdeveloper.com/"
+          className={footerLinkStyles}
+          onClick={() => recordClick('developer-site')}
+        >{`Dan Edwards`}</Link>
       </p>
       <p className="text-sm text-zinc-500 dark:text-zinc-400">© {new Date().getFullYear()}, Dan Edwards</p>
     </footer>
