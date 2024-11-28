@@ -1,9 +1,11 @@
 import { type SubscriberInterface } from '../database/models/subscriber'
+import { generateEmailHyperlink } from './htmlComponents/hyperlink'
 import { sendEmail } from './sendEmail'
-import { generateConfirmationLink } from '@/app/api/subscriptions/utilities'
+import { generateConfirmationURL } from '@/app/api/subscriptions/utilities'
 
 export function generateConfirmationEmailContent(subscriber: SubscriberInterface) {
-  const confirmationLink = generateConfirmationLink(subscriber.confirmationToken, subscriber.email)
+  const confirmationURL = generateConfirmationURL(subscriber.confirmationToken, subscriber.email)
+  const confirmationLink = generateEmailHyperlink(confirmationURL, 'Confirm subscription', 'blue')
 
   const content = [
     `<p>Hey there${subscriber.firstName && `, ${subscriber.firstName}`}</p>`,
