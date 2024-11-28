@@ -1,16 +1,14 @@
-import pino from 'pino'
-import { Logger } from 'pino'
+import pino, { type Logger } from 'pino'
 
 import { isProduction, logLevel } from './environment'
 
 const logger: Logger = pino({
   transport: isProduction
     ? {
-        target: 'pino-pretty',
+        target: 'pino/file',
         options: {
-          colorize: false,
+          destination: 1,
           messageFormat: '{level}: {msg}',
-          ignore: 'pid,hostname,time',
         },
       }
     : {
@@ -19,16 +17,18 @@ const logger: Logger = pino({
           colorize: true,
         },
       },
-  level: logLevel || 'debug',
+  level: logLevel,
   formatters: {
     level: label => {
       return { level: label.toUpperCase() }
     },
+    bindings: () => ({}),
   },
   timestamp: false,
-  base: null,
+  base: undefined,
+  browser: {
+    disabled: isProduction,
+  },
 })
-
-logger.info(`Pino logger set to ${logLevel}`)
 
 export default logger
