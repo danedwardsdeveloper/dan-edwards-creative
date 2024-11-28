@@ -1,6 +1,5 @@
-import logger from '@/library/logger'
-
 import { ApiEndpoints } from '../types/apiEndpoints'
+import logger from './logger'
 
 function buildApiUrl<P extends keyof ApiEndpoints, M extends keyof ApiEndpoints[P]>(
   path: P,
