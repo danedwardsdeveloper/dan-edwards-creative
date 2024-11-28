@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from 'react'
 
 import { ForwardButton } from '@/components/audioPlayerContainer/ForwardButton'
 import { MuteButton } from '@/components/audioPlayerContainer/MuteButton'
-import { PlaybackRateButton } from '@/components/audioPlayerContainer/PlaybackRateButton'
 import { PlayButton } from '@/components/audioPlayerContainer/PlayButton'
 import { RewindButton } from '@/components/audioPlayerContainer/RewindButton'
 import { Slider } from '@/components/audioPlayerContainer/Slider'
 
+import DismissButton from './DismissButton'
 import { useAudioPlayer } from '@/providers/audio'
 
 function parseTime(seconds: number) {
@@ -25,7 +25,7 @@ function formatHumanTime(seconds: number) {
   return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${m === 1 ? '' : 's'}, ${s} second${s === 1 ? '' : 's'}`
 }
 
-export function AudioPlayer({ onDismiss }: { onDismiss?: () => void }) {
+export function AudioPlayer() {
   const player = useAudioPlayer()
 
   const wasPlayingRef = useRef(false)
@@ -38,6 +38,7 @@ export function AudioPlayer({ onDismiss }: { onDismiss?: () => void }) {
 
   return (
     <div
+      data-container="AudioPlayer"
       className={clsx(
         'bg-blue-50/90 p-4',
         'shadow shadow-slate-200/80 dark:shadow-slate-600/80',
@@ -96,7 +97,7 @@ export function AudioPlayer({ onDismiss }: { onDismiss?: () => void }) {
             />
             <div className="flex items-center gap-4">
               <div className="flex items-center">
-                <PlaybackRateButton player={player} />
+                <DismissButton onClick={'close'} />
               </div>
               <div className="hidden items-center md:flex">
                 <MuteButton player={player} />
