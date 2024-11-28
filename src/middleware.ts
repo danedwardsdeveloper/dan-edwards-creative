@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { Token } from '@/library/cookies'
 import { cookieName } from '@/library/cookies'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
         const currentTime = Math.floor(Date.now() / 1000)
 
         if (currentTime < token.exp) {
-          logger.debug(`Analytics request blocked for ${url.pathname}`)
+          logger.debug(`Analytics blocked by middleware for ${url.pathname}`)
           return new NextResponse(null, { status: 204 })
         }
       } catch (error) {
