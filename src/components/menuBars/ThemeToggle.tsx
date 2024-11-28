@@ -1,3 +1,5 @@
+'use client'
+
 import clsx from 'clsx'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
@@ -19,8 +21,9 @@ export function ThemeToggleIcons() {
       type="button"
       aria-label={mounted ? `Switch to ${otherTheme} theme` : 'Toggle theme'}
       className={clsx(
-        'group rounded-full bg-white/90 px-3 py-2',
-        'backdrop-blur transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20',
+        // 'bg-white/90 backdrop-blur dark:bg-zinc-800/90',
+        'group rounded-full px-3 py-2',
+        'transition  dark:ring-white/10 dark:hover:ring-white/20',
       )}
       onClick={() => setTheme(otherTheme)}
     >
