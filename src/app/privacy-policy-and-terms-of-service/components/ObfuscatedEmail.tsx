@@ -5,33 +5,41 @@ import { useCallback, useState } from 'react'
 
 import { MailIcon } from '@/components/Icons'
 
-// import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
+import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 interface ObfuscatedEmailProps {
   className?: string
 }
 
 export default function ObfuscatedEmail({ className }: ObfuscatedEmailProps) {
-  // const recordClick = useRecordLinkClick()
-  const encodedEmail = 'ZGFuZWR3YXJkc2NyZWF0aXZlQGdtYWlsLmNvbQ=='
+  const recordClick = useRecordLinkClick()
+
+  const danEdwardsCreativeEncodedEmail = 'ZGFuZWR3YXJkc2NyZWF0aXZlQGdtYWlsLmNvbQ=='
   const [decodedEmail, setDecodedEmail] = useState('')
   const [copied, setCopied] = useState(false)
 
-  const decodeEmail = useCallback(() => {
-    if (!decodedEmail) {
-      const decoded = atob(encodedEmail)
-      setDecodedEmail(decoded)
-    }
-  }, [encodedEmail, decodedEmail])
+  const decodeEmail = useCallback((): string => {
+    const decoded = Buffer.from(danEdwardsCreativeEncodedEmail, 'base64').toString('utf-8')
+    setDecodedEmail(decoded)
+    return decoded
+  }, [danEdwardsCreativeEncodedEmail])
+
+  const copyToClipboard = useCallback((text: string) => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }, [])
 
   const handleClick = (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    // recordClick('copy-email-address')
-    decodeEmail()
-    navigator.clipboard.writeText(decodedEmail).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
+    recordClick('copy-email-address')
+
+    if (decodedEmail) {
+      copyToClipboard(decodedEmail)
+    } else {
+      const email = decodeEmail()
+      copyToClipboard(email)
+    }
   }
 
   return (
