@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// library/environment
+// export const spotifyRedirectUri = `${dynamicBaseURL}/api/spotify/callback`
 import { dynamicBaseURL, spotifyRedirectUri } from '@/library/environment'
 
 import { SpotifyErrorResponse, SpotifySuccessResponse } from '@/app/api/spotify/types'
