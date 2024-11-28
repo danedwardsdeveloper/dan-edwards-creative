@@ -22,6 +22,10 @@
   list-style-type: circle;
 }
 
+.article-content ul > li > strong:has(+ ul) {
+  @apply block mb-4;
+}
+
 .article-content li {
-  @apply text-zinc-600 dark:text-zinc-400 my-4;
+  @apply text-zinc-600 dark:text-zinc-400;
 }
