@@ -2,12 +2,13 @@
 
 import { useContext } from 'react'
 
-import { AppContext } from '../components/Providers'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 
+import { PreviousPathnameContext } from '@/providers/previousPathname'
+
 export default function NotFound() {
-  const { previousPathname } = useContext(AppContext)
+  const { previousPathname } = useContext(PreviousPathnameContext)
 
   return (
     <Container className="flex h-full items-center pt-16 sm:pt-32">
