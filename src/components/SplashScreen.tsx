@@ -2,67 +2,61 @@
 
 import { clsx } from 'clsx'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Spinner from './Spinner'
 import iconPNG from '@/app/icon.png'
 import { useLoading } from '@/hooks/useLoading'
 
-export default function SplashScreen({ children }: { children: React.ReactNode }) {
+export default function SplashScreen() {
+  const [splashExists, setSplashExists] = useState(true)
+  // const [forceShow, setForceShow] = useState(false)
   const { isLoading } = useLoading()
+
   const forceShow = false
-  const showSplash = isLoading || forceShow
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setForceShow(prev => !prev)
+  //   }, 3000)
+
+  //   return () => clearInterval(interval)
+  // }, [])
+
+  const showSplash = forceShow || isLoading
 
   useEffect(() => {
     if (showSplash) {
-      document.body.style.overflow = 'hidden'
-      document.body.style.height = '100vh'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
+      setSplashExists(true)
     } else {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-    }
-
-    return () => {
-      document.body.style.overflow = ''
-      document.body.style.height = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
+      const timer = setTimeout(() => {
+        setSplashExists(false)
+      }, 550)
+      return () => clearTimeout(timer)
     }
   }, [showSplash])
 
-  return (
-    <div data-component="SplashScreen" className="flex flex-col h-full">
-      {showSplash && (
-        <div
-          className={clsx(
-            'fixed inset-0',
-            'z-50',
-            'flex flex-col items-center justify-center',
-            'bg-slate-50 dark:bg-gray-900',
-            'transition-opacity duration-300',
-            {
-              'opacity-100': isLoading,
-              'opacity-0 pointer-events-none': !isLoading,
-            },
-          )}
-        >
-          <Image src={iconPNG} alt="Dan Edwards creative icon" height={80} width={80} />
+  if (!splashExists) return null
 
-          <div className="absolute bottom-20">
-            <Spinner />
-          </div>
-          <h1
-            className={clsx('absolute bottom-8', 'text-xl font-medium', 'text-gray-900 dark:text-gray-100')}
-          >
-            Dan Edwards creative
-          </h1>
-        </div>
+  return (
+    <div
+      data-component="SplashScreen"
+      className={clsx(
+        'flex flex-col fixed h-full inset-0',
+        'z-50',
+        'flex flex-col items-center justify-center',
+        'bg-slate-50 dark:bg-gray-900',
+        'transition-opacity duration-500',
+        showSplash ? 'opacity-100' : 'opacity-0 pointer-events-none',
       )}
-      <div className={clsx('flex flex-col flex-1 overflow-auto', isLoading ? 'hidden' : '')}>{children}</div>
+    >
+      <Spinner />
+      <div className="absolute bottom-20">
+        <Image src={iconPNG} alt="Dan Edwards creative icon" height={80} width={80} />
+      </div>
+      <h1 className={clsx('absolute bottom-8', 'text-xl font-medium', 'text-gray-900 dark:text-gray-100')}>
+        Dan Edwards creative
+      </h1>
     </div>
   )
 }
