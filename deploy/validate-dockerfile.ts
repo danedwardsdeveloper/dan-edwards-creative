@@ -1,3 +1,6 @@
+//@ts-nocheck
+
+/* eslint-disable */
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse as dotenvParse } from 'dotenv'
@@ -48,7 +51,7 @@ class FileNotFoundError extends EnvValidatorError {
 }
 
 const defaultConfig: Config = {
-  ignoredVars: new Set(['NODE_ENV', 'NODE_VERSION', 'PNPM_VERSION', 'NODE_ENV', 'PORT']),
+  ignoredVars: new Set(['NODE_ENV', 'NODE_VERSION', 'PNPM_VERSION', 'NODE_ENV', 'PORT', 'HOSTNAME']),
 }
 
 function checkFileExists(filePath: string): void {
