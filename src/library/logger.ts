@@ -1,6 +1,8 @@
 import pino, { type Logger } from 'pino'
 
-import { isProduction, logLevel } from './environment'
+import { isProduction } from './environment'
+
+const LOG_LEVEL: Logger['level'] = 'debug'
 
 const logger: Logger = pino({
   transport: isProduction
@@ -17,7 +19,7 @@ const logger: Logger = pino({
           colorize: true,
         },
       },
-  level: logLevel,
+  level: LOG_LEVEL,
   formatters: {
     level: label => {
       return { level: label.toUpperCase() }
