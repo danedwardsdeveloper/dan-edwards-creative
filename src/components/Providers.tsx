@@ -1,22 +1,12 @@
 'use client'
 
 import { ThemeProvider, useTheme } from 'next-themes'
-import { usePathname } from 'next/navigation'
-import { createContext, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
-import { AudioProvider } from '@/providers/audio'
-import { LayoutProvider } from '@/providers/layout'
-import { LoadingProvider } from '@/providers/loading'
-
-function usePrevious<T>(value: T) {
-  const ref = useRef<T>()
-
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-
-  return ref.current
-}
+import AudioProvider from '@/providers/audio'
+import LayoutProvider from '@/providers/layout'
+import LoadingProvider from '@/providers/loading'
+import PreviousPathnameProvider from '@/providers/previousPathname'
 
 function ThemeWatcher() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -42,21 +32,16 @@ function ThemeWatcher() {
   return null
 }
 
-export const AppContext = createContext<{ previousPathname?: string }>({})
-
 export function Providers({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const previousPathname = usePrevious(pathname)
-
   return (
     <LoadingProvider>
       <LayoutProvider>
-        <AppContext.Provider value={{ previousPathname }}>
+        <PreviousPathnameProvider>
           <ThemeProvider attribute="class" disableTransitionOnChange>
             <ThemeWatcher />
             <AudioProvider>{children}</AudioProvider>
           </ThemeProvider>
-        </AppContext.Provider>
+        </PreviousPathnameProvider>
       </LayoutProvider>
     </LoadingProvider>
   )
