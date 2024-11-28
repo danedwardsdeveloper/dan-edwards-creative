@@ -1,11 +1,11 @@
 import { SendEmailCommand } from '@aws-sdk/client-ses'
 
 import { sesClient } from '@/library/email/client'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 import { type SubscriberInterface } from '../database/models/subscriber'
 import generateEmailContainer from './htmlComponents/container'
-import { generateUnsubscribeLink } from '@/app/api/subscriptions/utilities'
+import { generateUnsubscribeURL } from '@/app/api/subscriptions/utilities'
 
 interface SendEmailProps {
   subscriber: SubscriberInterface
@@ -15,7 +15,7 @@ interface SendEmailProps {
 
 export async function sendEmail({ subscriber, subject, content }: SendEmailProps) {
   const { email, unsubscribeToken } = subscriber
-  const unsubscribeLink = generateUnsubscribeLink(unsubscribeToken, email)
+  const unsubscribeLink = generateUnsubscribeURL(unsubscribeToken, email)
 
   if (!process.env.SES_FROM_EMAIL) {
     throw new Error('SES_FROM_EMAIL environment variable is not set')
