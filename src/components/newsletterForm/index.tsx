@@ -69,7 +69,9 @@ export function NewsletterForm() {
     },
     'success please confirm': {
       heading: `Thank you${firstName ? `, ${firstName}` : ''}`,
-      text: 'Please click the link in your email to confirm your subscription. Remember to check your junk folder.',
+      text: email
+        ? `Please click the link in the email sent to ${email} to confirm your subscription. Remember to check your junk folder.`
+        : 'Please click the link in your email to confirm your subscription. Remember to check your junk folder.',
       colour: greenText,
     },
     'success confirmation bypassed': {
