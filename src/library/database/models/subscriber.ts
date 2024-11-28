@@ -53,5 +53,5 @@ subscriberSchema.index({ email: 1 })
 subscriberSchema.index({ confirmationToken: 1 })
 
 export const Subscriber =
-  mongoose.models.subscribers ||
+  (mongoose.models.subscribers as mongoose.Model<SubscriberDocument>) ||
   mongoose.model<SubscriberDocument>('subscribers' as TableNames, subscriberSchema)
