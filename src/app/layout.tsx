@@ -9,7 +9,9 @@ import {
   siteName,
 } from '@/library/metadata'
 
+import AudioPlayerContainer from '@/components/audioPlayerContainer'
 import MainContainer from '@/components/MainContainer'
+import MenuBars from '@/components/menuBars'
 import { PageViewTracker } from '@/components/PageViewTracker'
 import { Providers } from '@/components/Providers'
 import SplashScreen from '@/components/SplashScreen'
@@ -68,11 +70,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB" className="antialiased" suppressHydrationWarning>
-      <body className="overflow-hidden bg-zinc-50 dark:bg-black">
+      <body className="antialiased h-screen flex flex-col overflow-hidden bg-zinc-50 dark:bg-black">
         <PageViewTracker />
         <Providers>
           <SplashScreen>
+            <MenuBars />
             <MainContainer>{children}</MainContainer>
+            <AudioPlayerContainer />
           </SplashScreen>
         </Providers>
       </body>
