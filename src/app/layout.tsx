@@ -73,11 +73,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased h-screen flex flex-col overflow-hidden bg-zinc-50 dark:bg-black">
         <PageViewTracker />
         <Providers>
-          <SplashScreen>
-            <MenuBars />
-            <MainContainer>{children}</MainContainer>
-            <AudioPlayerContainer />
-          </SplashScreen>
+          <SplashScreen />
+          <MenuBars />
+          <MainContainer>{children}</MainContainer>
+          <AudioPlayerContainer />
         </Providers>
       </body>
     </html>
