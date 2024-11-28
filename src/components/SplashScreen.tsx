@@ -35,10 +35,9 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
   }, [showSplash])
 
   return (
-    <>
+    <div data-component="SplashScreen" className="flex flex-col h-full">
       {showSplash && (
         <div
-          data-component="SplashScreen"
           className={clsx(
             'fixed inset-0',
             'z-50',
@@ -63,7 +62,7 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
           </h1>
         </div>
       )}
-      <div className={isLoading ? 'hidden' : ''}>{children}</div>
-    </>
+      <div className={clsx('flex flex-col flex-1 overflow-auto', isLoading ? 'hidden' : '')}>{children}</div>
+    </div>
   )
 }
