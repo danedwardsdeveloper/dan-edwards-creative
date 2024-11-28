@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
 
         if (currentTime < token.exp) {
           logger.debug(`Analytics blocked by middleware for ${url.pathname}`)
-          return new NextResponse(null, { status: 204 })
+          return NextResponse.json({ message: 'Analytics blocked by admin cookie' }, { status: 200 })
         }
       } catch (error) {
         logger.error('Error parsing analytics exclusion cookie', {
