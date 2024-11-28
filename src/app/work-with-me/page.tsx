@@ -5,9 +5,8 @@ export default function WorkWithMePage() {
   return (
     <SimpleLayout
       title="Work with me"
-      intro="While my web development career currently takes priority over production work, I'm actively seeking songwriting collaborations. I live in Salisbury but can work in London and Manchester, too."
+      intro="While my web development career currently takes priority over production work, I'm actively seeking songwriting collaborations."
     >
-      <h2>About you</h2>
       <p>{`I'm a classically trained prize-winning composer with a talent for crafting catchy melodies. I enjoy writing lyrics, too, but music theory is my deepest area of expertise, so I especially enjoy working with people who can craft a clever lyric.`}</p>
       <p>{`I'm particularly interested in working with songwriters or artists who:`}</p>
       <ul>
@@ -25,7 +24,7 @@ export default function WorkWithMePage() {
       <p>{`I have three songs to release in 2025, each with strong melodic foundations. While I have potential recording plans for 2025, I'm open to discussing these tracks with committed artists who are ready to develop and release them. The songs have partial lyrics and are unproduced, so there's plenty of room for collaborative input.`}</p>
       <ul>
         <li>
-          <strong>{`An uptempo pop banger with an unforgettable melody`}</strong>
+          <strong>{`An uptempo pop bop with an unforgettable melody`}</strong>
           <ul>
             <li>{`Suitable for any voice type`}</li>
             <li>{`Vocally challenging`}</li>
@@ -43,6 +42,8 @@ export default function WorkWithMePage() {
           </ul>
         </li>
       </ul>
+
+      <p>{`I live in Salisbury but can work in London and Manchester, too.`}</p>
 
       <p>
         {`If you're serious about your music career and connect with my style, `}
