@@ -1,4 +1,4 @@
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 import { ApiEndpoints } from '../types/apiEndpoints'
 
