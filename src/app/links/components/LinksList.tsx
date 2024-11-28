@@ -46,7 +46,7 @@ export default function LinksList({ linkItems, classes }: ArticlesListProps) {
                 ease: 'power3.out',
                 scrollTrigger: {
                   trigger: article,
-                  start: 'top bottom-=10%',
+                  start: 'top bottom-=20%',
                   end: 'top center',
                   toggleActions: 'play none none none',
                   // markers: true,
