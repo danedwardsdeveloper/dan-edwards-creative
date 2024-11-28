@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import mongoClient from '@/library/database/mongodb'
 import { type TableNames } from '@/library/database/tableNames'
 import { isDevelopment } from '@/library/environment'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
-import { generateConfirmationLink, generateToken } from '../utilities'
+import { generateConfirmationURL, generateToken } from '../utilities'
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (isDevelopment) {
       logger.info('New Confirmation Link:')
-      logger.info(generateConfirmationLink(newConfirmationToken, email))
+      logger.info(generateConfirmationURL(newConfirmationToken, email))
     }
 
     // ToDo

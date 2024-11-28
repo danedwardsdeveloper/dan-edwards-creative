@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { Subscriber } from '@/library/database/models/subscriber'
 import connectDB from '@/library/database/mongoose'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 import { decodeEmail } from '../utilities'
 import { ApiEndpoints } from '@/types/apiEndpoints'

@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 import { typesafeFetch } from '@/library/typesafeFetch'
 
 import { SimpleLayout } from '@/components/SimpleLayout'

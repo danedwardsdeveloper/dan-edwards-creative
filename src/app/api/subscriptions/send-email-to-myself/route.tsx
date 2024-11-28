@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { type SubscriberInterface } from '@/library/database/models/subscriber'
 import { sendEmail } from '@/library/email/sendEmail'
 import { testEmail, testEmailSubject } from '@/library/email/testEmail'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 export async function POST(request: NextRequest) {
   try {

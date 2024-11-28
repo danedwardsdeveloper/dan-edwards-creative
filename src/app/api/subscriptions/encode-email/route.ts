@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 import { encodeEmail } from '../utilities'
 
