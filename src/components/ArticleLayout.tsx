@@ -1,20 +1,19 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useContext } from 'react'
 
 import { type Article } from '@/library/articles'
 import { formatDate } from '@/library/formatDate'
 
 import { Container } from '@/components/Container'
-import { AppContext } from '@/components/Providers'
 
 import { ArrowLeftIcon } from './Icons'
 import { FeaturedImage } from './Images'
+import { usePreviousPathname } from '@/providers/previousPathname'
 
 export function ArticleLayout({ article, children }: { article: Article; children: React.ReactNode }) {
   const router = useRouter()
-  const { previousPathname } = useContext(AppContext)
+  const previousPathname = usePreviousPathname()
 
   return (
     <Container className="mt-16 lg:mt-32">
