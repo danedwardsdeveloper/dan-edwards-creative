@@ -9,38 +9,38 @@ import { baseStyles, colourStyles, mobileButtonStyles, sizeStyles } from '../sty
 import { useLayout } from '@/providers/layout'
 
 export function MenuButton() {
-  const { mobileMenuOpen, setMobileMenuOpen } = useLayout()
+  const { mobilePanelVisible, setMobilePanelVisible } = useLayout()
   const path = usePathname()
   const containerRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobilePanelVisible) {
       previousFocusRef.current = document.activeElement as HTMLElement
     }
-  }, [mobileMenuOpen])
+  }, [mobilePanelVisible])
 
   useEffect(() => {
-    if (!mobileMenuOpen && previousFocusRef.current) {
+    if (!mobilePanelVisible && previousFocusRef.current) {
       previousFocusRef.current.focus()
     }
-  }, [mobileMenuOpen])
+  }, [mobilePanelVisible])
 
   useEffect(() => {
     const handleClickOutside = (mouseEvent: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(mouseEvent.target as Node)) {
-        setMobileMenuOpen(false)
+        setMobilePanelVisible(false)
       }
     }
 
     const handleEscapeKey = (escapeEvent: KeyboardEvent) => {
       if (escapeEvent.key === 'Escape') {
-        setMobileMenuOpen(false)
+        setMobilePanelVisible(false)
       }
     }
 
     const handleTabKey = (keyboardEvent: KeyboardEvent) => {
-      if (!mobileMenuOpen || !containerRef.current) return
+      if (!mobilePanelVisible || !containerRef.current) return
 
       const focusableElements = containerRef.current.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
@@ -63,7 +63,7 @@ export function MenuButton() {
       }
     }
 
-    if (mobileMenuOpen) {
+    if (mobilePanelVisible) {
       document.addEventListener('mousedown', handleClickOutside)
       document.addEventListener('keydown', handleEscapeKey)
       document.addEventListener('keydown', handleTabKey)
@@ -74,14 +74,14 @@ export function MenuButton() {
       document.removeEventListener('keydown', handleEscapeKey)
       document.removeEventListener('keydown', handleTabKey)
     }
-  }, [mobileMenuOpen, setMobileMenuOpen])
+  }, [mobilePanelVisible, setMobilePanelVisible])
 
   useEffect(() => {
-    setMobileMenuOpen(false)
-  }, [path, setMobileMenuOpen])
+    setMobilePanelVisible(false)
+  }, [path, setMobilePanelVisible])
 
   const toggleMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
+    setMobilePanelVisible(!mobilePanelVisible)
   }
   return (
     <button
@@ -91,7 +91,7 @@ export function MenuButton() {
         mobileButtonStyles,
         sizeStyles['base'],
         colourStyles.text['base'],
-        mobileMenuOpen ? colourStyles.active : colourStyles.inactive,
+        mobilePanelVisible ? colourStyles.active : colourStyles.inactive,
       )}
     >{`Menu`}</button>
   )
