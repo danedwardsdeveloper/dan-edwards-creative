@@ -3,17 +3,23 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Subscriber } from '@/library/database/models/subscriber'
 import connectDB from '@/library/database/mongoose'
 import generateEmailContainer from '@/library/email/htmlComponents/container'
+import { generateEmailHyperlink } from '@/library/email/htmlComponents/hyperlink'
 import {
   generateConfirmationEmailContent,
   sendConfirmationEmail,
 } from '@/library/email/sendConfirmationEmail'
-import { isDevelopment } from '@/library/environment'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
-import { generateConfirmationLink, generateToken, generateUnsubscribeLink } from '../utilities'
+import { generateConfirmationURL, generateToken, generateUnsubscribeURL } from '../utilities'
 import { ApiEndpoints } from '@/types/apiEndpoints'
 
-const sendActualEmails = false
+if (!process.env.MY_EMAIL_ONE) {
+  throw new Error('MY_EMAIL_ONE missing')
+}
+
+if (!process.env.MY_EMAIL_TWO) {
+  throw new Error('MY_EMAIL_TWO missing')
+}
 
 export async function POST(
   request: NextRequest,
@@ -62,55 +68,45 @@ export async function POST(
 
     const confirmationToken = generateToken()
     const unsubscribeToken = generateToken()
-    logger.debug('Confirmation token:', confirmationToken)
-    logger.debug('Unsubscribe token:', unsubscribeToken)
+    logger.debug('Confirmation token:', { confirmationToken })
+    logger.debug('Unsubscribe token:', { unsubscribeToken })
+
+    const isAdminEmail =
+      sanitizedEmail === process.env.MY_EMAIL_ONE || sanitizedEmail === process.env.MY_EMAIL_TWO
 
     logger.info('Creating new subscriber...')
     const savedSubscriber = await Subscriber.create({
       firstName: sanitizedFirstName,
       email: sanitizedEmail,
-      status: isDevelopment ? 'pending' : 'subscribed',
+      status: isAdminEmail ? 'pending' : 'subscribed',
       confirmationToken,
       unsubscribeToken,
     })
-    logger.info('Subscriber created:', savedSubscriber)
+    logger.info('Subscriber created:', { savedSubscriber })
 
-    if (isDevelopment) {
-      const confirmationLink = generateConfirmationLink(confirmationToken, email)
-      logger.info('Confirmation link: ', confirmationLink)
-
-      if (sendActualEmails) {
-        await sendConfirmationEmail(savedSubscriber)
-      } else {
-        const unsubscribeLink = generateUnsubscribeLink(
-          savedSubscriber.unsubscribeToken,
-          savedSubscriber.email,
-        )
-        const content = generateConfirmationEmailContent(savedSubscriber)
-
-        const htmlContent = generateEmailContainer(content, unsubscribeLink)
-        logger.debug('HTML content:', htmlContent)
-        logger.info('Sending actual emails disabled')
-      }
-
-      return NextResponse.json(
-        {
-          message: 'success please confirm',
-          subscriber: savedSubscriber.toObject(),
-        },
-        { status: 201 },
-      )
+    if (isAdminEmail) {
+      const confirmationURL = generateConfirmationURL(confirmationToken, email)
+      logger.info({ confirmationURL }, 'Confirmation URL: ')
+      logger.info('Admin email used: attempting to send confirmation email')
+      await sendConfirmationEmail(savedSubscriber)
     } else {
-      return NextResponse.json(
-        {
-          message: 'success please confirm',
-          subscriber: savedSubscriber.toObject(),
-        },
-        { status: 201 },
-      )
+      const unsubscribeURL = generateUnsubscribeURL(savedSubscriber.unsubscribeToken, savedSubscriber.email)
+      const unsubscribeLink = generateEmailHyperlink(unsubscribeURL, 'Unsubscribe', 'grey')
+      const content = generateConfirmationEmailContent(savedSubscriber)
+      const htmlContent = generateEmailContainer(content, unsubscribeLink)
+      logger.debug('Would have sent this HTML content:', { htmlContent })
+      logger.info('Non-admin email: auto-subscribed without confirmation email')
     }
+
+    return NextResponse.json(
+      {
+        message: 'success please confirm',
+        subscriber: savedSubscriber.toObject(),
+      },
+      { status: 201 },
+    )
   } catch (error) {
-    logger.error('Failed to add subscription:', error)
+    logger.error('Failed to add subscription:', { error })
     logger.debug('Error stack trace:', (error as Error).stack)
     return NextResponse.json({ status: 500, message: 'fail' }, { status: 500 })
   }
