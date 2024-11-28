@@ -19,12 +19,12 @@ export function decodeEmail(encodedEmail: string): string {
   return Buffer.from(base64, 'base64').toString()
 }
 
-export function generateConfirmationLink(token: string, email: string): string {
+export function generateConfirmationURL(token: string, email: string): string {
   const encodedEmail = encodeEmail(email)
   return `${dynamicBaseURL}/confirm?e=${encodedEmail}&x=${token}`
 }
 
-export function generateUnsubscribeLink(token: string, email: string): string {
+export function generateUnsubscribeURL(token: string, email: string): string {
   const encodedEmail = encodeEmail(email)
   return `${dynamicBaseURL}/unsubscribe?e=${encodedEmail}&x=${token}`
 }
