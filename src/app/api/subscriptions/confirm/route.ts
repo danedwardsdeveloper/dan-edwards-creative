@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { Subscriber } from '@/library/database/models/subscriber'
 import connectDB from '@/library/database/mongoose'
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
-import { decodeEmail, generateUnsubscribeLink } from '../utilities'
+import { decodeEmail, generateUnsubscribeURL } from '../utilities'
 import { ApiEndpoints } from '@/types/apiEndpoints'
 
 export async function PATCH(
@@ -34,7 +34,7 @@ export async function PATCH(
 
     if (!encodedEmail) {
       logger.error(`Missing param: 'e'`)
-      return NextResponse.json({ status: 400, message: `Missing param: 'e'` }, { status: 400 })
+      return NextResponse.json({ message: `Missing param: 'e'` }, { status: 400 })
     }
 
     const email = decodeEmail(encodedEmail)
@@ -45,13 +45,12 @@ export async function PATCH(
     }).select('firstName email status')
 
     if (!subscriber) {
-      return NextResponse.json({ status: 404, message: 'Subscriber not found' }, { status: 404 })
+      return NextResponse.json({ message: 'Subscriber not found' }, { status: 404 })
     }
 
     if (subscriber.status === 'subscribed') {
       return NextResponse.json(
         {
-          status: 409,
           message: 'Email already confirmed',
           subscriber: {
             firstName: subscriber.firstName,
@@ -78,11 +77,14 @@ export async function PATCH(
       },
     )
 
-    logger.info('Unsubscribe Link:', generateUnsubscribeLink(result.unsubscribeToken, email))
+    if (!result) {
+      return NextResponse.json({ message: 'Subscriber not found' }, { status: 404 })
+    }
+
+    logger.info(generateUnsubscribeURL(result.unsubscribeToken, email), 'Unsubscribe Link:')
 
     return NextResponse.json(
       {
-        status: 200,
         message: 'Email confirmed successfully',
         subscriber: {
           firstName: result.firstName,
@@ -94,6 +96,6 @@ export async function PATCH(
   } catch (error) {
     logger.error('Failed to confirm subscription:')
     logger.error(error as string)
-    return NextResponse.json({ status: 500, message: 'Failed to confirm subscription' }, { status: 500 })
+    return NextResponse.json({ message: 'Failed to confirm subscription' }, { status: 500 })
   }
 }
