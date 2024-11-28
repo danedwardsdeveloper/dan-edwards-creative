@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 64, 128, 256, 384, 512],
     formats: ['image/webp'],
   },
+  serverExternalPackages: ['pino', 'pino-pretty'],
   async redirects() {
     return [
       {
