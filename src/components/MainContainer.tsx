@@ -12,7 +12,8 @@ export default function MainContainer({ children }: { children: ReactNode }) {
         <div
           className={clsx(
             'md:mt-16', // Offset DesktopMenu. MobileMenu is part of the flex container while DesktopMenu is position:absolute
-            'flex-1 max-w-4xl mx-auto px-6',
+            'flex-1 max-w-4xl mx-auto',
+            'px-4 md:px-0', // Mobile content margin
           )}
         >
           {children}
