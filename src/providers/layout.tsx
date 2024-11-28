@@ -25,8 +25,8 @@ export function useLayout() {
   return context
 }
 
-export default function LayoutProvider({ children }: { children: React.ReactNode }) {
-  const [showAudioPlayer, setShowAudioPlayer] = useState(true)
+export function LayoutProvider({ children }: { children: React.ReactNode }) {
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false)
   const [menusVisible, setMenusVisible] = useState(true)
   const [mobilePanelVisible, setMobilePanelVisible] = useState(false)
 
