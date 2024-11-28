@@ -1,15 +1,21 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 interface LayoutContextType {
   showAudioPlayer: boolean
   setShowAudioPlayer: (show: boolean) => void
-  mobileMenuOpen: boolean
-  setMobileMenuOpen: (open: boolean) => void
+  toggleAudioPlayer: () => void
+
+  menusVisible: boolean
+  setMenusVisible: (show: boolean) => void
+
+  mobilePanelVisible: boolean
+  setMobilePanelVisible: (open: boolean) => void
+  toggleMobilePanelVisible: () => void
 }
 
-export const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
+const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
 
 export function useLayout() {
   const context = useContext(LayoutContext)
@@ -19,17 +25,30 @@ export function useLayout() {
   return context
 }
 
-export function LayoutProvider({ children }: { children: React.ReactNode }) {
-  const [showAudioPlayer, setShowAudioPlayer] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export default function LayoutProvider({ children }: { children: React.ReactNode }) {
+  const [showAudioPlayer, setShowAudioPlayer] = useState(true)
+  const [menusVisible, setMenusVisible] = useState(true)
+  const [mobilePanelVisible, setMobilePanelVisible] = useState(false)
+
+  const toggleAudioPlayer = useCallback(() => {
+    setShowAudioPlayer(prev => !prev)
+  }, [])
+
+  const toggleMobilePanelVisible = useCallback(() => {
+    setMobilePanelVisible(prev => !prev)
+  }, [])
 
   return (
     <LayoutContext.Provider
       value={{
         showAudioPlayer,
         setShowAudioPlayer,
-        mobileMenuOpen,
-        setMobileMenuOpen,
+        toggleAudioPlayer,
+        menusVisible,
+        setMenusVisible,
+        mobilePanelVisible,
+        setMobilePanelVisible,
+        toggleMobilePanelVisible,
       }}
     >
       {children}
