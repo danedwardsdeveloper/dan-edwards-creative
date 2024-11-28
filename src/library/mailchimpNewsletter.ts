@@ -1,6 +1,6 @@
 'use server'
 
-import { logger } from '@/library/logger'
+import logger from '@/library/logger'
 
 const mailchimpURL = process.env.MAILCHIMP_URL!
 const mailchimpApiKey = process.env.MAILCHIMP_API_KEY!
