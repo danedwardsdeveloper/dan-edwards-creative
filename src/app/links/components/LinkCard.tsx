@@ -12,7 +12,8 @@ export interface LinkItemInterface {
   href: string
   icon: FC<IconProps>
   analyticsName: Destination
-  description: string
+  ctaDescription: string
+  shortDescription: string
   external?: boolean
 }
 
@@ -21,7 +22,7 @@ interface LinkCardProps {
 }
 
 export default function LinkCard({ linkCard }: LinkCardProps) {
-  const { title, href, icon: Icon, description, analyticsName } = linkCard
+  const { title, href, icon: Icon, ctaDescription, analyticsName } = linkCard
   const recordClick = useRecordLinkClick()
 
   return (
@@ -30,7 +31,7 @@ export default function LinkCard({ linkCard }: LinkCardProps) {
       target="_blank"
       rel="noopener noreferrer"
       className="group flex items-center rounded-lg bg-blue-50 p-3 transition-colors duration-300 hover:bg-blue-100 dark:bg-slate-800 dark:hover:bg-slate-700"
-      aria-label={`${title} - ${description}`}
+      aria-label={`${title} - ${ctaDescription}`}
       onClick={() => recordClick(analyticsName)}
     >
       <Icon
@@ -40,7 +41,7 @@ export default function LinkCard({ linkCard }: LinkCardProps) {
       <div className="ml-4 flex min-w-0 flex-col">
         <span className="text-balance text-lg font-semibold text-zinc-900 dark:text-zinc-100">{title}</span>
         <span className="line-clamp-2 text-balance text-sm text-zinc-600 dark:text-zinc-300">
-          {description}
+          {ctaDescription}
         </span>
       </div>
     </Link>
