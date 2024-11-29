@@ -103,7 +103,11 @@ export function NewsletterForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={clsx('max-w-md space-y-4', 'md:border border-gray-200 rounded-xl md:p-4')}
+      className={clsx(
+        'max-w-md',
+        'space-y-4',
+        'md:border border-zinc-200 dark:border-zinc-900 rounded-xl md:p-4',
+      )}
     >
       <h2 className="mb-6 text-2xl font-bold text-zinc-800 dark:text-zinc-100">
         {messageConfigs[status].heading}
