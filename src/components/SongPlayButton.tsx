@@ -16,11 +16,11 @@ export function SongPlayButton({
   paused: ReactNode
 }) {
   const player = useAudioPlayer(song)
-  const { showAudioPlayer, setShowAudioPlayer } = useLayout()
+  const { setShowAudioPlayer } = useLayout()
 
   function handleClick() {
-    player.toggle()
-    setShowAudioPlayer(!showAudioPlayer)
+    player.togglePlaying()
+    setShowAudioPlayer(true)
   }
 
   return (
