@@ -8,10 +8,10 @@ export const menuItems: MenuItem[] = [
     displayName: 'Home',
     href: '/',
   },
-  {
-    displayName: 'Songs',
-    href: '/songs',
-  },
+  // {
+  //   displayName: 'Songs',
+  //   href: '/songs',
+  // },
   {
     displayName: 'Work with me',
     href: '/work-with-me',
