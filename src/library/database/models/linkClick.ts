@@ -11,6 +11,7 @@ const destinations = {
   TIKTOK: 'tiktok-profile',
   EMAIL: 'copy-email-address',
   DEVELOPER: 'developer-site',
+  CHEWING_GUM: 'chewing-gum-audio-play',
 } as const
 
 export type Destination = (typeof destinations)[keyof typeof destinations]
