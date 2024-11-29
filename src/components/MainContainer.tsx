@@ -12,7 +12,7 @@ export default function MainContainer({ children }: { children: ReactNode }) {
         className={clsx(
           'min-h-full flex flex-col',
           'md:mx-8 lg:mx-16',
-          'bg-white dark:bg-slate-950',
+          'bg-white dark:bg-zinc-900',
           'border-x border-zinc-100 dark:border-zinc-300/20 ',
         )}
       >
