@@ -2,7 +2,8 @@
 
 import { ReactNode } from 'react'
 
-import { type Song, useAudioPlayer } from '@/providers/audio'
+import { type Song } from '@/app/songs/data'
+import { useAudioPlayer } from '@/providers/audio'
 import { useLayout } from '@/providers/layout'
 
 export function SongPlayButton({
