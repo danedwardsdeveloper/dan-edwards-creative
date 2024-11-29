@@ -1,5 +1,6 @@
 'use client'
 
+import { Header } from '@/components/Header'
 import { PauseIcon, PlayIcon } from '@/components/Icons'
 import { AdditionalImage } from '@/components/Images'
 import { NewsletterForm } from '@/components/newsletterForm'
@@ -94,11 +95,9 @@ function ColumnOne() {
 
 export default function Page() {
   return (
-    <TwoColumnLayout
-      title={'Dan Edwards creative'}
-      intro={'Pop music producer & songwriter in Salisbury, UK'}
-      columnOne={<ColumnOne />}
-      columnTwo={<NewsletterForm />}
-    />
+    <>
+      <Header title={'Dan Edwards creative'} intro={'Pop music producer & songwriter in Salisbury, UK'} />
+      <TwoColumnLayout columnOne={<ColumnOne />} columnTwo={<NewsletterForm />} />
+    </>
   )
 }
