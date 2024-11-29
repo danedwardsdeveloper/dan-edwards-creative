@@ -1,17 +1,18 @@
 'use client'
 
-import { createContext, useContext, useMemo, useReducer, useRef } from 'react'
+import { createContext, useContext, useMemo, useReducer, useRef, useState } from 'react'
 
-export interface Song {
-  title: string
-  slug: string
-}
+import logger from '@/library/logger'
+
+import { Song } from '@/app/songs/data'
+import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 interface PlayerState {
   playing: boolean
   duration: number
   currentTime: number
   song: Song | null
+  lastRecordedPlay: string | null
 }
 
 interface PublicPlayerActions {
@@ -31,6 +32,8 @@ const enum ActionKind {
   PAUSE = 'PAUSE',
   SET_CURRENT_TIME = 'SET_CURRENT_TIME',
   SET_DURATION = 'SET_DURATION',
+  RESET_RECORDED_PLAY = 'RESET_RECORDED_PLAY',
+  SET_RECORDED_PLAY = 'SET_RECORDED_PLAY',
 }
 
 type Action =
@@ -39,6 +42,8 @@ type Action =
   | { type: ActionKind.PAUSE }
   | { type: ActionKind.SET_CURRENT_TIME; payload: number }
   | { type: ActionKind.SET_DURATION; payload: number }
+  | { type: ActionKind.RESET_RECORDED_PLAY }
+  | { type: ActionKind.SET_RECORDED_PLAY; payload: string }
 
 const AudioPlayerContext = createContext<PlayerAPI | null>(null)
 
@@ -54,6 +59,10 @@ function audioReducer(state: PlayerState, action: Action): PlayerState {
       return { ...state, currentTime: action.payload }
     case ActionKind.SET_DURATION:
       return { ...state, duration: action.payload }
+    case ActionKind.RESET_RECORDED_PLAY:
+      return { ...state, lastRecordedPlay: null }
+    case ActionKind.SET_RECORDED_PLAY:
+      return { ...state, lastRecordedPlay: action.payload }
   }
 }
 
@@ -62,13 +71,17 @@ function getAudioPath(slug: string) {
 }
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
+  const recordPlay = useRecordLinkClick()
+  const [hasTriggeredPlay, setHasTriggeredPlay] = useState(false)
+
   const [state, dispatch] = useReducer(audioReducer, {
     playing: false,
     duration: 0,
     currentTime: 0,
     song: null,
+    lastRecordedPlay: null,
   })
-  const playerRef = useRef<React.ElementRef<'audio'>>(null)
+  const playerRef = useRef<HTMLAudioElement>(null)
 
   const actions = useMemo<PublicPlayerActions>(
     () => ({
@@ -83,12 +96,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
               playerRef.current.load()
               playerRef.current.pause()
               playerRef.current.currentTime = 0
+              dispatch({ type: ActionKind.RESET_RECORDED_PLAY })
+              setHasTriggeredPlay(false)
             }
-          }
-        }
 
-        if (playerRef.current) {
-          void playerRef.current.play()
+            void playerRef.current.play().catch(error => {
+              logger.error('Error playing audio', error)
+            })
+          }
         }
       },
       pause() {
@@ -133,10 +148,28 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         onPlay={() => dispatch({ type: ActionKind.PLAY })}
         onPause={() => dispatch({ type: ActionKind.PAUSE })}
         onTimeUpdate={event => {
+          const currentTime = Math.floor(event.currentTarget.currentTime)
+
           dispatch({
             type: ActionKind.SET_CURRENT_TIME,
-            payload: Math.floor(event.currentTarget.currentTime),
+            payload: currentTime,
           })
+
+          if (
+            currentTime >= 5 &&
+            !hasTriggeredPlay &&
+            state.song &&
+            state.lastRecordedPlay !== state.song.slug
+          ) {
+            logger.debug('Song play triggered by audio provider', {
+              currentTime,
+              songSlug: state.song.slug,
+              lastRecordedPlay: state.lastRecordedPlay,
+            })
+            recordPlay('chewing-gum-audio-play')
+            dispatch({ type: ActionKind.SET_RECORDED_PLAY, payload: state.song.slug })
+            setHasTriggeredPlay(true)
+          }
         }}
         onDurationChange={event => {
           dispatch({
