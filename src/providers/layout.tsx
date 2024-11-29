@@ -1,6 +1,8 @@
 'use client'
 
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
+
+import { useAudioPlayer } from './audio'
 
 interface LayoutContextType {
   showAudioPlayer: boolean
@@ -29,14 +31,18 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [showAudioPlayer, setShowAudioPlayer] = useState(false)
   const [menusVisible, setMenusVisible] = useState(true)
   const [mobilePanelVisible, setMobilePanelVisible] = useState(false)
+  const { isPlaying, pause } = useAudioPlayer()
 
-  const toggleAudioPlayer = useCallback(() => {
+  const toggleAudioPlayer = () => {
     setShowAudioPlayer(prev => !prev)
-  }, [])
+    if (isPlaying()) {
+      pause()
+    }
+  }
 
-  const toggleMobilePanelVisible = useCallback(() => {
+  const toggleMobilePanelVisible = () => {
     setMobilePanelVisible(prev => !prev)
-  }, [])
+  }
 
   return (
     <LayoutContext.Provider
