@@ -8,14 +8,15 @@ import { Footer } from './Footer'
 export default function MainContainer({ children }: { children: ReactNode }) {
   return (
     <main data-component="MainContainer" className="flex-1 overflow-y-auto w-full">
-      <div className="min-h-full flex flex-col lg:mx-16 bg-white">
-        <div
-          className={clsx(
-            'md:mt-16', // Offset DesktopMenu. MobileMenu is part of the flex container while DesktopMenu is position:absolute
-            'flex-1 max-w-4xl mx-auto',
-            'px-4 md:px-0', // Mobile content margin
-          )}
-        >
+      <div
+        className={clsx(
+          'min-h-full flex flex-col',
+          'md:mx-8 lg:mx-16',
+          'bg-white dark:bg-slate-950',
+          'border-x border-zinc-100 dark:border-zinc-300/20 ',
+        )}
+      >
+        <div className={clsx('md:mt-32', 'flex-1 max-w-5xl mx-auto w-full', 'px-4 sm:px-8 lg:px-0')}>
           {children}
         </div>
         <div data-component="FooterContainer">
