@@ -106,7 +106,7 @@ export function NewsletterForm() {
       className={clsx(
         'max-w-md',
         'space-y-4',
-        'md:border border-zinc-200 dark:border-zinc-900 rounded-xl md:p-4',
+        'md:border border-zinc-200 dark:border-zinc-700 rounded-xl md:p-4',
       )}
     >
       <h2 className="mb-6 text-2xl font-bold text-zinc-800 dark:text-zinc-100">
