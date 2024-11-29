@@ -57,11 +57,11 @@ export function AudioPlayer() {
           )}
         >
           {/* <Link
-          href={`songs/${player.episode.slug}`}
+          href={`songs/${player.song.slug}`}
           className="truncate text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200"
-          title={player.episode.title}
+          title={player.song.title}
         >
-          {player.episode.title}
+          {player.song.title}
         </Link> */}
           <span className="truncate text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200">
             {player.song?.title}
