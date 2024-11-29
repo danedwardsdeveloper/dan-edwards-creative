@@ -1,13 +1,16 @@
+'use client'
+
 import ObfuscatedEmail from '../privacy-policy-and-terms-of-service/components/ObfuscatedEmail'
-import { SimpleLayout } from '@/components/SimpleLayout'
+import { NewsletterForm } from '@/components/newsletterForm'
+import TwoColumnLayout from '@/components/TwoColumnLayout'
 
 export default function ContactPage() {
   return (
-    <SimpleLayout
-      title="Contact"
+    <TwoColumnLayout
+      title={'Contact'}
       intro={`If you'd like to work with me or have a question, I'd love to hear from you.`}
-    >
-      <ObfuscatedEmail />
-    </SimpleLayout>
+      columnOne={<ObfuscatedEmail />}
+      columnTwo={<NewsletterForm />}
+    />
   )
 }
