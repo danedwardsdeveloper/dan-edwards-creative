@@ -11,7 +11,7 @@
 }
 
 .article-content p {
-  @apply mb-8 text-zinc-600 dark:text-zinc-400;
+  @apply mb-8 text-zinc-600 dark:text-zinc-400 text-balance;
 }
 
 .article-content ul {
