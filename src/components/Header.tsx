@@ -1,15 +1,15 @@
 interface HeaderProps {
   title: string
-  subtitle: string
+  intro: string | React.ReactNode
 }
 
-export function Header({ title, subtitle }: HeaderProps) {
+export function Header({ title, intro }: HeaderProps) {
   return (
-    <header className="flex flex-col">
-      <h1 className="mb-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+    <header className="flex flex-col mt-12 mb-20 lg:px-8">
+      <h1 className="text-4xl sm:text-5xl font-bold text-zinc-800 dark:text-zinc-100 tracking-tight text-balance">
         {title}
       </h1>
-      <span className="flex items-center text-base text-zinc-600 dark:text-zinc-400">{subtitle}</span>
+      <p className="text-balance mt-6 text-base text-zinc-600 dark:text-zinc-400">{intro}</p>
     </header>
   )
 }
