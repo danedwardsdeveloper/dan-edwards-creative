@@ -46,7 +46,7 @@ export default function Input({
         className={clsx(
           'w-2/3 border p-2 rounded-md',
           ' bg-slate-100 dark:bg-slate-800 border-slate-400 dark:border-slate-600',
-          'ring-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500',
+          'outline-offset-4 focus:outline-none focus:outline-2 focus:outline-blue-500',
         )}
       />
     </div>
