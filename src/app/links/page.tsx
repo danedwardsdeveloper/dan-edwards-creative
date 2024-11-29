@@ -1,18 +1,18 @@
 'use client'
 
 import LinksList from './components/LinksList'
-import { SimpleLayout } from '@/components/SimpleLayout'
+import { NewsletterForm } from '@/components/newsletterForm'
+import TwoColumnLayout from '@/components/TwoColumnLayout'
 
-import { musicLinkItems } from './data'
+import { allLinks } from './data'
 
 export default function LinksPage() {
   return (
-    <SimpleLayout
+    <TwoColumnLayout
       title={'Links'}
       intro={`Dan Edwards | Pop music producer & songwriter in Salisbury, UK. All my links in one place`}
-      articleContent={false}
-    >
-      <LinksList linkItems={musicLinkItems} classes="mb-64" />
-    </SimpleLayout>
+      columnOne={<LinksList linkItems={allLinks} classes="mb-64" />}
+      columnTwo={<NewsletterForm />}
+    />
   )
 }
