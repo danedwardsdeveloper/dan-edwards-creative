@@ -13,40 +13,50 @@ export const metadata: Metadata = {
   },
 }
 
-export const musicLinkItems: LinkItemInterface[] = [
+export const streamingProfileItems: LinkItemInterface[] = [
   {
     title: 'Listen on Spotify',
     href: 'https://open.spotify.com/artist/7p3CxuHLT2LvMCl5w7brvj',
     icon: SpotifyIcon,
-    description: 'Follow my official Spotify artist profile',
+    ctaDescription: 'Follow my official Spotify artist profile',
     analyticsName: 'spotify-artist-profile',
+    shortDescription: 'Spotify',
   },
   {
     title: 'Listen on Apple Music',
     href: 'https://music.apple.com/us/artist/dan-edwards/1716619818',
     icon: AppleMusicIcon,
-    description: 'Subscribe to my Apple Music artist profile',
+    ctaDescription: 'Subscribe to my Apple Music artist profile',
     analyticsName: 'apple-music-artist-profile',
+    shortDescription: 'Apple Music',
   },
   {
     title: 'Listen on YouTube Music',
     href: 'https://music.youtube.com/channel/UCUSPxPa0YVfQdFxjD7uog2Q?si=4n7I5xmFdifB-cEM',
     icon: YouTubeMusicIcon,
-    description: 'Subscribe to my YouTube Music artist profile',
+    ctaDescription: 'Subscribe to my YouTube Music artist profile',
     analyticsName: 'youtube-music-artist-profile',
+    shortDescription: 'YouTubeMusic',
   },
+]
+
+export const socialMediaItems: LinkItemInterface[] = [
   {
     title: 'Follow me on Instagram',
     href: 'https://www.instagram.com/prod_danedwards/',
     icon: InstagramIcon,
-    description: `I hate social media but whatever`,
+    ctaDescription: `I hate social media but whatever`,
     analyticsName: 'instagram-profile',
+    shortDescription: 'Instagram',
   },
   {
     title: 'Follow me on Twitter',
     href: 'https://x.com/prod_danedwards',
     icon: TwitterIcon,
-    description: `But don't waste your life arguing with bots!`,
+    ctaDescription: `But don't waste your life arguing with bots!`,
     analyticsName: 'twitter-profile',
+    shortDescription: 'X',
   },
 ]
+
+export const allLinks: LinkItemInterface[] = [...streamingProfileItems, ...socialMediaItems]
