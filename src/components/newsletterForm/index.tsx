@@ -64,7 +64,7 @@ export function NewsletterForm() {
   const messageConfigs: Record<MessageStatus, MessageConfig> = {
     default: {
       heading: 'Join my mailing list',
-      text: 'I agree to receive emails. Unsubscribe with one click anytime.',
+      text: 'Keep up-to-date with my latest releases. Unsubscribe with one click anytime.',
       colour: 'text-slate-600 dark:text-slate-400',
     },
     'success please confirm': {
