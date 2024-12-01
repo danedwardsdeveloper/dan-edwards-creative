@@ -10,7 +10,8 @@ export default function MainContainer({ children }: { children: ReactNode }) {
     <main data-component="MainContainer" className="flex-1 overflow-y-auto w-full">
       <div
         className={clsx(
-          'min-h-full flex flex-col',
+          'min-h-full',
+          'flex flex-col',
           'md:mx-8 lg:mx-16',
           'bg-white dark:bg-zinc-900',
           'md:border-x border-zinc-100 dark:border-zinc-300/20 ',
