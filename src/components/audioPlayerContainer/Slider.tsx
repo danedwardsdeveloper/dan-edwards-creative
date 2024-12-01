@@ -78,7 +78,7 @@ export function Slider(props: SliderStateOptions<Array<number>> & { onChangeStar
         <div
           {...groupProps}
           className={clsx(
-            'absolute',
+            'absolute z-50',
             'inset-x-0  flex flex-auto touch-none items-center gap-6 md:relative',
             'bottom-full',
           )}

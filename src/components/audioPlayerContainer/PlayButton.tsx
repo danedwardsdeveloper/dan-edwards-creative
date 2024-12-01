@@ -1,11 +1,13 @@
 import { PauseIcon, PlayIcon } from '../Icons'
-import { type PlayerAPI } from '@/providers/audio'
+import { useAudioPlayer } from '@/providers/audio'
 
-export function PlayButton({ player }: { player: PlayerAPI }) {
+export function PlayButton() {
+  const player = useAudioPlayer()
   const Icon = player.playing ? PauseIcon : PlayIcon
 
   return (
     <button
+      data-component="PlayButton"
       type="button"
       className="group relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-slate-700 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-700 focus:ring-offset-2 md:h-14 md:w-14"
       onClick={() => player.togglePlaying()}

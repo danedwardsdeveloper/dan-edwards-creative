@@ -28,10 +28,6 @@ export function Footer() {
         'items-center justify-end',
       )}
     >
-      <Link
-        href="/privacy-policy-and-terms-of-service"
-        className={footerLinkStyles}
-      >{`Privacy policy & terms of service`}</Link>
       <p className="text-sm text-zinc-500 dark:text-zinc-400">
         {`Site by `}
         <Link

@@ -39,7 +39,7 @@ export const FeaturedImage = ({ src, alt, border }: Props) => {
 export const AdditionalImage = ({ src, alt, caption, children, classes, border, margin = true }: Props) => {
   return (
     <>
-      <div className={clsx(baseContainerStyles, margin && marginStyles, 'relative')}>
+      <div className={clsx(baseContainerStyles, margin && marginStyles)}>
         <Image
           src={src}
           alt={alt}

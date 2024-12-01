@@ -2,19 +2,15 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { menuItems } from '../data'
-import { baseStyles, colourStyles, sizeStyles } from '../styles'
+import { mobileMenuItems } from '../data'
+import { menuItemTextStyles } from '../styles'
 
-const menuItemsWithoutHome = menuItems.filter(
-  menuItem => menuItem.displayName !== 'Home' || menuItem.href !== '/',
-)
-
-export default function Links({ gap = 'gap-y-1' }: { gap?: string }) {
+export default function MobileMenuItems() {
   const currentPath = usePathname()
 
   return (
-    <ul className={clsx('flex flex-col', gap)}>
-      {menuItemsWithoutHome.map(item => {
+    <>
+      {mobileMenuItems.map(item => {
         const isActive = currentPath === item.href
 
         return (
@@ -23,10 +19,9 @@ export default function Links({ gap = 'gap-y-1' }: { gap?: string }) {
               href={item.href}
               aria-current={isActive && 'page'}
               className={clsx(
-                baseStyles,
-                sizeStyles['base'],
-                colourStyles.text['base'],
-                isActive ? colourStyles.active : colourStyles.inactive,
+                menuItemTextStyles.base,
+                'text-base',
+                isActive ? menuItemTextStyles.active : menuItemTextStyles.inactive,
               )}
             >
               {item.displayName}
@@ -35,6 +30,6 @@ export default function Links({ gap = 'gap-y-1' }: { gap?: string }) {
           </li>
         )
       })}
-    </ul>
+    </>
   )
 }

@@ -2,7 +2,9 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function NavItem({ href, children }: { href: string; children: React.ReactNode }) {
+import { menuItemTextStyles } from '../styles'
+
+export default function DesktopMenuItems({ href, children }: { href: string; children: React.ReactNode }) {
   const currentPath = usePathname()
   const isActive = currentPath === href
 
@@ -11,12 +13,11 @@ export default function NavItem({ href, children }: { href: string; children: Re
       <Link
         href={href}
         className={clsx(
+          menuItemTextStyles.base,
           'relative block',
           'px-3 py-2',
-          'transition duration-200',
-          isActive
-            ? ['text-blue-600 dark:text-blue-400', 'cursor-default']
-            : ['hover:text-blue-600 dark:hover:text-blue-400', 'cursor-pointer'],
+          'text-sm',
+          isActive ? menuItemTextStyles.active : menuItemTextStyles.inactive,
         )}
       >
         {children}

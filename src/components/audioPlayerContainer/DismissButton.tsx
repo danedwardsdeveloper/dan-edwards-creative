@@ -2,6 +2,7 @@
 
 import clsx from 'clsx'
 
+import { useAudioPlayer } from '@/providers/audio'
 import { useLayout } from '@/providers/layout'
 
 function DismissIcon({}: React.ComponentPropsWithoutRef<'svg'> & {}) {
@@ -26,21 +27,13 @@ function DismissIcon({}: React.ComponentPropsWithoutRef<'svg'> & {}) {
   )
 }
 
-export default function DismissButton({
-  onClick = 'toggle',
-  classes,
-}: {
-  onClick?: 'toggle' | 'close'
-  classes?: string
-}) {
-  const { toggleAudioPlayer, setShowAudioPlayer } = useLayout()
+export default function DismissButton({ classes }: { classes?: string }) {
+  const { setShowAudioPlayer } = useLayout()
+  const { pause } = useAudioPlayer()
 
   const handleClick = () => {
-    if (onClick === 'toggle') {
-      toggleAudioPlayer()
-    } else {
-      setShowAudioPlayer(false)
-    }
+    pause()
+    setShowAudioPlayer(false)
   }
 
   return (
@@ -54,7 +47,7 @@ export default function DismissButton({
       onClick={handleClick}
     >
       <div className="absolute -inset-4 md:hidden" />
-      <DismissIcon className="h-6 w-6 fill-slate-500 stroke-slate-500 group-hover:fill-slate-700 group-hover:stroke-slate-700" />
+      <DismissIcon className="h-6 w-6 fill-slate-500 stroke-slate-500 group-hover:fill-slate-700 group-hover:stroke-slate-700 transition-colors duration-300" />
     </button>
   )
 }

@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import { useEffect, useRef, useState } from 'react'
 
 import { ForwardButton } from '@/components/audioPlayerContainer/ForwardButton'
-import { MuteButton } from '@/components/audioPlayerContainer/MuteButton'
 import { PlayButton } from '@/components/audioPlayerContainer/PlayButton'
 import { RewindButton } from '@/components/audioPlayerContainer/RewindButton'
 import { Slider } from '@/components/audioPlayerContainer/Slider'
@@ -25,7 +24,7 @@ function formatHumanTime(seconds: number) {
   return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${m === 1 ? '' : 's'}, ${s} second${s === 1 ? '' : 's'}`
 }
 
-export function AudioPlayer() {
+export default function AudioPlayer() {
   const player = useAudioPlayer()
 
   const wasPlayingRef = useRef(false)
@@ -40,7 +39,7 @@ export function AudioPlayer() {
     <div
       data-container="AudioPlayer"
       className={clsx(
-        'bg-blue-50/90 p-4',
+        'bg-blue-50/90 p-4 pb-safe z-40',
         'shadow shadow-slate-200/80 dark:shadow-slate-600/80',
         'backdrop-blur-sm md:px-6 dark:bg-slate-900/90',
         'md:border-t md:border-x border-slate-900/5',
@@ -48,7 +47,7 @@ export function AudioPlayer() {
     >
       <div className="max-w-xl flex items-center gap-6 mx-auto">
         <div className="hidden md:block ">
-          <PlayButton player={player} />
+          <PlayButton />
         </div>
         <div
           className={clsx(
@@ -68,12 +67,12 @@ export function AudioPlayer() {
           </span>
           <div className="flex justify-between gap-6">
             <div className="flex items-center md:hidden">
-              <MuteButton player={player} />
+              <DismissButton />
             </div>
             <div className="flex flex-none items-center gap-4">
               <RewindButton player={player} />
               <div className="md:hidden">
-                <PlayButton player={player} />
+                <PlayButton />
               </div>
               <ForwardButton player={player} />
             </div>
@@ -97,10 +96,7 @@ export function AudioPlayer() {
             />
             <div className="flex items-center gap-4">
               <div className="flex items-center">
-                <DismissButton onClick={'close'} />
-              </div>
-              <div className="hidden items-center md:flex">
-                <MuteButton player={player} />
+                <DismissButton />
               </div>
             </div>
           </div>

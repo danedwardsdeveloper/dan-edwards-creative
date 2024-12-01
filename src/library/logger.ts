@@ -1,36 +1,10 @@
-import pino, { type Logger } from 'pino'
-
-import { isProduction } from './environment'
-
-const LOG_LEVEL: Logger['level'] = 'debug'
-
-const logger: Logger = pino({
-  transport: isProduction
-    ? {
-        target: 'pino/file',
-        options: {
-          destination: 1,
-          messageFormat: '{level}: {msg}',
-        },
-      }
-    : {
-        target: 'pino-pretty',
-        options: {
-          colorize: true,
-        },
-      },
-  level: LOG_LEVEL,
-  formatters: {
-    level: label => {
-      return { level: label.toUpperCase() }
-    },
-    bindings: () => ({}),
-  },
-  timestamp: false,
-  base: undefined,
-  browser: {
-    disabled: isProduction,
-  },
-})
-
+/* eslint-disable no-console */
+type LogArgs = unknown[]
+const logger = {
+  debug: (...args: LogArgs): void => console.debug('[debug]', ...args),
+  info: (...args: LogArgs): void => console.info('[info]', ...args),
+  warn: (...args: LogArgs): void => console.warn('[warn]', ...args),
+  error: (...args: LogArgs): void => console.error('[error]', ...args),
+} as const
+export type Logger = typeof logger
 export default logger

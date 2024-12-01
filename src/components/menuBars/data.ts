@@ -3,15 +3,7 @@ interface MenuItem {
   href: string
 }
 
-export const menuItems: MenuItem[] = [
-  {
-    displayName: 'Home',
-    href: '/',
-  },
-  // {
-  //   displayName: 'Songs',
-  //   href: '/songs',
-  // },
+export const mobileMenuItems: MenuItem[] = [
   {
     displayName: 'Work with me',
     href: '/work-with-me',
@@ -25,3 +17,10 @@ export const menuItems: MenuItem[] = [
     href: '/links',
   },
 ]
+
+const homeMenuItem: MenuItem = {
+  displayName: 'Home',
+  href: '/',
+}
+
+export const desktopMenuItems: MenuItem[] = [homeMenuItem, ...mobileMenuItems]

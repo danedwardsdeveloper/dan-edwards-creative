@@ -4,7 +4,7 @@ import { createContext, useContext, useMemo, useReducer, useRef, useState } from
 
 import logger from '@/library/logger'
 
-import { Song } from '@/app/songs/data'
+import { chewingGum, Song } from '@/app/songs/data'
 import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
 
 interface PlayerState {
@@ -182,19 +182,19 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function useAudioPlayer(song?: Song) {
+export function useAudioPlayer() {
   const player = useContext(AudioPlayerContext)
 
   return {
     ...player!,
     play() {
-      player!.play(song)
+      player!.play(chewingGum)
     },
     togglePlaying() {
-      player!.togglePlaying(song)
+      player!.togglePlaying(chewingGum)
     },
     get playing() {
-      return player!.isPlaying(song)
+      return player!.isPlaying(chewingGum)
     },
   }
 }

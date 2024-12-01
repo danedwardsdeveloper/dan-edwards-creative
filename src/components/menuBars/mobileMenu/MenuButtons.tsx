@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import { baseStyles, colourStyles, mobileButtonStyles, sizeStyles } from '../styles'
+import { menuItemTextStyles } from '../styles'
 import { useLayout } from '@/providers/layout'
 
 export function MenuButton() {
@@ -87,11 +87,8 @@ export function MenuButton() {
     <button
       onClick={toggleMenu}
       className={clsx(
-        baseStyles,
-        mobileButtonStyles,
-        sizeStyles['base'],
-        colourStyles.text['base'],
-        mobilePanelVisible ? colourStyles.active : colourStyles.inactive,
+        menuItemTextStyles.base,
+        mobilePanelVisible ? menuItemTextStyles.active : menuItemTextStyles.inactive,
       )}
     >{`Menu`}</button>
   )
@@ -99,16 +96,14 @@ export function MenuButton() {
 
 export function HomeButton() {
   const currentPath = usePathname()
-  const isActive = currentPath === `/`
+  const isActive = currentPath === '/'
+
   return (
     <Link
       href={`/`}
       className={clsx(
-        baseStyles,
-        mobileButtonStyles,
-        sizeStyles['base'],
-        colourStyles.text['base'],
-        isActive ? colourStyles.active : colourStyles.inactive,
+        menuItemTextStyles.base,
+        isActive ? menuItemTextStyles.active : menuItemTextStyles.inactive,
       )}
     >
       {`Home`}

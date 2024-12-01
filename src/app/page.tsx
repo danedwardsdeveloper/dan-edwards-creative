@@ -12,7 +12,7 @@ import StyledLink from '@/components/StyledLink'
 import TwoColumnLayout from '@/components/TwoColumnLayout'
 
 import { streamingProfileItems } from './links/data'
-import { chewingGum } from './songs/data'
+import './songs/data'
 
 import chewingGumArtwork from '@/images/album-artwork/chewing-gum-dan-edwards-ft-rowan-artwork.jpg'
 import pieceOfMeArtwork from '@/images/album-artwork/piece-of-me-dan-edwards-ft-rowan-artwork.png'
@@ -88,7 +88,6 @@ function ColumnOne() {
       >
         <div className="flex flex-col gap-4">
           <SongPlayButton
-            song={chewingGum}
             className="flex items-center gap-x-3 text-sm font-bold leading-6 text-blue-500 hover:text-blue-700 active:text-blue-900"
             playing={
               <>
