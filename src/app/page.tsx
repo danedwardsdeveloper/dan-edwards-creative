@@ -1,5 +1,8 @@
 'use client'
 
+import clsx from 'clsx'
+import { ReactNode } from 'react'
+
 import { Header } from '@/components/Header'
 import { PauseIcon, PlayIcon } from '@/components/Icons'
 import { AdditionalImage } from '@/components/Images'
@@ -36,6 +39,33 @@ const paragraphs = [
 ]
 /* cspell:enable */
 
+interface CardProps {
+  children: ReactNode
+  image: ReactNode
+  title: string
+  intro: string
+}
+
+function Card({ children, image, title, intro }: CardProps) {
+  return (
+    <div
+      className={clsx(
+        'max-w-md',
+        'flex flex-col space-y-4',
+        'my-12 md:my-8 items-start  rounded-xl md:p-4',
+        'md:border border-zinc-200 dark:border-zinc-700',
+      )}
+    >
+      {image}
+      <div>
+        <h2 className="text-2xl font-bold text-zinc-800 dark:text-zinc-100 mb-2">{title}</h2>
+        <p className="text-zinc-600 dark:text-zinc-400 text-balance mb-6">{intro}</p>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function ColumnOne() {
   return (
     <>
@@ -43,10 +73,20 @@ function ColumnOne() {
         {[paragraphs, paragraphs].map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
-
-        <h2>{`Upcoming release: Chewing Gum (ft. rowan)`}</h2>
-        <p>{`Listen to a preview of my upcoming single `}</p>
-        <div className="mt-4 flex flex-col gap-4">
+      </div>
+      <Card
+        title="Upcoming release"
+        intro={`Listen to a preview of my upcoming single, 'Chewing Gum' (ft. rowan). Subscribe to my newsletter, and I'll tell you when it's released.`}
+        image={
+          <AdditionalImage
+            src={chewingGumArtwork}
+            alt={`Chewing Gum (ft. rowan) by Dan Edwards - album artwork `}
+            classes="max-w-md"
+            margin={false}
+          />
+        }
+      >
+        <div className="flex flex-col gap-4">
           <SongPlayButton
             song={chewingGum}
             className="flex items-center gap-x-3 text-sm font-bold leading-6 text-blue-500 hover:text-blue-700 active:text-blue-900"
@@ -63,32 +103,23 @@ function ColumnOne() {
               </>
             }
           />
-          <StyledLink
-            href={`/songs/${chewingGum.slug}`}
-            colour="blue"
-            classes="block"
-            aria-label={`View details for Chewing Gum (ft. rowan)`}
-          >
-            More details
-          </StyledLink>
         </div>
+      </Card>
 
-        <AdditionalImage
-          src={chewingGumArtwork}
-          alt={`Chewing Gum (ft. rowan) by Dan Edwards - album artwork `}
-          classes="max-w-md"
-        />
-
-        <h2>{`Piece of Me ft. rowan`}</h2>
-        <p>Check out my latest release</p>
+      <Card
+        title="Latest release"
+        intro={`Check out my latest single, 'Piece of Me' (ft. rowan).`}
+        image={
+          <AdditionalImage
+            src={pieceOfMeArtwork}
+            alt={`Piece of Me (ft. rowan) by Dan Edwards - album artwork `}
+            border
+            margin={false}
+          />
+        }
+      >
         <StreamingProfileLinks />
-        <AdditionalImage
-          src={pieceOfMeArtwork}
-          alt={`Piece of Me (ft. rowan) by Dan Edwards - album artwork `}
-          border
-          classes="max-w-md"
-        />
-      </div>
+      </Card>
     </>
   )
 }
