@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { type Metadata, type Viewport } from 'next'
 
 import { productionBaseURL } from '@/library/environment'
@@ -71,7 +72,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB" className="antialiased" suppressHydrationWarning>
-      <body className="h-screen flex flex-col overflow-hidden bg-zinc-50 dark:bg-black">
+      <body className="h-[100dvh] flex flex-col overflow-hidden bg-zinc-50 dark:bg-black">
         <PageViewTracker />
         <Providers>
           <SplashScreen />
