@@ -9,9 +9,6 @@ interface LayoutContextType {
   setShowAudioPlayer: (show: boolean) => void
   toggleAudioPlayer: () => void
 
-  menusVisible: boolean
-  setMenusVisible: (show: boolean) => void
-
   mobilePanelVisible: boolean
   setMobilePanelVisible: (open: boolean) => void
   toggleMobilePanelVisible: () => void
@@ -29,7 +26,6 @@ export function useLayout() {
 
 export function LayoutProvider({ children }: { children: React.ReactNode }) {
   const [showAudioPlayer, setShowAudioPlayer] = useState(false)
-  const [menusVisible, setMenusVisible] = useState(true)
   const [mobilePanelVisible, setMobilePanelVisible] = useState(false)
   const { isPlaying, pause } = useAudioPlayer()
 
@@ -50,8 +46,6 @@ export function LayoutProvider({ children }: { children: React.ReactNode }) {
         showAudioPlayer,
         setShowAudioPlayer,
         toggleAudioPlayer,
-        menusVisible,
-        setMenusVisible,
         mobilePanelVisible,
         setMobilePanelVisible,
         toggleMobilePanelVisible,
