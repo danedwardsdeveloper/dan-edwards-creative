@@ -33,12 +33,6 @@ function StreamingProfileLinks() {
   )
 }
 
-/* cspell:disable */
-const paragraphs = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-]
-/* cspell:enable */
-
 interface CardProps {
   children: ReactNode
   image: ReactNode
@@ -69,11 +63,6 @@ function Card({ children, image, title, intro }: CardProps) {
 function ColumnOne() {
   return (
     <>
-      <div className="article-content">
-        {[paragraphs, paragraphs].map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </div>
       <Card
         title="Upcoming release"
         intro={`Listen to a preview of my upcoming single, 'Chewing Gum' (ft. rowan). Subscribe to my newsletter, and I'll tell you when it's released.`}
