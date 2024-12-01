@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { type Metadata, type Viewport } from 'next'
 
 import { productionBaseURL } from '@/library/environment'
