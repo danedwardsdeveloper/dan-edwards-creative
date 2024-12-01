@@ -20,10 +20,7 @@ export default function LinksPage() {
           </>
         }
       />
-      <TwoColumnLayout
-        columnOne={<LinksList linkItems={allLinks} classes="mb-64" />}
-        columnTwo={<NewsletterForm />}
-      />
+      <TwoColumnLayout columnOne={<LinksList linkItems={allLinks} />} columnTwo={<NewsletterForm />} />
     </>
   )
 }
