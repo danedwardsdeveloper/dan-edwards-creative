@@ -2,24 +2,26 @@ import clsx from 'clsx'
 import Image, { StaticImageData } from 'next/image'
 import { ReactNode } from 'react'
 
-const baseContainerStyles = `w-full mt-10 mb-4`
+const baseContainerStyles = `w-full`
+const marginStyles = 'mt-10 mb-4'
 const baseImageStyles = `rounded-lg w-full h-auto`
-const borderStyles = 'border-2 border-gray-300 rounded-lg'
+const borderStyles = 'border border-zinc-200 dark:border-zinc-700 rounded-lg'
 const sizes = '(max-width: 1023px) calc(100vw - 2rem), min(calc(100vw - 2rem), 576px)'
 const captionStyles = 'mt-2 mb-6 text-gray-600 italic text-sm'
 
-interface CustomImageProps {
+interface Props {
   src: StaticImageData
   alt: string
   caption?: string
   children?: ReactNode
   border?: boolean
   classes?: string
+  margin?: boolean
 }
 
-export const FeaturedImage = ({ src, alt, border }: CustomImageProps) => {
+export const FeaturedImage = ({ src, alt, border }: Props) => {
   return (
-    <div className={clsx(baseContainerStyles)}>
+    <div className={clsx('w-full', marginStyles)}>
       <Image
         src={src}
         alt={alt}
@@ -34,14 +36,13 @@ export const FeaturedImage = ({ src, alt, border }: CustomImageProps) => {
   )
 }
 
-export const AdditionalImage = ({ src, alt, caption, children, classes, border }: CustomImageProps) => {
+export const AdditionalImage = ({ src, alt, caption, children, classes, border, margin = true }: Props) => {
   return (
     <>
-      <div className={clsx(baseContainerStyles, 'relative')}>
+      <div className={clsx(baseContainerStyles, margin && marginStyles, 'relative')}>
         <Image
           src={src}
           alt={alt}
-          quality={80}
           sizes={sizes}
           placeholder="blur"
           className={clsx(baseImageStyles, 'object-cover', classes, border && borderStyles)}
