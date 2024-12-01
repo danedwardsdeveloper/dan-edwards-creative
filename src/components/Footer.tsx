@@ -23,7 +23,7 @@ export function Footer() {
       className={clsx(
         'shrink-0',
         'flex flex-col sm:flex-row',
-        'mt-4 py-6 pb-8 md:px-6 gap-6',
+        'mt-32 py-6 pb-8 md:px-6 gap-6',
         'border-t border-zinc-100 dark:border-zinc-700/40',
         'items-center justify-end',
       )}
