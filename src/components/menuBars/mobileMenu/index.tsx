@@ -35,7 +35,7 @@ export default function MobileMenu() {
         data-component="MobileMenuPanel"
         className={clsx(
           'absolute z-40 w-full top-10',
-          'bg-white dark:bg-black',
+          'bg-zinc-50 dark:bg-black',
           'border-zinc-200 dark:border-zinc-700',
           'transition-all duration-700 ease-in-out overflow-hidden',
           'after:absolute after:bottom-0 after:left-0 after:right-0',
