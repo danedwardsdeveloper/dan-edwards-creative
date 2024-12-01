@@ -1,9 +1,10 @@
 'use client'
 
-import ObfuscatedEmail from '../privacy-policy-and-terms-of-service/components/ObfuscatedEmail'
 import { Header } from '@/components/Header'
 import { NewsletterForm } from '@/components/newsletterForm'
 import TwoColumnLayout from '@/components/TwoColumnLayout'
+
+import ObfuscatedEmail from './ObfuscatedEmail'
 
 export default function ContactPage() {
   return (
