@@ -39,7 +39,7 @@ export default function AudioPlayer() {
     <div
       data-container="AudioPlayer"
       className={clsx(
-        'bg-blue-50/90 p-4 pb-safe z-40',
+        'bg-blue-50/90 p-4 z-40',
         'shadow shadow-slate-200/80 dark:shadow-slate-600/80',
         'backdrop-blur-sm md:px-6 dark:bg-slate-900/90',
         'md:border-t md:border-x border-slate-900/5',
@@ -62,7 +62,7 @@ export default function AudioPlayer() {
         >
           {player.song.title}
         </Link> */}
-          <span className="truncate text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200">
+          <span className="block max-h-6 text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200 overflow-x-auto whitespace-nowrap">
             {player.song?.title}
           </span>
           <div className="flex justify-between gap-6">
