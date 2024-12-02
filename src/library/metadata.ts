@@ -1,59 +1,74 @@
-import { type Metadata } from 'next'
-import { StaticImageData } from 'next/image'
-
-import { type Article } from './articles'
 import { productionBaseURL } from './environment'
 
 export const siteName = 'Dan Edwards creative'
-export const defaultMetaTitle = `Dan Edwards creative | Pop music producer & songwriter`
-export const defaultMetaDescription = `Dan Edwards creative | Pop music producer & songwriter`
+
+export const baseMetaTitle = `Pop music producer & songwriter in Salisbury, UK`
+
+const defaultMetaDescription =
+  'Professional pop music producer and songwriter in Salisbury, UK. Dan Edwards is an expert in music theory with a talent for crafting catchy melodies.'
+
+function createSubPageTitle(verb: string) {
+  return `${verb} Dan Edwards | ${baseMetaTitle}`
+}
+
+function generateCanonical(path: string) {
+  const formattedPath = path.startsWith('/') ? path : `/${path}`
+  const cleanPath = formattedPath.endsWith('/') ? formattedPath.slice(0, -1) : formattedPath
+  return `${productionBaseURL}${cleanPath}`
+}
+
 export const defaultKeywords = 'Pop music, music producer, UK, songwriter, pop music producer'
+
 export const defaultSocialImage = {
-  absoluteUrl: `${productionBaseURL}/images/dan-edwards-developer.png`,
-  alt: 'Dan Edwards developer | Full-Stack Node programmer',
+  absoluteUrl: `${productionBaseURL}/social-images/dan-edwards-pop-music-producer-and-songwriter.png`,
+  alt: 'Dan Edwards - Pop music producer and songwriter in Salisbury, UK',
   height: 630,
   width: 1200,
 }
 
-function extractImageName(image: StaticImageData): string {
-  const fullPath = image.src
-  const filename = fullPath.split('/').pop() || ''
-  const nameWithoutHashAndExtension = filename.replace(/\.[\w\d]+\.[^.]+$/, '')
-
-  return nameWithoutHashAndExtension
-}
-
-function generateAbsoluteURL(image: StaticImageData): string {
-  const imageName = extractImageName(image)
-  return `${productionBaseURL}/images/${imageName}.png`
-}
-
-export function generateArticleMetadata(article: Article): Metadata {
-  const absoluteImageURL = generateAbsoluteURL(article.socialImage)
-
-  return {
-    title: `${article.title} | Software development article by Dan Edwards`,
-    description: article.metaDescription || article.displayDescription,
-    openGraph: {
-      title: article.title,
-      description: article.displayDescription,
-      type: 'article',
-      publishedTime: article.date,
-      authors: ['Dan Edwards'],
-      images: [
-        {
-          url: absoluteImageURL,
-          width: 1200,
-          height: 630,
-          alt: article.title,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: article.title,
-      description: article.displayDescription,
-      images: [absoluteImageURL],
-    },
-  }
+export const siteMetadata: { [key: string]: { title: string; description: string; canonical: string } } = {
+  home: {
+    title: `${siteName} | ${baseMetaTitle}`,
+    description: defaultMetaDescription,
+    canonical: generateCanonical(''),
+  },
+  workWithMe: {
+    title: createSubPageTitle('Work with'),
+    description:
+      'Prize-winning composer, pop producer and songwriter in Salisbury, UK, seeking collaborations with singers and songwriters for commercial pop releases. ',
+    canonical: generateCanonical('/work-with-me'),
+  },
+  contact: {
+    title: createSubPageTitle('Contact'),
+    description:
+      'Get in touch with Dan Edwards, pop music producer and songwriter in Salisbury. Available for songwriting collaborations and music production projects.',
+    canonical: generateCanonical('/contact'),
+  },
+  links: {
+    title: createSubPageTitle('Links for'),
+    description:
+      'Connect with Dan Edwards across social media and music platforms. Listen to latest releases, follow updates, and explore collaboration opportunities.',
+    canonical: generateCanonical('/links'),
+  },
+  error: {
+    title: `Error | ${siteName}`,
+    description:
+      'An error occurred while processing your request. Please try again or contact Dan Edwards for assistance.',
+    canonical: generateCanonical('/error'),
+  },
+  confirm: {
+    title: `Confirm your newsletter subscription | ${siteName}`,
+    description: `Don't miss the latest updates and exclusive content from pop music producer and songwriter Dan Edwards.`,
+    canonical: generateCanonical('/confirm'),
+  },
+  unsubscribe: {
+    title: `Unsubscribe from my newsletter | ${siteName}`,
+    description: defaultMetaDescription,
+    canonical: generateCanonical('/unsubscribe'),
+  },
+  notFound: {
+    title: `Page not found | ${siteName}`,
+    description: defaultMetaDescription,
+    canonical: generateCanonical('/not-found'),
+  },
 }
