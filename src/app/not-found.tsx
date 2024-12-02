@@ -2,8 +2,8 @@
 
 import { useContext } from 'react'
 
-import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
+import ErrorButtons from '@/components/ErrorButtons'
 
 import { PreviousPathnameContext } from '@/providers/previousPathname'
 
@@ -20,13 +20,7 @@ export default function NotFound() {
         <p className="mt-4 text-base text-zinc-600 dark:text-zinc-400">
           {`Sorry, we couldn't find the page you're looking for.`}
         </p>
-        <Button
-          href={previousPathname ? previousPathname : '/'}
-          variant="secondary"
-          className="mt-4 max-w-sm"
-        >
-          {previousPathname ? 'Back' : 'Home'}
-        </Button>
+        <ErrorButtons path={previousPathname} />
       </div>
     </Container>
   )
