@@ -3,7 +3,7 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 
-import { Button } from '@/components/Button'
+import  Button from '@/components/Button'
 
 import { type Episode } from './audio'
 import { EpisodePlayButton } from './EpisodePlayButton'
