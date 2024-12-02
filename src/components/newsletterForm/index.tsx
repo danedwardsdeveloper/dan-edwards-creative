@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react'
 
 import { typesafeFetch } from '@/library/typesafeFetch'
 
-import { Button } from '../Button'
+import { buttonStyles } from '../Button'
 import Spinner from '../Spinner'
 import StyledLink from '../StyledLink'
 import Input from './Input'
@@ -138,14 +138,16 @@ export function NewsletterForm() {
         classes={clsx('transition-all duration-300', { 'opacity-0': !formIsVisible })}
       />
 
-      <Button
+      <button
         type="submit"
         disabled={isSubscribing || !formIsVisible}
         aria-hidden={!formIsVisible}
-        className={clsx('transition-all duration-300', { 'opacity-0': !formIsVisible })}
+        className={clsx(buttonStyles.baseStyles, buttonStyles.primary, 'transition-all duration-300', {
+          'opacity-0': !formIsVisible,
+        })}
       >
         {isSubscribing ? <Spinner colour="text-white" /> : 'Subscribe'}
-      </Button>
+      </button>
     </form>
   )
 }
