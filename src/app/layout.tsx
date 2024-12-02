@@ -1,13 +1,7 @@
 import { type Metadata, type Viewport } from 'next'
 
 import { productionBaseURL } from '@/library/environment'
-import {
-  defaultKeywords,
-  defaultMetaDescription,
-  defaultMetaTitle,
-  defaultSocialImage,
-  siteName,
-} from '@/library/metadata'
+import { defaultKeywords, defaultSocialImage, siteMetadata, siteName } from '@/library/metadata'
 
 import AudioPlayerContainer from '@/components/audioPlayerContainer'
 import MainContainer from '@/components/MainContainer'
@@ -20,15 +14,15 @@ import SplashScreen from '@/components/SplashScreen'
 import '@/styles.tailwind.css'
 
 export const metadata: Metadata = {
-  title: defaultMetaTitle,
-  description: defaultMetaDescription,
+  title: siteMetadata.home.title,
+  description: siteMetadata.home.description,
   keywords: defaultKeywords,
-  authors: [{ name: 'Dan Edwards', url: productionBaseURL }],
+  authors: [{ name: 'Dan Edwards', url: siteMetadata.home.canonical }],
   creator: 'Dan Edwards',
   publisher: siteName,
   openGraph: {
-    title: defaultMetaTitle,
-    description: defaultMetaDescription,
+    title: siteMetadata.home.title,
+    description: siteMetadata.home.description,
     url: productionBaseURL,
     siteName: siteName,
     locale: 'en_GB',
@@ -58,7 +52,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: productionBaseURL,
+    canonical: siteMetadata.home.canonical,
   },
 }
 
