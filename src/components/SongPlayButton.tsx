@@ -2,8 +2,7 @@
 
 import { ReactNode } from 'react'
 
-import { chewingGum } from '@/app/songs/data'
-import { useAudioPlayer } from '@/providers/audio'
+import { chewingGum, useAudioPlayer } from '@/providers/audio'
 import { useLayout } from '@/providers/layout'
 
 export function SongPlayButton({
