@@ -3,6 +3,7 @@
 import clsx from 'clsx'
 import { ReactNode } from 'react'
 
+import { buttonStyles } from '@/components/Button'
 import { Header } from '@/components/Header'
 import { PauseIcon, PlayIcon } from '@/components/Icons'
 import { AdditionalImage } from '@/components/Images'
@@ -12,7 +13,6 @@ import StyledLink from '@/components/StyledLink'
 import TwoColumnLayout from '@/components/TwoColumnLayout'
 
 import { streamingProfileItems } from './links/data'
-import './songs/data'
 
 import chewingGumArtwork from '@/images/album-artwork/chewing-gum-dan-edwards-ft-rowan-artwork.jpg'
 import pieceOfMeArtwork from '@/images/album-artwork/piece-of-me-dan-edwards-ft-rowan-artwork.png'
@@ -77,17 +77,17 @@ function ColumnOne() {
       >
         <div className="flex flex-col gap-4">
           <SongPlayButton
-            className="flex items-center gap-x-3 text-sm font-bold leading-6 text-blue-500 hover:text-blue-700 active:text-blue-900"
+            className={clsx(buttonStyles.baseStyles, buttonStyles.primary)}
             playing={
               <>
-                <PauseIcon className="h-2.5 w-2.5 fill-current" />
-                <span aria-hidden="true">Listen</span>
+                <span aria-hidden="true">Pause preview</span>
+                <PauseIcon className="h-4 w-4 fill-current" />
               </>
             }
             paused={
               <>
-                <PlayIcon className="h-2.5 w-2.5 fill-current" />
-                <span aria-hidden="true">Listen</span>
+                <span aria-hidden="true">Listen to preview</span>
+                <PlayIcon className="h-4 w-4 fill-current" />
               </>
             }
           />
