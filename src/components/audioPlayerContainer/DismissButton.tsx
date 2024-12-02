@@ -40,14 +40,14 @@ export default function DismissButton({ classes }: { classes?: string }) {
     <button
       type="button"
       className={clsx(
-        'group relative rounded-md hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 md:order-none',
+        'group relative rounded-md hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 md:order-none',
         classes,
       )}
       aria-label="Close audio player"
       onClick={handleClick}
     >
       <div className="absolute -inset-4 md:hidden" />
-      <DismissIcon className="h-6 w-6 fill-slate-500 stroke-slate-500 group-hover:fill-slate-700 group-hover:stroke-slate-700 transition-colors duration-300" />
+      <DismissIcon className="h-6 w-6 fill-slate-500 stroke-slate-500 dark:fill-slate-700 dark:stroke-slate-700 group-hover:fill-slate-700 dark:group-hover:fill-slate-500  group-hover:stroke-slate-700 dark:group-hover:stroke-slate-500 transition-colors duration-300" />
     </button>
   )
 }
