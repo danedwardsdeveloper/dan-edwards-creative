@@ -14,7 +14,7 @@ export default function MainContainer({ children }: { children: ReactNode }) {
           'flex flex-col',
           'md:mx-8 lg:mx-16',
           'bg-white dark:bg-zinc-900',
-          'md:border-x border-zinc-100 dark:border-zinc-300/20 ',
+          'md:border-x border-zinc-100 dark:border-zinc-800',
         )}
       >
         <div className={clsx('md:mt-32', 'flex-1 max-w-5xl mx-auto w-full', 'px-4 sm:px-8 lg:px-0')}>
