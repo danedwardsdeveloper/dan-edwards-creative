@@ -24,6 +24,10 @@ function formatHumanTime(seconds: number) {
   return `${h} hour${h === 1 ? '' : 's'}, ${m} minute${m === 1 ? '' : 's'}, ${s} second${s === 1 ? '' : 's'}`
 }
 
+function PlaceholderButton() {
+  return <div data-component="PlaceholderButton" className="size-6" />
+}
+
 export default function AudioPlayer() {
   const player = useAudioPlayer()
 
@@ -62,12 +66,12 @@ export default function AudioPlayer() {
         >
           {player.song.title}
         </Link> */}
-          <span className="block max-h-6 text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200 overflow-x-auto whitespace-nowrap">
+          <span className="block max-h-6 text-center text-sm font-bold leading-6 md:text-left dark:text-slate-200 truncate">
             {player.song?.title}
           </span>
           <div className="flex justify-between gap-6">
             <div className="flex items-center md:hidden">
-              <DismissButton />
+              <PlaceholderButton />
             </div>
             <div className="flex flex-none items-center gap-4">
               <RewindButton player={player} />
