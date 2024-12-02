@@ -1,7 +1,9 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 
-const variantStyles = {
+export const buttonStyles = {
+  baseStyles:
+    'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm transition active:transition-none outline-offset-4 focus:outline-blue-500 w-full',
   primary:
     'bg-blue-500 font-semibold text-white hover:bg-blue-600 active:bg-blue-600 active:text-white-100/70 dark:bg-blue-700 dark:hover:bg-blue-600 dark:active:bg-blue-700 dark:active:text-blue-100/70',
   secondary:
@@ -10,25 +12,39 @@ const variantStyles = {
     'bg-emerald-400 font-semibold text-black hover:bg-emerald-500 active:bg-emerald-700 active:text-white/70',
 }
 
-type ButtonProps = {
-  variant?: keyof typeof variantStyles
+type Props = {
+  variant?: keyof typeof buttonStyles
+  text: string
+  width?: 'md:max-w-md' | 'md:max-w-sm'
+  classes?: string
+  submit?: boolean
 } & (
   | (React.ComponentPropsWithoutRef<'button'> & { href?: undefined })
   | React.ComponentPropsWithoutRef<typeof Link>
 )
 
-export function Button({ variant = 'primary', className, ...props }: ButtonProps) {
-  className = clsx(
-    'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm  transition active:transition-none w-full',
-    'outline-offset-4 focus:outline-blue-500',
-    'w-full',
-    variantStyles[variant],
-    className,
-  )
-
-  return typeof props.href === 'undefined' ? (
-    <button className={className} {...props} />
-  ) : (
-    <Link className={className} {...props} />
-  )
+export default function Button({
+  text,
+  variant = 'primary',
+  width = 'md:max-w-md',
+  classes,
+  href,
+  submit,
+}: Props) {
+  if (!href) {
+    return (
+      <button
+        type={submit ? 'submit' : undefined}
+        className={clsx(buttonStyles.baseStyles, buttonStyles[variant], width, classes)}
+      >
+        {text}
+      </button>
+    )
+  } else {
+    return (
+      <Link className={clsx(buttonStyles.baseStyles, buttonStyles[variant], width, classes)} href={href}>
+        {text}
+      </Link>
+    )
+  }
 }
