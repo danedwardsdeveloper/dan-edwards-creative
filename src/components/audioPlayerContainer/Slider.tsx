@@ -34,7 +34,8 @@ function Thumb(props: {
 
   return (
     <div
-      className="absolute top-1/2 -translate-x-1/2"
+      data-component="SliderThumb"
+      className="absolute top-1/2 md:-translate-x-1/2 z-50"
       style={{
         left: `${state.getThumbPercent(index) * 100}%`,
       }}
@@ -51,7 +52,10 @@ function Thumb(props: {
         }}
         className={clsx(
           'h-4 rounded-full',
-          isFocusVisible || state.isThumbDragging(index) ? 'w-1.5 bg-slate-900' : 'w-1 bg-slate-700',
+          'transition-colors duration-300',
+          isFocusVisible || state.isThumbDragging(index)
+            ? 'w-2.5 bg-slate-900 dark:bg-slate-200'
+            : ' w-2 bg-slate-700 dark:bg-slate-400',
         )}
       >
         <VisuallyHidden>
@@ -80,7 +84,7 @@ export function Slider(props: SliderStateOptions<Array<number>> & { onChangeStar
           className={clsx(
             'absolute z-50',
             'inset-x-0  flex flex-auto touch-none items-center gap-6 md:relative',
-            'bottom-full',
+            'top-0',
           )}
         >
           {props.label && (
@@ -89,6 +93,7 @@ export function Slider(props: SliderStateOptions<Array<number>> & { onChangeStar
             </label>
           )}
           <div
+            data-component="SliderRail"
             {...trackProps}
             onMouseDown={(...args) => {
               trackProps.onMouseDown?.(...args)
@@ -104,7 +109,10 @@ export function Slider(props: SliderStateOptions<Array<number>> & { onChangeStar
             <div
               className={clsx(
                 'h-2 md:rounded-l-xl md:rounded-r-md',
-                isFocusVisible || state.isThumbDragging(0) ? 'bg-slate-900' : 'bg-slate-700',
+                'transition-colors duration-300',
+                isFocusVisible || state.isThumbDragging(0)
+                  ? 'bg-slate-900 dark:bg-slate-200'
+                  : 'bg-slate-700 dark:bg-slate-400',
               )}
               style={{
                 width:
@@ -130,6 +138,7 @@ export function Slider(props: SliderStateOptions<Array<number>> & { onChangeStar
               aria-live="off"
               className={clsx(
                 'hidden rounded-md px-1 py-0.5 font-mono text-sm leading-6 md:block',
+                'transition-colors duration-300',
                 state.getThumbMaxValue(0) === 0 && 'opacity-0',
                 isFocusVisible || state.isThumbDragging(0) ? 'bg-slate-100 text-slate-900' : 'text-slate-500',
               )}
