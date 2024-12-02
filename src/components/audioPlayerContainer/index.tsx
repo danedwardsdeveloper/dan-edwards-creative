@@ -13,7 +13,10 @@ export default function AudioPlayerContainer() {
       data-container="AudioPlayerContainer"
       className={clsx(
         'bg-slate-100 z-40',
-        'transition-all duration-500 overflow-hidden',
+        'md:mx-8 lg:mx-16',
+        'md:border-x border-zinc-100 dark:border-zinc-800',
+        'transition-all duration-500',
+        // 'overflow-hidden',
         showAudioPlayer ? 'h-[113px]' : 'h-0',
       )}
     >
