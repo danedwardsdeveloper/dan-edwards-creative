@@ -3,6 +3,8 @@
 import clsx from 'clsx'
 import { ReactNode } from 'react'
 
+import { cloudfrontDomain } from '@/library/environment'
+
 import { buttonStyles } from '@/components/Button'
 import { Header } from '@/components/Header'
 import { PauseIcon, PlayIcon } from '@/components/Icons'
@@ -13,9 +15,6 @@ import StyledLink from '@/components/StyledLink'
 import TwoColumnLayout from '@/components/TwoColumnLayout'
 
 import { streamingProfileItems } from './links/data'
-
-import chewingGumArtwork from '@/images/album-artwork/chewing-gum-dan-edwards-ft-rowan-artwork.jpg'
-import pieceOfMeArtwork from '@/images/album-artwork/piece-of-me-dan-edwards-ft-rowan-artwork.png'
 
 function StreamingProfileLinks() {
   return (
@@ -68,10 +67,13 @@ function ColumnOne() {
         intro={`Listen to a preview of my upcoming single, 'Chewing Gum' (ft. rowan). Subscribe to my newsletter, and I'll tell you when it's released.`}
         image={
           <AdditionalImage
-            src={chewingGumArtwork}
+            src={`${cloudfrontDomain}/chewing-gum-dan-edwards-ft-rowan-artwork-828.webp`}
+            height={414}
+            width={414}
             alt={`Chewing Gum (ft. rowan) by Dan Edwards - album artwork `}
             classes="max-w-md"
             margin={false}
+            priority
           />
         }
       >
@@ -99,7 +101,9 @@ function ColumnOne() {
         intro={`Check out my latest single, 'Piece of Me' (ft. rowan).`}
         image={
           <AdditionalImage
-            src={pieceOfMeArtwork}
+            src={`${cloudfrontDomain}/piece-of-me-dan-edwards-ft-rowan-artwork-828.webp`}
+            height={414}
+            width={414}
             alt={`Piece of Me (ft. rowan) by Dan Edwards - album artwork `}
             border
             margin={false}

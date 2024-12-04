@@ -4,24 +4,16 @@ import { clsx } from 'clsx'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+import { cloudfrontDomain } from '@/library/environment'
+
 import Spinner from './Spinner'
-import iconPNG from '@/app/icon.png'
 import { useLoading } from '@/hooks/useLoading'
 
 export default function SplashScreen() {
   const [splashExists, setSplashExists] = useState(true)
-  // const [forceShow, setForceShow] = useState(false)
   const { isLoading } = useLoading()
 
   const forceShow = false
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setForceShow(prev => !prev)
-  //   }, 3000)
-
-  //   return () => clearInterval(interval)
-  // }, [])
 
   const showSplash = forceShow || isLoading
 
@@ -52,7 +44,12 @@ export default function SplashScreen() {
     >
       <Spinner />
       <div className="absolute bottom-20">
-        <Image src={iconPNG} alt="Dan Edwards creative icon" height={80} width={80} />
+        <Image
+          src={`${cloudfrontDomain}/dan-edwards-creative-icon-160.webp`}
+          alt="Dan Edwards creative icon"
+          height={80}
+          width={80}
+        />
       </div>
       <h1 className={clsx('absolute bottom-8', 'text-xl font-medium', 'text-gray-900 dark:text-gray-100')}>
         Dan Edwards creative
