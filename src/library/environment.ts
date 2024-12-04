@@ -13,3 +13,5 @@ export const isDevelopment = nodeEnv === 'development'
 export const productionBaseURL = 'https://dec-test.fly.dev'
 export const developmentBaseURL = 'http://localhost:3000'
 export const dynamicBaseURL = isProduction ? productionBaseURL : developmentBaseURL
+
+export const cloudfrontDomain = 'https://d1zazl06f7w9hx.cloudfront.net'
