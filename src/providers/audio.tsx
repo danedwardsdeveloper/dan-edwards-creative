@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useMemo, useReducer, useRef, useState } from 'react'
 
+import { cloudfrontDomain } from '@/library/environment'
 import logger from '@/library/logger'
 
 import { useRecordLinkClick } from '@/hooks/useRecordLinkClick'
@@ -10,12 +11,14 @@ export interface Song {
   title: string
   slug: string
   releaseDate: Date
+  cloudfrontUrl: string
 }
 
 export const chewingGum: Song = {
   title: 'Chewing Gum (ft. rowan) - Dan Edwards [PREVIEW]',
   slug: 'chewing-gum',
   releaseDate: new Date('2025-01-10T00:00:00Z'),
+  cloudfrontUrl: `${cloudfrontDomain}/chewing-gum-clip.mp3`,
 }
 
 export function isReleased({ song }: { song: Song }) {
@@ -82,10 +85,6 @@ function audioReducer(state: PlayerState, action: Action): PlayerState {
   }
 }
 
-function getAudioPath(slug: string) {
-  return `/audio/${slug}.mp3`
-}
-
 export function AudioProvider({ children }: { children: React.ReactNode }) {
   const recordPlay = useRecordLinkClick()
   const [hasTriggeredPlay, setHasTriggeredPlay] = useState(false)
@@ -108,7 +107,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
           if (playerRef.current) {
             const currentSlug = playerRef.current.currentSrc.split('/').pop()?.replace('.mp3', '')
             if (currentSlug !== song.slug) {
-              playerRef.current.src = getAudioPath(song.slug)
+              playerRef.current.src = chewingGum.cloudfrontUrl
               playerRef.current.load()
               playerRef.current.pause()
               playerRef.current.currentTime = 0
@@ -146,10 +145,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       },
       isPlaying(song) {
         if (!playerRef.current) return false
-        return song
-          ? state.playing &&
-              playerRef.current.currentSrc === new URL(getAudioPath(song.slug), window.location.href).href
-          : state.playing
+        return song ? state.playing && playerRef.current.currentSrc === song.cloudfrontUrl : state.playing
       },
     }),
     [state.playing],
