@@ -9,7 +9,10 @@ export default function Spinner({
 }) {
   return (
     <svg
-      className={clsx('animate-spin', 'h-7 w-7', colour, classes)}
+      className={clsx('h-7 w-7', colour, classes)}
+      style={{
+        animation: 'spin 1.8s cubic-bezier(0.8, 0.2, 0.2, 0.8) infinite',
+      }}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
