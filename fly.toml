@@ -1,9 +1,4 @@
-# fly.toml app configuration file generated for dec-test on 2024-11-26T16:27:06Z
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'dec-test'
+app = 'dan-edwards-creative'
 primary_region = 'lhr'
 
 [build]
