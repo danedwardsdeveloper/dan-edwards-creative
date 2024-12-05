@@ -8,10 +8,10 @@ export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || ''
   const url = request.nextUrl
 
-  const flyDomain = 'dan-edwards-creative.fly.dev'
+  const flyDomains = ['dan-edwards-creative.fly.dev', 'dec-test.fly.dev']
   const customDomain = 'danedwardscreative.com'
 
-  if (hostname === flyDomain) {
+  if (flyDomains.includes(hostname)) {
     return NextResponse.redirect(`https://${customDomain}${url.pathname}${url.search}`)
   }
 
