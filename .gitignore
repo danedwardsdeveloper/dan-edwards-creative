@@ -38,6 +38,15 @@ Dockerfile
 next-env.d.ts
 
 # My stuff
-ToDo.md
-zhow-i-made-my-blog.md
-**/_work-in-progress
+**/misc
+
+# Tailwind UI copyrighted content
+src/providers/previousPathname.tsx
+src/providers/audio.tsx
+src/components/audioPlayerContainer/
+src/components/Container.tsx
+src/components/HoveringBackButton.tsx
+src/components/menuBars/desktopMenu/
+src/components/menuBars/ThemeToggle.tsx
+src/app/page.tsx
+src/app/not-found.tsx
