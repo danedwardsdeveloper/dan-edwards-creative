@@ -1,4 +1,4 @@
 {
   "version": "0.2",
-  "ignorePaths": ["Dockerfile", ".env"]
+  "ignorePaths": ["Dockerfile", ".env", ".gitignore", "pnpm-lock.yaml"]
 }
